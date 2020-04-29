@@ -72,7 +72,7 @@ $conn->close();
 </head>
 <body>
 
-<?php include './modal.php'?>
+<?php include './shareModal.php'?>
 
 <!-- 본문 -->
 <div class="container" style="min-width:550px; height: 500px;">
@@ -104,6 +104,8 @@ $conn->close();
             }
             ?>
         </form>
+
+        <!-- 좋아요, 북마크, 공유 -->
         <div style=" height: 75px; position: relative; border-top: 3px solid silver; border-bottom: 3px solid silver; margin-top:30px; margin-bottom: 30px;">
             <div id="like" style="position: absolute; left:6%; top: 50%; transform: translateY(-50%); cursor:pointer;">
                 <i class="far fa-heart" style="font-size: 40px;"></i>
@@ -118,6 +120,27 @@ $conn->close();
                 <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Share</span>
             </div>
         </div>
+
+        <!-- 댓글 입력창 -->
+        <div class="container_medium2" style="background: #f0f0f0; margin-bottom: 20px;">
+            <div style="padding:20px;">
+                <div style="margin-bottom: 10px;">Comments</div>
+                <textarea style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                <div>
+                    <button class="btn" style="background: black; color: white;">Post</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 결과창 -->
+        <div class="container_medium2" style="border: 2px solid silver; margin-bottom: 20px;">
+            <div style="padding:10px;">
+                <div style="margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;">너구리 ( msbe@naver.com )</div>
+                <div style="width: 100%; margin-bottom: 10px;">안녕하세요</div>
+                <div style="color:silver;">2019-07-23 09:43:11</div>
+            </div>
+        </div>
+
     </div><!-- container_medium2 끝부분 -->
 </div>
 
@@ -211,7 +234,7 @@ $conn->close();
 
         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
-        })
+        });
 
     });
 
