@@ -58,6 +58,7 @@ $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $my_book_mark = $row["count(*)"];
 
+
 //DB해제
 $conn->close();
 ?>
@@ -127,20 +128,41 @@ $conn->close();
                 <div style="margin-bottom: 10px;">Comments</div>
                 <textarea style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
                 <div>
-                    <button class="btn" style="background: black; color: white;">Post</button>
+                    <button id="comment_post" class="btn" style="background: black; color: white;">Post</button>
                 </div>
             </div>
         </div>
 
         <!-- 댓글 결과창 -->
-        <div class="container_medium2" style="border: 2px solid silver; margin-bottom: 20px;">
-            <div style="padding:10px;">
-                <div style="margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;">너구리 ( msbe@naver.com )</div>
-                <div style="width: 100%; margin-bottom: 10px;">안녕하세요</div>
-                <div style="color:silver;">2019-07-23 09:43:11</div>
-            </div>
-        </div>
+        <div id="comment_result">
+            <!-- 댓글 목록 가져오기 -->
+            <?php
+            include '../DB/DBConnection.php';
 
+            //게시글 시작위치
+            $sql = "SELECT * FROM freeBoardComment WHERE board_no = $idx";
+            $result = $conn->query($sql);
+            while($row = $result->fetch_assoc()) {
+                $datetime = explode(' ', $row['update_date']);
+                $date = $datetime[0];
+                $time = $datetime[1];
+                if($date == Date('Y-m-d'))
+                    $row['update_date'] = $time;
+                else
+                    $row['update_date'] = $date;
+                ?>
+                <div class="container_medium2" style="border: 2px solid silver; margin-bottom: 20px;">
+                    <div style="padding:10px;">
+                        <div style="margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;"><?php echo $row['writer_nick_name'].' ( '.$row['writer_email'].' ) '?></div>
+                        <div style="width: 100%; margin-bottom: 10px;"><?php echo $row['content']?></div>
+                        <div style="color:silver;"><?php echo $row['update_date']?></div>
+                    </div>
+                </div>
+                <?php
+            }
+            $conn->close();
+            ?>
+        </div>
     </div><!-- container_medium2 끝부분 -->
 </div>
 
@@ -234,6 +256,22 @@ $conn->close();
 
         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
+        });
+
+        $('#comment_post').on("click", function() {
+
+            $.ajax({
+                type: "POST",
+                url : "/freeBoardMark.php",
+                data: {"idx":<?php echo $idx ?>},
+                dataType:"json",
+                success : function(data, status, xhr) {
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                }
+            });
         });
 
     });
