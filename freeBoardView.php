@@ -71,6 +71,10 @@ $conn->close();
     <?php include './header.php'?>
 </head>
 <body>
+
+<?php include './modal.php'?>
+
+<!-- 본문 -->
 <div class="container" style="min-width:550px; height: 500px;">
     <!-- 상단 부분 -->
     <div style="position:relative; height: 80px">
@@ -101,15 +105,17 @@ $conn->close();
             ?>
         </form>
         <div style=" height: 75px; position: relative; border-top: 3px solid silver; border-bottom: 3px solid silver; margin-top:30px; margin-bottom: 30px;">
-            <div id="like" style="position: absolute; left:9%; top: 50%; transform: translateY(-50%); cursor:pointer;">
+            <div id="like" style="position: absolute; left:6%; top: 50%; transform: translateY(-50%); cursor:pointer;">
                 <i class="far fa-heart" style="font-size: 40px;"></i>
                 <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Like(<span id="like_num" ><?php echo $likes?></span>)</span>
             </div>
-            <div id="bookmark" style="position: absolute; left:43%; top: 50%; transform: translate(-50%,-50%); cursor:pointer;">
+            <div id="bookmark" style="position: absolute; left:38%; top: 50%; transform: translate(-50%,-50%); cursor:pointer;">
                 <i class="far fa-bookmark" style="font-size: 40px;"></i>
                 <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Bookmark(<span id="total_book_mark" ><?php echo $total_book_mark?></span>)</span>
             </div>
-            <div style="position: absolute; right:25%; top: 50%; transform: translateY(-50%); cursor:pointer;">
+            <div id="share" data-toggle="modal" data-target="#exampleModal" style="position: absolute; right:20%; top: 50%; transform: translateY(-50%); cursor:pointer;">
+                <i class="fas fa-share-alt" style="font-size: 40px;"></i>
+                <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Share</span>
             </div>
         </div>
     </div><!-- container_medium2 끝부분 -->
@@ -178,6 +184,11 @@ $conn->close();
             });
         });
 
+        //공유 클릭
+        $("#share").on("click", function() {
+            $("#modal_input_url").val(window.location.href);
+        });
+
         //처음 로딩될때 좋아요 선택or비선택 하게 만들기
         let $svg = $("#like i");
         //이미 좋아요 했다면
@@ -197,6 +208,10 @@ $conn->close();
         }else{
 
         }
+
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
 
     });
 
