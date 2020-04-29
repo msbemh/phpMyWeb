@@ -23,7 +23,7 @@ if($count>0){
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $count = $row["count(*)"];
-    echo(json_encode(array("likeCheck" => true,"count"=>$count)));
+    echo(json_encode(array("count"=>$count)));
 //이미 좋아요 클릭하지 않은 경우
 }else{
     //좋아요 넣기
@@ -35,7 +35,7 @@ if($count>0){
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $count = $row["count(*)"];
-    echo(json_encode(array("likeCheck" => false,"count"=>$count)));
+    echo(json_encode(array("count"=>$count)));
 }
 
 $conn->close();

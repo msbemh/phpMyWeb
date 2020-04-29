@@ -34,17 +34,29 @@ $writer = $row["writer"];
 $nickName = $row["nickName"];
 $updateDate = $row["updateDate"];
 
-//좋아요 정보 가져오기
+//좋아요 총 개수 가져오기
 $sql = "SELECT count(*) FROM freeBoardLikes WHERE freeBoardNo = $idx";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $likes = $row["count(*)"];
 
-//좋아요 내가 선택했는지 안했는지 가져오기
+//내가 좋아요를 선택했는지 안했는지 정보 가져오기
 $sql = "SELECT count(*) FROM freeBoardLikes WHERE freeBoardNo = $idx AND userId ='$userId'";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $my_count = $row["count(*)"];
+
+//북마트 총 개수 가져오기
+$sql = "SELECT count(*) FROM freeBoardBookmark WHERE freeBoardNo = $idx";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$total_book_mark = $row["count(*)"];
+
+//내가 좋아요를 선택했는지 안했는지 정보 가져오기
+$sql = "SELECT count(*) FROM freeBoardBookmark WHERE freeBoardNo = $idx AND userId ='$userId'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$my_book_mark = $row["count(*)"];
 
 //DB해제
 $conn->close();
@@ -93,8 +105,9 @@ $conn->close();
                 <i class="far fa-heart" style="font-size: 40px;"></i>
                 <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Like(<span id="like_num" ><?php echo $likes?></span>)</span>
             </div>
-            <div style="position: absolute; left:43%; top: 50%; transform: translate(-50%,-50%); cursor:pointer;">
-
+            <div id="bookmark" style="position: absolute; left:43%; top: 50%; transform: translate(-50%,-50%); cursor:pointer;">
+                <i class="far fa-bookmark" style="font-size: 40px;"></i>
+                <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Bookmark(<span id="total_book_mark" ><?php echo $total_book_mark?></span>)</span>
             </div>
             <div style="position: absolute; right:25%; top: 50%; transform: translateY(-50%); cursor:pointer;">
             </div>
@@ -144,15 +157,47 @@ $conn->close();
             });
         });
 
-        //처음 로딩될때 선택or비선택 하게 만들기
+        //북마크 클릭
+        $("#bookmark").on("click", function() {
+            let $bookmark = $("#bookmark i");
+            let $total_book_mark = $("#total_book_mark");
+            //DB에서 존재하는 아이디인지 검사
+            $.ajax({
+                type: "POST",
+                url : "/freeBoardMark.php",
+                data: {"idx":<?php echo $idx ?>},
+                dataType:"json",
+                success : function(data, status, xhr) {
+                    console.log("data:",data);
+                    $bookmark.toggleClass("fas");
+                    $total_book_mark.html(data.count);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                }
+            });
+        });
+
+        //처음 로딩될때 좋아요 선택or비선택 하게 만들기
         let $svg = $("#like i");
         //이미 좋아요 했다면
         if(<?php echo $my_count?>>0){
             $svg.addClass("fas");
         //아직 좋아요를 누르지 않았다면
         }else{
-            
+
         }
+
+        //처음 로딩될때 북마크 선택or비선택 하게 만들기
+        let $bookmark = $("#bookmark i");
+        //이미 북마크 선택했다면
+        if(<?php echo $my_book_mark?>>0){
+            $bookmark.addClass("fas");
+        //아직 북마트 선택하지 않았다면
+        }else{
+
+        }
+
     });
 
 </script>
