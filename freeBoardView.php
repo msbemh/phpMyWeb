@@ -126,7 +126,7 @@ $conn->close();
         <div class="container_medium2" style="background: #f0f0f0; margin-bottom: 20px;">
             <div style="padding:20px;">
                 <div style="margin-bottom: 10px;">Comments</div>
-                <textarea style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
+                <textarea id="comment_textarea" style="width: 100%; height: 100px; margin-bottom: 10px;"></textarea>
                 <div>
                     <button id="comment_post" class="btn" style="background: black; color: white;">Post</button>
                 </div>
@@ -139,8 +139,8 @@ $conn->close();
             <?php
             include '../DB/DBConnection.php';
 
-            //게시글 시작위치
-            $sql = "SELECT * FROM freeBoardComment WHERE board_no = $idx";
+            //댓글 시작위치
+            $sql = "SELECT * FROM freeBoardComment WHERE board_no = $idx ORDER BY comment_no DESC";
             $result = $conn->query($sql);
             while($row = $result->fetch_assoc()) {
                 $datetime = explode(' ', $row['update_date']);
@@ -258,17 +258,22 @@ $conn->close();
             $('#myInput').trigger('focus')
         });
 
+        //댓글 post클릭
         $('#comment_post').on("click", function() {
-
             $.ajax({
                 type: "POST",
-                url : "/freeBoardMark.php",
-                data: {"idx":<?php echo $idx ?>},
-                dataType:"json",
+                url : "/freeBoardComment.php",
+                data: {"idx":<?php echo $idx ?>,"content":$("#comment_textarea").val()},
+                dataType:"html",
                 success : function(data, status, xhr) {
-
+                    console.log("data:",data);
+                    $("#comment_textarea").val("");
+                    let comment = $("#comment_result").html();
+                    data += comment;
+                    $("#comment_result").html(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    $("#comment_textarea").val("");
                     console.log(jqXHR.responseText);
                 }
             });
