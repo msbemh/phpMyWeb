@@ -33,6 +33,11 @@ $writer = $row["writer"];
 $nickName = $row["nickName"];
 $updateDate = $row["updateDate"];
 
+//좋아요 정보 가져오기
+$sql = "SELECT count(*) FROM freeBoardLikes WHERE freeBoardNo = $idx";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$likes = $row["count(*)"];
 
 //DB해제
 $conn->close();
@@ -79,7 +84,7 @@ $conn->close();
         <div style=" height: 75px; position: relative; border-top: 3px solid silver; border-bottom: 3px solid silver; margin-top:30px; margin-bottom: 30px;">
             <div id="like" style="position: absolute; left:9%; top: 50%; transform: translateY(-50%); cursor:pointer;">
                 <i class="far fa-heart" style="font-size: 40px;"></i>
-                <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Like(<span id="like_num" >0</span>) </span>
+                <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Like(<span id="like_num" ><?php echo $likes?></span>)</span>
             </div>
             <div style="position: absolute; left:43%; top: 50%; transform: translate(-50%,-50%); cursor:pointer;">
 
@@ -109,16 +114,17 @@ $conn->close();
             }
         });
 
+        //좋아요 클릭
         $("#like").on("click", function() {
             let $svg = $("#like i");
             let $like_num = $("#like_num");
             let like_num_value = $like_num.html()*1;
             console.log("like_num_value:",like_num_value);
-            //좋아요 이미 눌렀다면
+            //좋아요 이미 눌려진 상태라면
             if($svg.hasClass("fas")){
                 like_num_value -= 1;
                 $like_num.html(like_num_value);
-            //좋아요 이미 누르지 않았다면
+            //좋아요 이미 누르지 않은 상태라면
             }else{
                 like_num_value += 1;
                 $like_num.html(like_num_value);
