@@ -65,19 +65,29 @@ $conn->close();
             <div id="writer" name="writer" style="margin-bottom: 10px;"><?php echo 'by '.$nickName; echo ' ( '.$writer.' )' ?></div>
             <div id="updateDate" name="updateDate" style="margin-bottom: 20px; color: silver;"><?php echo 'published '.$updateDate; ?></div>
             <div id="content" name="content" style="margin:15px;"><?php echo $content ?></div>
-
             <?php
             if($writer == $_SESSION['userId']){ ?>
                 <div style="float:right; margin-top: 10px;">
                     <button type="button" id="update" class="btn">수정</button>
                     <button type="button" id="delete" class="btn">삭제</button>
                 </div>
+                <div style="clear: both;"></div>
                 <?php
             }
             ?>
         </form>
-    </div>
+        <div style=" height: 75px; position: relative; border-top: 3px solid silver; border-bottom: 3px solid silver; margin-top:30px; margin-bottom: 30px;">
+            <div id="like" style="position: absolute; left:9%; top: 50%; transform: translateY(-50%); cursor:pointer;">
+                <i class="far fa-heart" style="font-size: 40px;"></i>
+                <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Like(<span id="like_num" >0</span>) </span>
+            </div>
+            <div style="position: absolute; left:43%; top: 50%; transform: translate(-50%,-50%); cursor:pointer;">
 
+            </div>
+            <div style="position: absolute; right:25%; top: 50%; transform: translateY(-50%); cursor:pointer;">
+            </div>
+        </div>
+    </div><!-- container_medium2 끝부분 -->
 </div>
 
 <script type="text/javascript">
@@ -97,6 +107,23 @@ $conn->close();
                 $form.attr("action", "freeBoardDelete.php");
                 $form.trigger("submit");
             }
+        });
+
+        $("#like").on("click", function() {
+            let $svg = $("#like i");
+            let $like_num = $("#like_num");
+            let like_num_value = $like_num.html()*1;
+            console.log("like_num_value:",like_num_value);
+            //좋아요 이미 눌렀다면
+            if($svg.hasClass("fas")){
+                like_num_value -= 1;
+                $like_num.html(like_num_value);
+            //좋아요 이미 누르지 않았다면
+            }else{
+                like_num_value += 1;
+                $like_num.html(like_num_value);
+            }
+            $svg.toggleClass("fas");
         });
     });
 
