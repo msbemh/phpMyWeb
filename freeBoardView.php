@@ -260,6 +260,12 @@ $conn->close();
 
         //댓글 post클릭
         $('#comment_post').on("click", function() {
+            let comment_value = $("#comment_textarea").val();
+            console.log("comment_value:",comment_value);
+            if(comment_value == "" || comment_value == null){
+                alert("댓글을 입력해주세요.");
+                return;
+            }
             $.ajax({
                 type: "POST",
                 url : "/freeBoardComment.php",
@@ -268,8 +274,8 @@ $conn->close();
                 success : function(data, status, xhr) {
                     console.log("data:",data);
                     $("#comment_textarea").val("");
-                    let comment = $("#comment_result").html();
-                    data += comment;
+                    let comment_html = $("#comment_result").html();
+                    data += comment_html;
                     $("#comment_result").html(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
