@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+.freeBoardHover:hover{
+    background: #FFEEE4;
+    cursor: pointer;
+}
+
+.container_medium{
+    margin: auto;
+    width:850px;
+}
+.container_medium2{
+    margin: auto;
+    width:700px;
+}
+
+
