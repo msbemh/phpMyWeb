@@ -8,6 +8,7 @@ if(!isset($_SESSION['userId'])){
 
 }
 
+$userId = $_SESSION['userId'];
 
 //DB연결
 include '../DB/DBConnection.php';
@@ -38,6 +39,12 @@ $sql = "SELECT count(*) FROM freeBoardLikes WHERE freeBoardNo = $idx";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $likes = $row["count(*)"];
+
+//좋아요 내가 선택했는지 안했는지 가져오기
+$sql = "SELECT count(*) FROM freeBoardLikes WHERE freeBoardNo = $idx AND userId ='$userId'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$my_count = $row["count(*)"];
 
 //DB해제
 $conn->close();
@@ -120,17 +127,32 @@ $conn->close();
             let $like_num = $("#like_num");
             let like_num_value = $like_num.html()*1;
             console.log("like_num_value:",like_num_value);
-            //좋아요 이미 눌려진 상태라면
-            if($svg.hasClass("fas")){
-                like_num_value -= 1;
-                $like_num.html(like_num_value);
-            //좋아요 이미 누르지 않은 상태라면
-            }else{
-                like_num_value += 1;
-                $like_num.html(like_num_value);
-            }
-            $svg.toggleClass("fas");
+            //DB에서 존재하는 아이디인지 검사
+            $.ajax({
+                type: "POST",
+                url : "/freeBoardLike.php",
+                data: {"idx":<?php echo $idx ?>},
+                dataType:"json",
+                success : function(data, status, xhr) {
+                    console.log("data:",data);
+                    $svg.toggleClass("fas");
+                    $like_num.html(data.count);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                }
+            });
         });
+
+        //처음 로딩될때 선택or비선택 하게 만들기
+        let $svg = $("#like i");
+        //이미 좋아요 했다면
+        if(<?php echo $my_count?>>0){
+            $svg.addClass("fas");
+        //아직 좋아요를 누르지 않았다면
+        }else{
+            
+        }
     });
 
 </script>
