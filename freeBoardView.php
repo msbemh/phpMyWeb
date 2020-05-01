@@ -82,6 +82,7 @@ $conn->close();
 
 <?php include './shareModal.php'?>
 
+
 <!-- 본문 -->
 <div class="container" style="min-width:550px; height: 500px;">
     <!-- 상단 부분 -->
@@ -93,6 +94,11 @@ $conn->close();
         <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
     </div>
     <div style="clear: both"></div>
+
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+
     <!-- 글쓰기 부분 -->
     <div class="container_medium2" >
         <form id ="form" method="POST">
@@ -306,7 +312,7 @@ $conn->close();
                 data: {"idx":<?php echo $idx ?>,"content":$("#comment_textarea").val()},
                 dataType:"html",
                 success : function(data, status, xhr) {
-                    console.log("data:",data);
+                    // console.log("data:",data);
                     $("#comment_textarea").val("");
                     $("#comment_result").prepend(data);
                 },

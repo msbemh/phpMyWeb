@@ -23,36 +23,22 @@ if(!isset($_SESSION['userId'])){
         <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
     </div>
     <div style="clear: both"></div>
-
-<!--    <ul>-->
-<!--        <li onclick="goHome()">홈</li>-->
-<!--        <li onclick="goFreeBoard()">자유 게시판</li>-->
-<!--        <li onclick="goHome()">Contact</li>-->
-<!--        <li onclick="goHome()">About</li>-->
-<!--        <li onclick="goHome()">About</li>-->
-<!--    </ul>-->
-    <div>
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" style="background: #e7e7e7" href="/main.php">Home</a>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/freeBoard.php">자유게시판</a></li>
-                        <li><a href="#">여행일정</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
+    <div class="container_medium">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/main.php" style="background: #E3E3E3">Home</a>
+            <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/freeBoard.php">자유게시판</a>
+                    </li>
+                    <li class="nav-item" style="margin-left:10px;">
+                        <a class="nav-link" href="/freeBoard.php">여행일정</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
 
 
