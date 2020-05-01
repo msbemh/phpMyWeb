@@ -85,15 +85,9 @@ $conn->close();
 
 <!-- 본문 -->
 <div class="container" style="min-width:550px; height: 500px;">
+
     <!-- 상단 부분 -->
-    <div style="position:relative; height: 80px">
-        <h1 style="float:left;">여행 일정</h1>
-        <div style="float:right; margin:20px 0px;">
-            <button id="logOut" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">로그아웃</button>
-        </div>
-        <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
-    </div>
-    <div style="clear: both"></div>
+    <?php include './topPart.php'?>
 
     <!-- 글쓰기 부분 -->
     <div class="container_medium2" >
@@ -204,10 +198,6 @@ $conn->close();
 
 <script type="text/javascript">
     $(document).on('ready', function(e){
-        $("#logOut").on("click", function() {
-            location.href = "/logOut.php";
-        });
-
         $("#update").on("click", function() {
             let idx = $("#idx").val();
             location.href='/freeBoardUpdateView.php?idx='+idx;
@@ -359,7 +349,7 @@ $conn->close();
                             let loading = document.querySelector(".loading");	//제거하고자 하는 엘리먼트
                             let comment_result = document.querySelector("#comment_result");		// 그 엘리먼트의 부모 객체
                             comment_result.removeChild(loading);
-                            
+
                             console.log(jqXHR.responseText);
                         }
                     });

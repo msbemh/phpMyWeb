@@ -28,14 +28,9 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
 </head>
 <body>
 <div class="container" style="min-width:550px; height: 500px;">
-    <div style="position:relative; height: 80px">
-        <h1 style="float:left;">여행 일정</h1>
-        <div style="float:right; margin:20px 0px;">
-            <button id="logOut" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">로그아웃</button>
-        </div>
-        <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
-    </div>
-    <div style="clear: both"></div>
+
+    <!-- 상단 부분 -->
+    <?php include './topPart.php'?>
 
     <!-- 메뉴 -->
     <div class="container_medium">
@@ -169,10 +164,6 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
 </div>
 <script type="text/javascript">
     $(document).on('ready', function(e){
-        $("#logOut").on("click", function() {
-            location.href = "/logOut.php";
-        });
-
         $("#write_btn").on("click", function() {
             location.href = "/freeBoardWrite.php";
         });

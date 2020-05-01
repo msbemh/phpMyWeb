@@ -15,14 +15,11 @@ if(!isset($_SESSION['userId'])){
 </head>
 <body>
 <div class="container" style="min-width:550px; height: 500px;">
-    <div style="position:relative; height: 80px">
-        <h1 style="float:left;">여행 일정</h1>
-        <div style="float:right; margin:20px 0px;">
-            <button id="logOut" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">로그아웃</button>
-        </div>
-        <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
-    </div>
-    <div style="clear: both"></div>
+
+    <!-- 상단 부분 -->
+    <?php include './topPart.php'?>
+
+    <!-- 메뉴 -->
     <div class="container_medium">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/main.php" style="background: #E3E3E3">Home</a>
@@ -50,15 +47,7 @@ if(!isset($_SESSION['userId'])){
 </div>
 <script type="text/javascript">
     $(document).on('ready', function(e){
-        console.log("들어옴");
-        $("#logOut").on("click", function() {
-            console.log("들어옴");
-            location.href = "/logOut.php";
-        });
 
-        $("#signUpBtn").on("click", function() {
-            location.href = "/signUp.php";
-        });
     });
     function goHome() {
         location.href='/main.php';
