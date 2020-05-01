@@ -159,7 +159,7 @@ $conn->close();
                         <!-- 나의 댓글만 수정 삭제 활성화 -->
                         <?php
                         if($userId == $row['writer_email']){?>
-                            <div style="float:right; color:silver;"><span style="cursor: pointer;" onclick="comment_view_update(<?php echo $comment_no ?>)">수정</span>&nbsp;|&nbsp;<span style="cursor: pointer;">삭제</span></div>
+                            <div style="float:right; color:silver;"><span style="cursor: pointer;" onclick="comment_view_update(<?php echo $comment_no ?>)">수정</span>&nbsp;|&nbsp;<span style="cursor: pointer;" onclick="comment_delete(<?php echo $comment_no ?>)">삭제</span></div>
                         <?php
                         }?>
                         <div style="clear:both;"></div>
@@ -367,6 +367,39 @@ $conn->close();
                 console.log(jqXHR.responseText);
             }
         });
+    }
+    
+    function  comment_delete(comment_no) {
+        console.log("comment_no:",comment_no);
+        let result = confirm("정말 삭제하시겠습니까?");
+        if(result){
+            $.ajax({
+                type: "POST",
+                url : "/freeBoardCommentDelete.php",
+                data: {"comment_no":comment_no,"textarea_content":textarea_content},
+                dataType:"json",
+                success : function(data, status, xhr) {
+                    console.log("data:",data);
+
+                    //데이터 넣어주기
+                    $(".comment_textarea_"+comment_no+" .content").val(data.content);
+                    $(".comment_textarea_"+comment_no+" .update_date").html(data.update_date);
+                    $(".comment_view_"+comment_no+" .content").html(data.content);
+                    $(".comment_view_"+comment_no+" .update_date").html(data.update_date);
+
+                    //댓글창 토글
+                    $(".comment_textarea_"+comment_no).css("display","none");
+                    $(".comment_view_"+comment_no).css("display","block");
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("삭제에 실패했습니다.");
+                    console.log(jqXHR.responseText);
+                }
+            });
+        }else{
+            console.log("삭제취소");
+        }
     }
 
 </script>

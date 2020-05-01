@@ -33,18 +33,34 @@ if($date == Date('Y-m-d'))
 else
     $update_date = $date;
 
+$html =     "<div class=\"container_medium2 comment_view_$comment_no\" style=\"border: 2px solid silver; margin-bottom: 20px;\">
+                <div style=\"padding:10px;\">
+                    <div style=\"float:left; margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;\">$writer_nick_name ( $writer_email )</div>";
+if($user_id == $writer_email){
+    $html = $html. "<div style=\"float:right; color:silver;\"><span style=\"cursor: pointer;\" onclick=\"comment_view_update($comment_no)\">수정</span>&nbsp;|&nbsp;<span style=\"cursor: pointer;\" onclick=\"comment_delete($comment_no)\">삭제</span></div>";
+}
 
-
-//echo(json_encode(array("count"=>1)));
-
-echo "<div clas=\"container_medium2\" style=\"border: 2px solid silver; margin-bottom: 20px;\">
-    <div style=\"padding:10px;\">
-        <div style=\"margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;\">$writer_nick_name ( $writer_email )</div>
-        <div style=\"width: 100%; margin-bottom: 10px;\">$content</div>
-        <div style=\"color:silver;\">$update_date</div>
-    </div>
-</div>";
-
+$html = $html.     "<div style=\"clear:both;\"></div>
+                    <div class=\"content\" style=\"width: 100%; margin-bottom: 10px;\">$content</div>
+                    <div class=\"update_date\" style=\"color:silver;\">$update_date</div>
+                </div>
+            </div>
+            <div class=\"container_medium2 comment_textarea_$comment_no\" style=\"display:none; border: 2px solid silver; margin-bottom: 20px;\">
+                <div style=\"padding:10px;\">
+                <div style=\"float:left; margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;\">$writer_nick_name ( $writer_email )</div>";
+if($user_id == $writer_email){
+    $html = $html. "<div style=\"float:right; color:silver;\"><span style=\"cursor: pointer;\" onclick=\"comment_update_cancel($comment_no)\">수정취소</span></div>";
+}
+$html = $html.     "<div style=\"clear:both;\"></div>
+                    <div style='width:100%; position: relative;'>
+                        <textarea class=\"content\" style='width: 90%;'></textarea>
+                        <button style=\"background: black; color:white; position: absolute; right:0%; top: 50%; transform: translateY(-50%);\"
+                            onclick=\"comment_update_btn($comment_no)\" class=\"btn\">수정</button>
+                    </div>
+                    <div class=\"update_date\" style=\"color:silver;\">$update_date</div>
+                </div>
+            </div>";
+echo $html;
 $conn->close();
 
 ?>
