@@ -368,29 +368,30 @@ $conn->close();
             }
         });
     }
-    
+
+    //댓글 삭제버튼 클릭
     function  comment_delete(comment_no) {
         console.log("comment_no:",comment_no);
         let result = confirm("정말 삭제하시겠습니까?");
+
+        let comment_view = document.querySelector(".comment_view_"+comment_no);	//제거하고자 하는 엘리먼트
+        let comment_textarea = document.querySelector(".comment_textarea_"+comment_no); //제거하고자 하는 엘리먼트
+        let comment_result = document.querySelector("#comment_result");		// 그 엘리먼트의 부모 객체
+        comment_result.removeChild(comment_view);
+        comment_result.removeChild(comment_textarea);
         if(result){
             $.ajax({
                 type: "POST",
                 url : "/freeBoardCommentDelete.php",
-                data: {"comment_no":comment_no,"textarea_content":textarea_content},
+                data: {"comment_no":comment_no},
                 dataType:"json",
                 success : function(data, status, xhr) {
                     console.log("data:",data);
-
-                    //데이터 넣어주기
-                    $(".comment_textarea_"+comment_no+" .content").val(data.content);
-                    $(".comment_textarea_"+comment_no+" .update_date").html(data.update_date);
-                    $(".comment_view_"+comment_no+" .content").html(data.content);
-                    $(".comment_view_"+comment_no+" .update_date").html(data.update_date);
-
-                    //댓글창 토글
-                    $(".comment_textarea_"+comment_no).css("display","none");
-                    $(".comment_view_"+comment_no).css("display","block");
-
+                    if(data.result > 0){
+                        alert("삭제 완료됐습니다.");
+                    }else{
+                        alert("삭제에 실패했습니다.");
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert("삭제에 실패했습니다.");
