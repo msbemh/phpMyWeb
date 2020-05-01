@@ -146,16 +146,43 @@ $conn->close();
                 $datetime = explode(' ', $row['update_date']);
                 $date = $datetime[0];
                 $time = $datetime[1];
+                $comment_no = $row['comment_no'];
+                $content = $row['content'];
                 if($date == Date('Y-m-d'))
                     $row['update_date'] = $time;
                 else
                     $row['update_date'] = $date;
                 ?>
-                <div class="container_medium2" style="border: 2px solid silver; margin-bottom: 20px;">
+                <div class="container_medium2 comment_view_<?php echo $comment_no?>" style="border: 2px solid silver; margin-bottom: 20px;">
                     <div style="padding:10px;">
-                        <div style="margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;"><?php echo $row['writer_nick_name'].' ( '.$row['writer_email'].' ) '?></div>
-                        <div style="width: 100%; margin-bottom: 10px;"><?php echo $row['content']?></div>
-                        <div style="color:silver;"><?php echo $row['update_date']?></div>
+                        <div style="float:left; margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;"><?php echo $row['writer_nick_name'].' ( '.$row['writer_email'].' ) '?></div>
+                        <!-- 나의 댓글만 수정 삭제 활성화 -->
+                        <?php
+                        if($userId == $row['writer_email']){?>
+                            <div style="float:right; color:silver;"><span style="cursor: pointer;" onclick="comment_view_update(<?php echo $comment_no ?>)">수정</span>&nbsp;|&nbsp;<span style="cursor: pointer;">삭제</span></div>
+                        <?php
+                        }?>
+                        <div style="clear:both;"></div>
+                        <div class="content" style="width: 100%; margin-bottom: 10px;"><?php echo $row['content']?></div>
+                        <div class="update_date" style="color:silver;"><?php echo $row['update_date']?></div>
+                    </div>
+                </div>
+                <div class="container_medium2 comment_textarea_<?php echo $comment_no?>" style="display:none; border: 2px solid silver; margin-bottom: 20px;">
+                    <div style="padding:10px;">
+                        <div style="float:left; margin-bottom: 10px; color: #41169A; font-size: 15px; font-weight: bold;"><?php echo $row['writer_nick_name'].' ( '.$row['writer_email'].' ) '?></div>
+                        <!-- 나의 댓글만 수정 삭제 활성화 -->
+                        <?php
+                        if($userId == $row['writer_email']){?>
+                            <div style="float:right; color:silver;"><span style="cursor: pointer;" onclick="comment_update_cancel(<?php echo $comment_no ?>)">수정취소</span></div>
+                            <?php
+                        }?>
+                        <div style="clear:both;"></div>
+                        <div style='width:100%; position: relative;'>
+                            <textarea class="content" style='width: 90%;'></textarea>
+                            <button style="background: black; color:white; position: absolute; right:0%; top: 50%; transform: translateY(-50%);"
+                                    onclick="comment_update_btn(<?php echo $comment_no?>)" class="btn">수정</button>
+                        </div>
+                        <div class="update_date" style="color:silver;"><?php echo $row['update_date']?></div>
                     </div>
                 </div>
                 <?php
@@ -286,6 +313,61 @@ $conn->close();
         });
 
     });
+
+    //수정 클릭 (수정하는 창 띄우기)
+    function comment_view_update(comment_no) {
+        $(".comment_view_"+comment_no).css("display","none");
+        $(".comment_textarea_"+comment_no).css("display","block");
+        //수정전 내용 가져오기
+        let before_content = $(".comment_view_"+comment_no+" .content").html();
+        //수정창에 수정전 내용 넣어주기
+        $(".comment_textarea_"+comment_no+" .content").val(before_content);
+
+        console.log("before_content:",before_content);
+        console.log("comment_no:",comment_no);
+
+
+    }
+    //수정 취소 클릭 (view창 띄우기)
+    function comment_update_cancel(comment_no) {
+        $(".comment_textarea_"+comment_no).css("display","none");
+        $(".comment_view_"+comment_no).css("display","block");
+        console.log("comment_no:",comment_no);
+
+
+    }
+
+    //수정 버튼 클릭 (수정 동작하기)
+    function comment_update_btn(comment_no){
+        //수정창에 있는 내용 가져오기
+        let textarea_content = $(".comment_textarea_"+comment_no+" .content").val();
+        console.log("comment_no:",comment_no);
+        console.log("textarea_content:",textarea_content);
+        $.ajax({
+            type: "POST",
+            url : "/freeBoardCommentUpdate.php",
+            data: {"comment_no":comment_no,"textarea_content":textarea_content},
+            dataType:"json",
+            success : function(data, status, xhr) {
+                console.log("data:",data);
+
+                //데이터 넣어주기
+                $(".comment_textarea_"+comment_no+" .content").val(data.content);
+                $(".comment_textarea_"+comment_no+" .update_date").html(data.update_date);
+                $(".comment_view_"+comment_no+" .content").html(data.content);
+                $(".comment_view_"+comment_no+" .update_date").html(data.update_date);
+
+                //댓글창 토글
+                $(".comment_textarea_"+comment_no).css("display","none");
+                $(".comment_view_"+comment_no).css("display","block");
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $("#comment_textarea").val("");
+                console.log(jqXHR.responseText);
+            }
+        });
+    }
 
 </script>
 
