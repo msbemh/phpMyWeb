@@ -60,7 +60,9 @@ $html = $html.     "<div style=\"clear:both;\"></div>
                     <div class=\"update_date\" style=\"color:silver;\">$update_date</div>
                 </div>
             </div>";
+
 echo $html;
+
 $conn->close();
 
 ?>

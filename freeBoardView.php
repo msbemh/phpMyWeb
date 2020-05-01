@@ -58,6 +58,13 @@ $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $my_book_mark = $row["count(*)"];
 
+//댓글 총 개수 세기
+$sql = "select count(*) from freeBoardComment WHERE board_no = $idx";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$total_comment_num = $row["count(*)"];
+$list_num = 5; //한 페이징당 댓글 개수
+$total_page = $total_comment_num/$list_num;
 
 //DB해제
 $conn->close();
@@ -140,7 +147,7 @@ $conn->close();
             include '../DB/DBConnection.php';
 
             //댓글 시작위치
-            $sql = "SELECT * FROM freeBoardComment WHERE board_no = $idx ORDER BY comment_no DESC";
+            $sql = "SELECT * FROM freeBoardComment WHERE board_no = $idx ORDER BY comment_no DESC LIMIT 0, $list_num";
             $result = $conn->query($sql);
             while($row = $result->fetch_assoc()) {
                 $datetime = explode(' ', $row['update_date']);
@@ -301,9 +308,7 @@ $conn->close();
                 success : function(data, status, xhr) {
                     console.log("data:",data);
                     $("#comment_textarea").val("");
-                    let comment_html = $("#comment_result").html();
-                    data += comment_html;
-                    $("#comment_result").html(data);
+                    $("#comment_result").prepend(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $("#comment_textarea").val("");
@@ -312,10 +317,30 @@ $conn->close();
             });
         });
 
+        //page = 0이 맨처음
+        let page = 1;
         //스크롤 제일 밑으로 왔을때
         $(window).on( "scroll", function() {
-            if ($(window).scrollTop() == $(document).height() - window.innerHeight) {
+            if (Math.floor($(window).scrollTop()) == Math.floor($(document).height() - window.innerHeight)) {
                 console.log("제일 마지막 부분");
+                if(page <= <?php echo $total_page?>){
+                    $.ajax({
+                        type: "POST",
+                        url : "/freeBoardInfiniteScroll.php",
+                        data: {"page":page, "board_no":<?php echo $idx ?>},
+                        dataType:"html",
+                        async:false,
+                        success : function(data, status, xhr) {
+                            page++;
+                            console.log("page:",page);
+                            // console.log("data:",data);
+                            $("#comment_result").append(data);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(jqXHR.responseText);
+                        }
+                    });
+                }
             }
         });
 
