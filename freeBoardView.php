@@ -312,6 +312,13 @@ $conn->close();
             });
         });
 
+        //스크롤 제일 밑으로 왔을때
+        $(window).on( "scroll", function() {
+            if ($(window).scrollTop() == $(document).height() - window.innerHeight) {
+                console.log("제일 마지막 부분");
+            }
+        });
+
     });
 
     //수정 클릭 (수정하는 창 띄우기)
