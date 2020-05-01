@@ -95,10 +95,6 @@ $conn->close();
     </div>
     <div style="clear: both"></div>
 
-    <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-
     <!-- 글쓰기 부분 -->
     <div class="container_medium2" >
         <form id ="form" method="POST">
@@ -329,7 +325,16 @@ $conn->close();
         $(window).on( "scroll", function() {
             if (Math.floor($(window).scrollTop()) == Math.floor($(document).height() - window.innerHeight)) {
                 console.log("제일 마지막 부분");
+                //가져올 페이지가 존재한다면
                 if(page <= <?php echo $total_page?>){
+                    //로딩바 추가
+                    let loading = '<div class="loading" style="text-align: center; margin-bottom: 10px;">' +
+                                        '<div class="spinner-border" role="status" style="width: 40px; height: 40px;">\n' +
+                                        '<span class="sr-only">Loading...</span>\n' +
+                                        '</div>'+
+                                  '</div>'
+                    $("#comment_result").append(loading);
+
                     $.ajax({
                         type: "POST",
                         url : "/freeBoardInfiniteScroll.php",
@@ -337,12 +342,24 @@ $conn->close();
                         dataType:"html",
                         async:false,
                         success : function(data, status, xhr) {
+
+                            //로딩바 없애기
+                            let loading = document.querySelector(".loading");	//제거하고자 하는 엘리먼트
+                            let comment_result = document.querySelector("#comment_result");		// 그 엘리먼트의 부모 객체
+                            comment_result.removeChild(loading);
+
+                            //댓글 페이징결과 추가시키기
                             page++;
-                            console.log("page:",page);
+                            // console.log("page:",page);
                             // console.log("data:",data);
                             $("#comment_result").append(data);
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
+                            //로딩바 없애기
+                            let loading = document.querySelector(".loading");	//제거하고자 하는 엘리먼트
+                            let comment_result = document.querySelector("#comment_result");		// 그 엘리먼트의 부모 객체
+                            comment_result.removeChild(loading);
+                            
                             console.log(jqXHR.responseText);
                         }
                     });
