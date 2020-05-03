@@ -16,11 +16,15 @@ if(!isset($_SESSION['userId'])){
     <link rel="stylesheet" href="css/trevelPlan.css" />
 </head>
 <body>
-<div class="container" style="min-width:550px; height: 100%;">
 
-    <!-- 상단 부분 -->
+<!-- 상단 부분 -->
+<div class="container" style="height: 100%;">
     <?php include './topPart.php'?>
+</div>
 
+
+<!-- 여행일정 부분 -->
+<div class="container_big" style="height: 100%;">
     <nav id="top_menu" class="fl">
         <div class="sign">날짜</div>
         <ul>
@@ -38,6 +42,7 @@ if(!isset($_SESSION['userId'])){
             </li>
         </ul>
     </nav>
+
     <nav id="mega_menu" class="fl">
         <div class="sign_btn">
             <span>관광명소 추천(서울)</span>
@@ -88,6 +93,7 @@ if(!isset($_SESSION['userId'])){
             </li>
         </ul>
     </nav>
+
     <nav id="major_menu" class="fl">
         <div class="sign">나의 여행 장소</div>
         <ul>
@@ -109,7 +115,7 @@ if(!isset($_SESSION['userId'])){
         </ul>
     </nav>
     <!-- 지도를 표시할 div 입니다 -->
-    <div id="map" style="width:100%;height:350px; float:left;"></div>
+    <div id="map" style="width:770px;height:600px; float:left;"></div>
 
 </div>
 
