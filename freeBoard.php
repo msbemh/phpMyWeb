@@ -45,7 +45,7 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
                         <a class="nav-link" href="/freeBoard.php">자유게시판</a>
                     </li>
                     <li class="nav-item" style="margin-left:10px;">
-                        <a class="nav-link" href="/freeBoard.php">여행일정</a>
+                        <a class="nav-link" href="/travelPlan.php">여행일정</a>
                     </li>
                 </ul>
             </div>
@@ -168,22 +168,22 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
             location.href = "/freeBoardWrite.php";
         });
     });
-    function goFreeBoardView(idx) {
-        console.log("idx:",idx);
-        location.href='/freeBoardView.php?idx='+idx;
-    }
-    function goHome() {
-        location.href='/main.php';
-    }
-    function goFreeBoard() {
-        location.href='/freeBoard.php';
-    }
-    function goHome() {
-        location.href='/main.php';
-    }
-    function goHome() {
-        location.href='/main.php';
-    }
+    // function goFreeBoardView(idx) {
+    //     console.log("idx:",idx);
+    //     location.href='/freeBoardView.php?idx='+idx;
+    // }
+    // function goHome() {
+    //     location.href='/main.php';
+    // }
+    // function goFreeBoard() {
+    //     location.href='/freeBoard.php';
+    // }
+    // function goHome() {
+    //     location.href='/main.php';
+    // }
+    // function goHome() {
+    //     location.href='/main.php';
+    // }
 
 </script>
 

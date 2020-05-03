@@ -100,8 +100,8 @@ $conn->close();
             <?php
             if($writer == $_SESSION['userId']){ ?>
                 <div style="float:right; margin-top: 10px;">
-                    <button type="button" id="update" class="btn">수정</button>
-                    <button type="button" id="delete" class="btn">삭제</button>
+                    <button type="button" id="update" class="btn btn-dark" >수정</button>
+                    <button type="button" id="delete" class="btn btn-dark">삭제</button>
                 </div>
                 <div style="clear: both;"></div>
                 <?php

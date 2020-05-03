@@ -1,0 +1,148 @@
+@charset "utf-8";
+
+#top_menu {
+    height: 100%;
+    width: 100px;
+}
+
+#mega_menu{
+    height: 100%;
+    width: 300px;
+}
+
+#major_menu{
+    height: 100%;
+    width: 300px;
+}
+
+#top_menu ul{
+    padding: 10px;
+    background-color: #2d2d2d;
+    border: 1px solid white;
+}
+
+#mega_menu ul{
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#major_menu ul{
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#mega_menu ul li{
+    height: 120px;
+}
+
+#major_menu ul li{
+    height: 120px;
+}
+
+#top_menu ul li {
+    list-style: none; /*<li> 태그는 위의 이미지처럼 목록을 나타내는 점을 없앤다*/
+    color: white; /*글씨 색을 흰색으로 설정*/
+    background-color: #2d2d2d; /*배경색을 진한 회색(RGB(2D,2D,2D)으로 설정*/
+    line-height: 30px; /*글씨가 가운데로 오도록 설정하기 위해 한줄의 높이를 30px로 설정*/
+    vertical-align: middle; /*세로 정렬을 가운데로 설정(위의 line-height와 같이 설정 필요함)*/
+    text-align: center; /*글씨 정렬을 가운데로 설정*/
+    border: 1px solid white;
+    cursor:pointer;
+    margin-bottom: 5px;
+}
+
+#mega_menu ul li {
+    list-style: none; /*<li> 태그는 위의 이미지처럼 목록을 나타내는 점을 없앤다*/
+    line-height: 30px; /*글씨가 가운데로 오도록 설정하기 위해 한줄의 높이를 30px로 설정*/
+    vertical-align: middle; /*세로 정렬을 가운데로 설정(위의 line-height와 같이 설정 필요함)*/
+    text-align: center; /*글씨 정렬을 가운데로 설정*/
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+
+#major_menu ul li {
+    list-style: none; /*<li> 태그는 위의 이미지처럼 목록을 나타내는 점을 없앤다*/
+    line-height: 30px; /*글씨가 가운데로 오도록 설정하기 위해 한줄의 높이를 30px로 설정*/
+    vertical-align: middle; /*세로 정렬을 가운데로 설정(위의 line-height와 같이 설정 필요함)*/
+    text-align: center; /*글씨 정렬을 가운데로 설정*/
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+
+
+#mega_menu .img_box{
+    width: 100px;
+    height: 90px;
+}
+
+#major_menu .img_box{
+    width: 100px;
+    height: 90px;
+}
+
+img{
+    height: 100%;
+    width: 100%;
+}
+
+.fl{
+    float:left;
+}
+
+.fr{
+    float:right;
+}
+
+.data_piece{
+    height: 100%;
+    padding: 15px;
+    position: relative;
+}
+
+.img_box{
+}
+
+.info_box{
+    width: 120px;
+    overflow: hidden;
+}
+
+.item_add_remove{
+    position: absolute;
+    top:50%;
+    right:10px;
+    transform: translateY(-50%);
+}
+
+.sign{
+    text-align: center;
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 55px;
+    padding: 10px;
+}
+
+.sign_btn{
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 55px;
+    padding: 10px;
+}
+
+.item_add_remove i{
+    font-size: 25px; cursor:pointer;
+}
+
+ul{
+    min-height: 550px;
+}
+
+.sign_btn .btn{
+    background: black;
+    color: white;
+}
+
+
+
