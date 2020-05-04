@@ -530,14 +530,89 @@ $conn->close();
 
 <!-- 구글맵 관련 javascript -->
 <script>
+
+    let MARKER_WIDTH = 33, // 기본, 클릭 마커의 너비
+        MARKER_HEIGHT = 36, // 기본, 클릭 마커의 높이
+        OFFSET_X = 12, // 기본, 클릭 마커의 기준 X좌표
+        OFFSET_Y = MARKER_HEIGHT, // 기본, 클릭 마커의 기준 Y좌표
+        OVER_MARKER_WIDTH = 40, // 오버 마커의 너비
+        OVER_MARKER_HEIGHT = 42, // 오버 마커의 높이
+        OVER_OFFSET_X = 13, // 오버 마커의 기준 X좌표
+        OVER_OFFSET_Y = OVER_MARKER_HEIGHT, // 오버 마커의 기준 Y좌표
+        SPRITE_MARKER_URL = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markers_sprites2.png', // 스프라이트 마커 이미지 URL
+        SPRITE_WIDTH = 126, // 스프라이트 이미지 너비
+        SPRITE_HEIGHT = 146, // 스프라이트 이미지 높이
+        SPRITE_GAP = 10; // 스프라이트 이미지에서 마커간 간격
+
+    let markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT), // 기본, 클릭 마커의 크기
+        markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y), // 기본, 클릭 마커의 기준좌표
+        overMarkerSize = new kakao.maps.Size(OVER_MARKER_WIDTH, OVER_MARKER_HEIGHT), // 오버 마커의 크기
+        overMarkerOffset = new kakao.maps.Point(OVER_OFFSET_X, OVER_OFFSET_Y), // 오버 마커의 기준 좌표
+        spriteImageSize = new kakao.maps.Size(SPRITE_WIDTH, SPRITE_HEIGHT); // 스프라이트 이미지의 크기
+
+
     let mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
             center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
         };
 
-    // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-    let map = new kakao.maps.Map(mapContainer, mapOption);
+
+    let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    //지도에 마커를 표시
+    travel_api_list.forEach(function(item, index){
+        // 마커가 표시될 위치입니다
+        let markerPosition  = new kakao.maps.LatLng(item.latitude, item.longitude);
+
+        // 마커를 생성합니다
+        let marker = new kakao.maps.Marker({
+            position: markerPosition,
+            title: item.title_detail
+        });
+
+        let infowindow_html =
+            "           <div class=\"window_info\">\n" +
+            "                <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\">\n" +
+            "                    <div class =\"img_box fl\">\n" +
+            "                        <img src=\""+item.image+"\"></img>\n" +
+            "                    </div>\n" +
+            "                    <div class =\"info_box fl\">\n" +
+            "                        <div class=\"title_detail\">"+item.title_detail+"</div>\n" +
+            "                        <div class=\"sub\">"+item.sub+"</div>\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "            </div>";
+
+        // 마커에 표시할 인포윈도우를 생성합니다
+        let infowindow = new kakao.maps.InfoWindow({
+            content: infowindow_html
+        });
+
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+    })
+
+    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+    function makeOverListener(map, marker, infowindow) {
+        return function() {
+            infowindow.open(map, marker);
+        };
+    }
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+    function makeOutListener(infowindow) {
+        return function() {
+            infowindow.close();
+        };
+    }
+
 
 
 </script>
