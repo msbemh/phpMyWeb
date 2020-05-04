@@ -8,6 +8,47 @@ if(!isset($_SESSION['userId'])){
 
 }
 
+//DB에서 여행일정 정보 가져오기
+include '../DB/DBConnection.php';
+
+//POST로 값 전달 받아야함
+$travel_plan_no = 1;
+
+$sql = "SELECT * FROM travelPlan A
+        INNER JOIN travelPlanDetail B
+        ON A.travel_plan_no = B.travel_plan_no
+        WHERE A.travel_plan_no = $travel_plan_no";
+$result = $conn->query($sql);
+$my_travel_list = array();
+
+while($row = $result->fetch_assoc()) {
+    $my_travel_list[] = $row;
+}
+
+//DAY가 종류별로 몇개있는지 세기
+$sql = "SELECT count(D.day) as cnt FROM(
+            SELECT day FROM(
+                SELECT A.travel_plan_no, travel_plan_detail_no, day FROM travelPlan A
+                INNER JOIN travelPlanDetail B
+                ON A.travel_plan_no = B.travel_plan_no
+                WHERE A.travel_plan_no = $travel_plan_no
+            ) C
+            GROUP BY C.day
+        ) AS D";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$day_count = $row["cnt"];
+
+
+
+//foreach ($my_travel_list as $item) {
+//    foreach ($item as $key => $value) {
+//        echo $key." ".$value."<br>";
+//    }
+//}
+
+$conn->close();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,17 +65,24 @@ if(!isset($_SESSION['userId'])){
 
 
 <!-- 여행일정 부분 -->
+<div class="container_big sign_table">
+    <div class="fl" style="display: inline-block;">
+        <span>제목 : </span><input class="title" />
+        <span>시작날짜 : </span><input class="start_date" />
+    </div>
+    <button class="btn fr" style="width: 500px; background: black; color:white;">여행일정 저장</button>
+</div>
 <div class="container_big" style="height: 100%;">
     <nav id="top_menu" class="fl">
         <div class="sign">날짜</div>
         <ul>
-            <li class="day">
+            <li class="day day_on" data-day="1">
                 <div>DAY1</div>
             </li>
-            <li class="day">
+            <li class="day" data-day="2">
                 <div>DAY2</div>
             </li>
-            <li class="day">
+            <li class="day" data-day="3">
                 <div>DAY3</div>
             </li>
             <li class="day_plus">
@@ -55,7 +103,7 @@ if(!isset($_SESSION['userId'])){
                         <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
                     </div>
                     <div class ="info_box fl">
-                        <div class="title">북촌 한옥마을</div>
+                        <div class="title_detail">북촌 한옥마을</div>
                         <div class="sub">유명한거리/지역</div>
                     </div>
                     <div class="item_add_remove">
@@ -66,11 +114,11 @@ if(!isset($_SESSION['userId'])){
             <li>
                 <div class="data_piece">
                     <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
+                        <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg"></img>
                     </div>
                     <div class ="info_box fl">
-                        <div class="title">북촌 한옥마을</div>
-                        <div class="sub">유명한거리/지역</div>
+                        <div class="title_detail">N서울타워</div>
+                        <div class="sub">랜드마크, 전경/야경</div>
                     </div>
                     <div class="item_add_remove">
                         <i class="fas fa-plus-circle"></i>
@@ -80,11 +128,39 @@ if(!isset($_SESSION['userId'])){
             <li>
                 <div class="data_piece">
                     <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
+                        <img src="http://img.earthtory.com/img/place_img/310/6638_0_et.jpg"></img>
                     </div>
                     <div class ="info_box fl">
-                        <div class="title">북촌 한옥마을</div>
-                        <div class="sub">유명한거리/지역</div>
+                        <div class="title_detail">경복궁</div>
+                        <div class="sub">랜드마크, 성.궁궐</div>
+                    </div>
+                    <div class="item_add_remove">
+                        <i class="fas fa-plus-circle" ></i>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="data_piece">
+                    <div class ="img_box fl">
+                        <img src="http://img.earthtory.com/img/place_img/310/6661_0_et.jpg"></img>
+                    </div>
+                    <div class ="info_box fl">
+                        <div class="title_detail">광화문</div>
+                        <div class="sub">역사적 명소</div>
+                    </div>
+                    <div class="item_add_remove">
+                        <i class="fas fa-plus-circle" ></i>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="data_piece">
+                    <div class ="img_box fl">
+                        <img src="http://img.earthtory.com/img/place_img/310/6661_0_et.jpg"></img>
+                    </div>
+                    <div class ="info_box fl">
+                        <div class="title_detail">광화문</div>
+                        <div class="sub">역사적 명소</div>
                     </div>
                     <div class="item_add_remove">
                         <i class="fas fa-plus-circle" ></i>
@@ -103,7 +179,7 @@ if(!isset($_SESSION['userId'])){
                         <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
                     </div>
                     <div class ="info_box fl">
-                        <div class="title">북촌 한옥마을</div>
+                        <div class="title_detail">북촌 한옥마을</div>
                         <div class="sub">유명한거리/지역</div>
                     </div>
                     <div class="item_add_remove">
@@ -111,36 +187,95 @@ if(!isset($_SESSION['userId'])){
                     </div>
                 </div>
             </li>
-
         </ul>
     </nav>
     <!-- 지도를 표시할 div 입니다 -->
-    <div id="map" style="width:770px;height:600px; float:left;"></div>
+    <div id="map" style="width:764px;height:600px; float:left;"></div>
 
 </div>
 
 
 <script type="text/javascript">
+
+    // 임시 데이터 생성
+    // var my_travel_location_list = new Array();
+    // var my_travel_location = {};
+    // my_travel_location.title_detail = "광화문";
+    // my_travel_location.sub = "광장, 랜드마크";
+    // my_travel_location.day = 1;
+    // my_travel_location.img = "http://img.earthtory.com/img/place_img/310/6661_0_et.jpg";
+    //
+    // var my_travel_location2 = {};
+    // my_travel_location2.title_detail = "북촌 한옥마을";
+    // my_travel_location2.sub = "유명한거리/지역";
+    // my_travel_location2.day = 1;
+    // my_travel_location2.img = "http://img.earthtory.com/img/place_img/310/6725_0_et.jpg";
+    //
+    //
+    //
+    // console.log("my_travel_location:",my_travel_location);
+    // my_travel_location_list.push(my_travel_location);
+    // my_travel_location_list.push(my_travel_location2);
+    // console.log("my_travel_location_list:",my_travel_location_list);
+
+    let my_travel_list = <?= json_encode($my_travel_list) ?>;
+
+    console.log("my_travel_list:",my_travel_list);
+
+    //나의 여행장소 리로드
+    my_location_reload(1);
+
+    //나의 DAY 로드
+    my_day_load();
+
     $(document).on('ready', function(e){
         $("#travel_plan_write_btn").on("click", function() {
             location.href = "/travelPlanWrite.php";
         });
 
+        //날짜 추가(+) 버튼 클릭
         $("#top_menu .day_plus").on("click", function() {
             let $side_ul = $("#top_menu ul")
             let length = $side_ul.children().size();
-            console.log("$side_ul:",$side_ul);
-            console.log("length:",length);
 
             let html =
-                    "<li class=\"day\">\n" +
+                    "<li class=\"day\" data-day=\""+length+"\">\n" +
                         "<div>DAY"+length+"</div>\n" +
                     "</li>"
             $side_ul.children(":last").before(html);
+
+            //날짜(DAY) 버튼 클릭 이벤트 다시 추가
+            $(".day").on("click", function() {
+                console.log("$(this):",$(this));
+                $(this).addClass("day_on");
+                $(this).siblings().removeClass("day_on");
+
+                console.log("데이터:",$(this).data('day'));
+
+                let selected_day = $(this).data('day');
+
+                //나의 여행장소 리로드
+                my_location_reload(selected_day);
+
+            });
+
+        });
+
+        //날짜(DAY) 버튼 클릭
+        $(".day").on("click", function() {
+            console.log("$(this):",$(this));
+            $(this).addClass("day_on");
+            $(this).siblings().removeClass("day_on");
+
+            console.log("데이터:",$(this).data('day'));
+            let selected_day = $(this).data('day');
+
+            //나의 여행장소 리로드
+            my_location_reload(selected_day);
+
         });
 
     });
-
 
 
     /* 관광 openapi 관련 javascript */
@@ -163,6 +298,75 @@ if(!isset($_SESSION['userId'])){
     // };
     //
     // xhr.send('');
+
+    //나의 여행장소 리로드 함수
+    function my_location_reload(selected_day) {
+
+        let $my_travel_ul = $("#major_menu ul");
+
+        $my_travel_ul.html("");
+
+        for(let i=0; i<my_travel_list.length; i++){
+            let item = my_travel_list[i];
+            console.log("item:",item);
+            if(item.day == selected_day){
+                let html =
+                    "            <li>\n" +
+                    "                <div class=\"data_piece\">\n" +
+                    "                    <div class =\"img_box fl\">\n" +
+                    "                        <img src=\""+item.image+"\"></img>\n" +
+                    "                    </div>\n" +
+                    "                    <div class =\"info_box fl\">\n" +
+                    "                        <div class=\"title_detail\">"+item.title_detail+"</div>\n" +
+                    "                        <div class=\"sub\">"+item.sub+"</div>\n" +
+                    "                    </div>\n" +
+                    "                    <div class=\"item_add_remove\">\n" +
+                    "                        <i class=\"fas fa-minus-circle\"></i>\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </li>";
+                $my_travel_ul.append(html);
+            }
+        }
+    }
+
+    //나의 DAY 로드
+    function my_day_load(selected_day) {
+        let $my_day_ul = $("#top_menu ul");
+        $my_day_ul.html("");
+
+        //DAY추가
+        for(let i=0; i<<?=$day_count?>; i++){
+            let day = i+1;
+            let html =
+                "            <li class=\"day\" data-day=\""+day+"\">\n" +
+                "                <div>DAY"+day+"</div>\n" +
+                "            </li>\n";
+            $my_day_ul.append(html);
+        }
+
+        //플러스 버튼 추가
+        let plus_html =
+            "            <li class=\"day_plus\">\n" +
+            "                <i class=\"fas fa-plus-circle\"></i>\n" +
+            "            </li>";
+        $my_day_ul.append(plus_html);
+
+        //DAY가 하나도 없을경우 1개 추가
+        let $my_day_li = $("#top_menu ul li");
+        if($my_day_li.length < 2){
+            let day = 1;
+            let html =
+                "            <li class=\"day\" data-day=\""+day+"\">\n" +
+                "                <div>DAY"+day+"</div>\n" +
+                "            </li>\n";
+            $my_day_ul.append(html);
+        }
+
+        //첫번째 DAY는 day_on 클래스 추가시키기
+        $("#top_menu ul li").eq(0).addClass("day_on");
+
+    }
 
 
 </script>

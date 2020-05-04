@@ -7,7 +7,7 @@
 
 #mega_menu{
     height: 100%;
-    width: 300px;
+    width: 315px;
 }
 
 #major_menu{
@@ -136,12 +136,28 @@ img{
 }
 
 ul{
-    min-height: 550px;
+    /*min-height: 550px;*/
+    height: 550px;
+    overflow: auto;
 }
 
 .sign_btn .btn{
     background: black;
     color: white;
+}
+
+.day_on{
+    background: white !important;
+    color: black !important;
+}
+
+.sign_table{
+    text-align: center;
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 55px;
+    padding: 10px;
 }
 
 

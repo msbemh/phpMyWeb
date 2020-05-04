@@ -419,12 +419,12 @@ $conn->close();
         console.log("comment_no:",comment_no);
         let result = confirm("정말 삭제하시겠습니까?");
 
-        let comment_view = document.querySelector(".comment_view_"+comment_no);	//제거하고자 하는 엘리먼트
-        let comment_textarea = document.querySelector(".comment_textarea_"+comment_no); //제거하고자 하는 엘리먼트
-        let comment_result = document.querySelector("#comment_result");		// 그 엘리먼트의 부모 객체
-        comment_result.removeChild(comment_view);
-        comment_result.removeChild(comment_textarea);
         if(result){
+            let comment_view = document.querySelector(".comment_view_"+comment_no);	//제거하고자 하는 엘리먼트
+            let comment_textarea = document.querySelector(".comment_textarea_"+comment_no); //제거하고자 하는 엘리먼트
+            let comment_result = document.querySelector("#comment_result");		// 그 엘리먼트의 부모 객체
+            comment_result.removeChild(comment_view);
+            comment_result.removeChild(comment_textarea);
             $.ajax({
                 type: "POST",
                 url : "/freeBoardCommentDelete.php",
