@@ -570,8 +570,8 @@ $conn->close();
             "                    <div class =\"close_box fr\" onclick='window_info_close()'>\n" +
             "                        <i class=\"fas fa-times-circle\"></i>\n" +
             "                    </div>\n" +
-            "                    <div class =\"\" style='clear:both; text-align: center;' onclick=''>\n" +
-            "                        <button class =\"btn\" style='background: black; color:white;'>추가하기</button>\n" +
+            "                    <div style='clear:both; text-align: center;' onclick=''>\n" +
+            "                        <button class =\"btn\" onclick=\"window_info_add("+item.latitude+","+item.longitude+",'"+item.image+"','"+item.title_detail+"','"+item.sub+"')\">추가하기</button>\n" +
             "                    </div>\n" +
             "                </div>\n" +
             "            </div>";
@@ -601,6 +601,35 @@ $conn->close();
         }
     }
 
+    //윈도 인포에서 나의여행장소 추가하기
+    function window_info_add(latitude, longitude, image, title_detail, sub){
+        console.log("latitude:",latitude);
+        console.log("longitude:",longitude);
+        console.log("image:",image);
+        console.log("title_detail:",title_detail);
+        console.log("sub:",sub);
+        let day = $("#top_menu .day_on").data("day");
+
+        let data = {};
+        data.title_detail = title_detail;
+        data.latitude = latitude;
+        data.longitude = longitude;
+        data.sub = sub;
+        data.image = image;
+        data.day = day;
+
+        //나의 여행장소 리스트에 push
+        my_travel_list.push(data);
+
+        //order_num 순서대로 다시 주기
+        for(let i=0; i<my_travel_list.length; i++){
+            let order_num = i+1;
+            my_travel_list[i].order_num= order_num;
+        }
+
+        //나의 여행장소 리로드
+        my_location_reload(day);
+    }
 
 
 </script>
