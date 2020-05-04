@@ -169,7 +169,7 @@ ul{
 
 .window_info{
     width: 315px;
-    height: 122px;
+    height: 160px;
 }
 
 .window_info .img_box{
@@ -183,6 +183,19 @@ ul{
 
 .title_detail{
     font-weight: bold;
+}
+
+.close_box .fa-times-circle{
+    font-size: 25px;
+    cursor:pointer;
+}
+
+.window_info button{
+    background: black;
+    color:white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
 }
 
 
