@@ -76,18 +76,18 @@ $conn->close();
     <nav id="top_menu" class="fl">
         <div class="sign">날짜</div>
         <ul>
-            <li class="day day_on" data-day="1">
-                <div>DAY1</div>
-            </li>
-            <li class="day" data-day="2">
-                <div>DAY2</div>
-            </li>
-            <li class="day" data-day="3">
-                <div>DAY3</div>
-            </li>
-            <li class="day_plus">
-                <i class="fas fa-plus-circle"></i>
-            </li>
+<!--            <li class="day day_on" data-day="1">-->
+<!--                <div>DAY1</div>-->
+<!--            </li>-->
+<!--            <li class="day" data-day="2">-->
+<!--                <div>DAY2</div>-->
+<!--            </li>-->
+<!--            <li class="day" data-day="3">-->
+<!--                <div>DAY3</div>-->
+<!--            </li>-->
+<!--            <li class="day_plus">-->
+<!--                <i class="fas fa-plus-circle"></i>-->
+<!--            </li>-->
         </ul>
     </nav>
 
@@ -97,82 +97,82 @@ $conn->close();
             <button class="btn">지역 변경</button>
         </div>
         <ul>
-            <li>
-                <div class="data_piece" data-latitude="37.582419" data-longitude="126.983650">
-                    <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="title_detail">북촌 한옥마을</div>
-                        <div class="sub">유명한거리/지역</div>
-                    </div>
-                    <div class="item_add">
-                        <i class="fas fa-plus-circle"></i>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="data_piece" data-latitude="37.551331" data-longitude="126.988227">
-                    <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="title_detail">N서울타워</div>
-                        <div class="sub">랜드마크, 전경/야경</div>
-                    </div>
-                    <div class="item_add">
-                        <i class="fas fa-plus-circle"></i>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="data_piece" data-latitude="37.579796" data-longitude="126.977020" >
-                    <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6638_0_et.jpg"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="title_detail">경복궁</div>
-                        <div class="sub">랜드마크, 성.궁궐</div>
-                    </div>
-                    <div class="item_add">
-                        <i class="fas fa-plus-circle" ></i>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="data_piece" data-latitude="37.576020" data-longitude="126.976809">
-                    <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6661_0_et.jpg"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="title_detail">광화문</div>
-                        <div class="sub">역사적 명소</div>
-                    </div>
-                    <div class="item_add">
-                        <i class="fas fa-plus-circle" ></i>
-                    </div>
-                </div>
-            </li>
+<!--            <li>-->
+<!--                <div class="data_piece" data-latitude="37.582419" data-longitude="126.983650">-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl">-->
+<!--                        <div class="title_detail">북촌 한옥마을</div>-->
+<!--                        <div class="sub">유명한거리/지역</div>-->
+<!--                    </div>-->
+<!--                    <div class="item_add">-->
+<!--                        <i class="fas fa-plus-circle"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <div class="data_piece" data-latitude="37.551331" data-longitude="126.988227">-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl">-->
+<!--                        <div class="title_detail">N서울타워</div>-->
+<!--                        <div class="sub">랜드마크, 전경/야경</div>-->
+<!--                    </div>-->
+<!--                    <div class="item_add">-->
+<!--                        <i class="fas fa-plus-circle"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <div class="data_piece" data-latitude="37.579796" data-longitude="126.977020" >-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="http://img.earthtory.com/img/place_img/310/6638_0_et.jpg"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl">-->
+<!--                        <div class="title_detail">경복궁</div>-->
+<!--                        <div class="sub">랜드마크, 성.궁궐</div>-->
+<!--                    </div>-->
+<!--                    <div class="item_add">-->
+<!--                        <i class="fas fa-plus-circle" ></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <div class="data_piece" data-latitude="37.576020" data-longitude="126.976809">-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="http://img.earthtory.com/img/place_img/310/6661_0_et.jpg"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl">-->
+<!--                        <div class="title_detail">광화문</div>-->
+<!--                        <div class="sub">역사적 명소</div>-->
+<!--                    </div>-->
+<!--                    <div class="item_add">-->
+<!--                        <i class="fas fa-plus-circle" ></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
         </ul>
     </nav>
 
     <nav id="major_menu" class="fl">
         <div class="sign">나의 여행 장소</div>
         <ul>
-            <li>
-                <div class="data_piece">
-                    <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="title_detail">북촌 한옥마을</div>
-                        <div class="sub">유명한거리/지역</div>
-                    </div>
-                    <div class="item_remove">
-                        <i class="fas fa-minus-circle"></i>
-                    </div>
-                </div>
-            </li>
+<!--            <li>-->
+<!--                <div class="data_piece">-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl">-->
+<!--                        <div class="title_detail">북촌 한옥마을</div>-->
+<!--                        <div class="sub">유명한거리/지역</div>-->
+<!--                    </div>-->
+<!--                    <div class="item_remove">-->
+<!--                        <i class="fas fa-minus-circle"></i>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
         </ul>
     </nav>
     <!-- 지도를 표시할 div 입니다 -->
@@ -183,30 +183,51 @@ $conn->close();
 
 <script type="text/javascript">
 
-    // 임시 데이터 생성
-    // var my_travel_location_list = new Array();
-    // var my_travel_location = {};
-    // my_travel_location.title_detail = "광화문";
-    // my_travel_location.sub = "광장, 랜드마크";
-    // my_travel_location.day = 1;
-    // my_travel_location.img = "http://img.earthtory.com/img/place_img/310/6661_0_et.jpg";
-    //
-    // var my_travel_location2 = {};
-    // my_travel_location2.title_detail = "북촌 한옥마을";
-    // my_travel_location2.sub = "유명한거리/지역";
-    // my_travel_location2.day = 1;
-    // my_travel_location2.img = "http://img.earthtory.com/img/place_img/310/6725_0_et.jpg";
-    //
-    //
-    //
-    // console.log("my_travel_location:",my_travel_location);
-    // my_travel_location_list.push(my_travel_location);
-    // my_travel_location_list.push(my_travel_location2);
-    // console.log("my_travel_location_list:",my_travel_location_list);
+    // 임시 데이터 생성(관광명소 추천)
+    let travel_api_list = new Array();
+    let array = {};
+    array.title_detail = "북촌 한옥마을";
+    array.sub = "유명한거리/지역";
+    array.latitude = 37.582419;
+    array.longitude = 126.983650;
+    array.image = "http://img.earthtory.com/img/place_img/310/6725_0_et.jpg";
+    travel_api_list.push(array);
+
+    array = {};
+    array.title_detail = "N서울타워";
+    array.sub = "랜드마크, 전경/야경";
+    array.latitude = 37.551331;
+    array.longitude = 126.988227;
+    array.image = "http://img.earthtory.com/img/place_img/310/6645_0_et.jpg";
+    travel_api_list.push(array);
+
+    array = {};
+    array.title_detail = "경복궁";
+    array.sub = "랜드마크, 성.궁궐";
+    array.latitude = 37.579796;
+    array.longitude = 126.977020;
+    array.image = "http://img.earthtory.com/img/place_img/310/6638_0_et.jpg";
+    travel_api_list.push(array);
+
+    array = {};
+    array.title_detail = "광화문";
+    array.sub = "역사적 명소";
+    array.latitude = 37.576020;
+    array.longitude = 126.976809;
+    array.image = "http://img.earthtory.com/img/place_img/310/6661_0_et.jpg";
+    travel_api_list.push(array);
+
+    console.log("travel_api_list:",travel_api_list);
+
+
+
 
     let my_travel_list = <?= json_encode($my_travel_list) ?>;
 
     console.log("my_travel_list:",my_travel_list);
+
+    //관광명소 추천 리로드
+    travel_api_reload();
 
     //나의 여행장소 리로드
     my_location_reload(1);
@@ -230,6 +251,9 @@ $conn->close();
                     "</li>"
             $side_ul.children(":last").before(html);
 
+
+            //이벤트 초기화
+            $(".day").off("click");
             //날짜(DAY) 버튼 클릭 이벤트 다시 추가
             $(".day").on("click", function() {
                 console.log("$(this):",$(this));
@@ -261,32 +285,46 @@ $conn->close();
 
         });
 
-        //관광명소 추천 (+)클릭
-        $("#mega_menu .item_add").on("click", function() {
+        // //관광명소 추천 (+)클릭
+        // $("#mega_menu .item_add").on("click", function() {
+        //
+        //     let title_detail = $(this).prev().children(".title_detail").html();
+        //     let latitude = $(this).parent().data('latitude');
+        //     let longitude = $(this).parent().data('longitude');
+        //     let sub = $(this).prev().children(".sub").html();
+        //     let img_src = $(this).prevAll(".img_box ").children("img").attr("src");
+        //     let day = $("#top_menu .day_on").data("day");
+        //
+        //     let data = {};
+        //     data.title_detail = title_detail;
+        //     data.latitude = latitude;
+        //     data.longitude = longitude;
+        //     data.sub = sub;
+        //     data.image = img_src;
+        //     data.day = day;
+        //     console.log("data:",data);
+        //
+        //     //나의 여행장소 리스트에 push
+        //     my_travel_list.push(data);
+        //
+        //     //order_num 순서대로 다시 주기
+        //     for(let i=0; i<my_travel_list.length; i++){
+        //         let order_num = i+1;
+        //         my_travel_list[i].order_num= order_num;
+        //     }
+        //
+        //     console.log("my_travel_list:",my_travel_list);
+        //
+        //     //나의 여행장소 리로드
+        //     my_location_reload(day);
+        //
+        // });
 
-            let title_detail = $(this).prev().children(".title_detail").html();
-            let latitude = $(this).parent().data('latitude');
-            let longitude = $(this).parent().data('longitude');
-            let sub = $(this).prev().children(".sub").html();
-            let img_src = $(this).prevAll(".img_box ").children("img").attr("src");
-            let day = $("#top_menu .day_on").data("day");
-
-            let data = {};
-            data.title_detail = title_detail;
-            data.latitude = latitude;
-            data.longitude = longitude;
-            data.sub = sub;
-            data.image = img_src;
-            data.day = day;
-            console.log("data:",data);
-
-            //나의 여행장소 리스트에 push
-            my_travel_list.push(data);
-
-            //나의 여행장소 리로드
-            my_location_reload(day);
-
-        });
+        //나의 여행장소 (-)클릭
+        // $("#major_menu .item_remove").on("click", function() {
+        //     let order_num = $(this).parent().data('order_num');
+        //     console.log("order_num:",order_num);
+        // });
 
         $("#save").on("click", function() {
 
@@ -326,11 +364,12 @@ $conn->close();
 
         for(let i=0; i<my_travel_list.length; i++){
             let item = my_travel_list[i];
-            console.log("item:",item);
+            let order_num = i+1;
+            // console.log("item:",item);
             if(item.day == selected_day){
                 let html =
                     "            <li>\n" +
-                    "               <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\">\n" +
+                    "               <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\" data-order_num=\""+order_num+"\">\n" +
                     "                    <div class =\"img_box fl\">\n" +
                     "                        <img src=\""+item.image+"\"></img>\n" +
                     "                    </div>\n" +
@@ -346,6 +385,103 @@ $conn->close();
                 $my_travel_ul.append(html);
             }
         }
+
+        //이벤트 초기화
+        $("#major_menu .item_remove").off("click");
+
+        //나의 여행장소 (-)클릭 이벤트 추가
+        $("#major_menu .item_remove").on("click", function() {
+            let order_num = $(this).parent().data('order_num');
+            let day = selected_day;
+            console.log("order_num:",order_num);
+            console.log("day:",day);
+            for(let i=0; i<my_travel_list.length; i++){
+                console.log("my_travel_list[i].order_num:",my_travel_list[i].order_num);
+                console.log(" my_travel_list[i].day:", my_travel_list[i].day);
+                if(day == my_travel_list[i].day && order_num == my_travel_list[i].order_num){
+                    my_travel_list.splice(i,1);
+                }
+            }
+
+            //order_num 순서대로 다시 주기
+            for(let i=0; i<my_travel_list.length; i++){
+                let order_num = i+1;
+                my_travel_list[i].order_num= order_num;
+            }
+
+            console.log("my_travel_list:",my_travel_list);
+
+            my_location_reload(day);
+
+        });
+    }
+
+    //관광명소 추천 리로드
+    function travel_api_reload() {
+
+        let $travel_api_ul = $("#mega_menu ul");
+
+        $travel_api_ul.html("");
+
+        for(let i=0; i<travel_api_list.length; i++){
+            let item = travel_api_list[i];
+            // console.log("item:",item);
+            let html =
+                "           <li>\n" +
+                "                <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\">\n" +
+                "                    <div class =\"img_box fl\">\n" +
+                "                        <img src=\""+item.image+"\"></img>\n" +
+                "                    </div>\n" +
+                "                    <div class =\"info_box fl\">\n" +
+                "                        <div class=\"title_detail\">"+item.title_detail+"</div>\n" +
+                "                        <div class=\"sub\">"+item.sub+"</div>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"item_add\">\n" +
+                "                        <i class=\"fas fa-plus-circle\"></i>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </li>";
+            $travel_api_ul.append(html);
+        }
+
+        //이벤트 초기화
+        $("#major_menu .item_remove").off("click");
+
+        //관광명소 추천 (+)클릭
+        $("#mega_menu .item_add").on("click", function() {
+
+            let title_detail = $(this).prev().children(".title_detail").html();
+            let latitude = $(this).parent().data('latitude');
+            let longitude = $(this).parent().data('longitude');
+            let sub = $(this).prev().children(".sub").html();
+            let img_src = $(this).prevAll(".img_box ").children("img").attr("src");
+            let day = $("#top_menu .day_on").data("day");
+
+            let data = {};
+            data.title_detail = title_detail;
+            data.latitude = latitude;
+            data.longitude = longitude;
+            data.sub = sub;
+            data.image = img_src;
+            data.day = day;
+            console.log("data:",data);
+
+            //나의 여행장소 리스트에 push
+            my_travel_list.push(data);
+
+            //order_num 순서대로 다시 주기
+            for(let i=0; i<my_travel_list.length; i++){
+                let order_num = i+1;
+                my_travel_list[i].order_num= order_num;
+            }
+
+            console.log("my_travel_list:",my_travel_list);
+
+            //나의 여행장소 리로드
+            my_location_reload(day);
+
+        });
+
     }
 
     //나의 DAY 로드
@@ -392,15 +528,16 @@ $conn->close();
 <!-- 구글맵 관련 javascript -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=db020925d06b61dd2f0089235b1f2b3a"></script>
 
+<!-- 구글맵 관련 javascript -->
 <script>
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    let mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
         };
 
     // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-    var map = new kakao.maps.Map(mapContainer, mapOption);
+    let map = new kakao.maps.Map(mapContainer, mapOption);
 
 
 </script>
