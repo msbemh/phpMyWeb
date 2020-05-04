@@ -12,7 +12,7 @@
 
 #major_menu{
     height: 100%;
-    width: 300px;
+    width: 316px;
 }
 
 #top_menu ul{
@@ -107,7 +107,14 @@ img{
     overflow: hidden;
 }
 
-.item_add_remove{
+.item_add{
+    position: absolute;
+    top:50%;
+    right:10px;
+    transform: translateY(-50%);
+}
+
+.item_remove{
     position: absolute;
     top:50%;
     right:10px;
@@ -131,7 +138,7 @@ img{
     padding: 10px;
 }
 
-.item_add_remove i{
+.item_add i, .item_remove i{
     font-size: 25px; cursor:pointer;
 }
 

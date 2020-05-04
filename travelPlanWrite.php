@@ -67,10 +67,10 @@ $conn->close();
 <!-- 여행일정 부분 -->
 <div class="container_big sign_table">
     <div class="fl" style="display: inline-block;">
-        <span>제목 : </span><input class="title" />
-        <span>시작날짜 : </span><input class="start_date" />
+        <span>제목 : </span><input id="title_input" class="title" />
+        <span>시작날짜 : </span><input id="start_date_input" class="start_date" />
     </div>
-    <button class="btn fr" style="width: 500px; background: black; color:white;">여행일정 저장</button>
+    <button id ="save" class="btn fr" style="width: 500px; background: black; color:white;">여행일정 저장</button>
 </div>
 <div class="container_big" style="height: 100%;">
     <nav id="top_menu" class="fl">
@@ -98,7 +98,7 @@ $conn->close();
         </div>
         <ul>
             <li>
-                <div class="data_piece">
+                <div class="data_piece" data-latitude="37.582419" data-longitude="126.983650">
                     <div class ="img_box fl">
                         <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>
                     </div>
@@ -106,13 +106,13 @@ $conn->close();
                         <div class="title_detail">북촌 한옥마을</div>
                         <div class="sub">유명한거리/지역</div>
                     </div>
-                    <div class="item_add_remove">
+                    <div class="item_add">
                         <i class="fas fa-plus-circle"></i>
                     </div>
                 </div>
             </li>
             <li>
-                <div class="data_piece">
+                <div class="data_piece" data-latitude="37.551331" data-longitude="126.988227">
                     <div class ="img_box fl">
                         <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg"></img>
                     </div>
@@ -120,13 +120,13 @@ $conn->close();
                         <div class="title_detail">N서울타워</div>
                         <div class="sub">랜드마크, 전경/야경</div>
                     </div>
-                    <div class="item_add_remove">
+                    <div class="item_add">
                         <i class="fas fa-plus-circle"></i>
                     </div>
                 </div>
             </li>
             <li>
-                <div class="data_piece">
+                <div class="data_piece" data-latitude="37.579796" data-longitude="126.977020" >
                     <div class ="img_box fl">
                         <img src="http://img.earthtory.com/img/place_img/310/6638_0_et.jpg"></img>
                     </div>
@@ -134,13 +134,13 @@ $conn->close();
                         <div class="title_detail">경복궁</div>
                         <div class="sub">랜드마크, 성.궁궐</div>
                     </div>
-                    <div class="item_add_remove">
+                    <div class="item_add">
                         <i class="fas fa-plus-circle" ></i>
                     </div>
                 </div>
             </li>
             <li>
-                <div class="data_piece">
+                <div class="data_piece" data-latitude="37.576020" data-longitude="126.976809">
                     <div class ="img_box fl">
                         <img src="http://img.earthtory.com/img/place_img/310/6661_0_et.jpg"></img>
                     </div>
@@ -148,21 +148,7 @@ $conn->close();
                         <div class="title_detail">광화문</div>
                         <div class="sub">역사적 명소</div>
                     </div>
-                    <div class="item_add_remove">
-                        <i class="fas fa-plus-circle" ></i>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="data_piece">
-                    <div class ="img_box fl">
-                        <img src="http://img.earthtory.com/img/place_img/310/6661_0_et.jpg"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="title_detail">광화문</div>
-                        <div class="sub">역사적 명소</div>
-                    </div>
-                    <div class="item_add_remove">
+                    <div class="item_add">
                         <i class="fas fa-plus-circle" ></i>
                     </div>
                 </div>
@@ -182,7 +168,7 @@ $conn->close();
                         <div class="title_detail">북촌 한옥마을</div>
                         <div class="sub">유명한거리/지역</div>
                     </div>
-                    <div class="item_add_remove">
+                    <div class="item_remove">
                         <i class="fas fa-minus-circle"></i>
                     </div>
                 </div>
@@ -190,7 +176,7 @@ $conn->close();
         </ul>
     </nav>
     <!-- 지도를 표시할 div 입니다 -->
-    <div id="map" style="width:764px;height:600px; float:left;"></div>
+    <div id="map" style="width:747px;height:600px; float:left;"></div>
 
 </div>
 
@@ -275,6 +261,38 @@ $conn->close();
 
         });
 
+        //관광명소 추천 (+)클릭
+        $("#mega_menu .item_add").on("click", function() {
+
+            let title_detail = $(this).prev().children(".title_detail").html();
+            let latitude = $(this).parent().data('latitude');
+            let longitude = $(this).parent().data('longitude');
+            let sub = $(this).prev().children(".sub").html();
+            let img_src = $(this).prevAll(".img_box ").children("img").attr("src");
+            let day = $("#top_menu .day_on").data("day");
+
+            let data = {};
+            data.title_detail = title_detail;
+            data.latitude = latitude;
+            data.longitude = longitude;
+            data.sub = sub;
+            data.image = img_src;
+            data.day = day;
+            console.log("data:",data);
+
+            //나의 여행장소 리스트에 push
+            my_travel_list.push(data);
+
+            //나의 여행장소 리로드
+            my_location_reload(day);
+
+        });
+
+        $("#save").on("click", function() {
+
+        });
+
+
     });
 
 
@@ -312,7 +330,7 @@ $conn->close();
             if(item.day == selected_day){
                 let html =
                     "            <li>\n" +
-                    "                <div class=\"data_piece\">\n" +
+                    "               <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\">\n" +
                     "                    <div class =\"img_box fl\">\n" +
                     "                        <img src=\""+item.image+"\"></img>\n" +
                     "                    </div>\n" +
@@ -320,7 +338,7 @@ $conn->close();
                     "                        <div class=\"title_detail\">"+item.title_detail+"</div>\n" +
                     "                        <div class=\"sub\">"+item.sub+"</div>\n" +
                     "                    </div>\n" +
-                    "                    <div class=\"item_add_remove\">\n" +
+                    "                    <div class=\"item_remove\">\n" +
                     "                        <i class=\"fas fa-minus-circle\"></i>\n" +
                     "                    </div>\n" +
                     "                </div>\n" +
