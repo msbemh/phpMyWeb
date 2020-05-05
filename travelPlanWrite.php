@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 //로그인 세션 없을때
 if(!isset($_SESSION['userId'])){
@@ -11,8 +12,21 @@ if(!isset($_SESSION['userId'])){
 //DB에서 여행일정 정보 가져오기
 include '../DB/DBConnection.php';
 
-//POST로 값 전달 받아야함
-$travel_plan_no = 1;
+//GET로 값 전달 받아야함
+$travel_plan_no = -1;
+if(isset($_GET["travel_plan_no"])){
+    $travel_plan_no = $_GET["travel_plan_no"];
+}
+
+
+$sql = "SELECT * FROM travelPlan WHERE travel_plan_no = $travel_plan_no";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$title = $row["title"];
+$travel_start_date = $row["travel_start_date"];
+$travel_start_date_split = explode(' ', $travel_start_date);
+$travel_start_date_format = $travel_start_date_split[0];
+
 
 $sql = "SELECT * FROM travelPlan A
         INNER JOIN travelPlanDetail B
@@ -50,11 +64,13 @@ $day_count = $row["cnt"];
 $conn->close();
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <?php include './header.php'?>
     <link rel="stylesheet" href="css/trevelPlan.css" />
+    <script type="text/javascript" src="./util.js"></script>
 </head>
 <body>
 
@@ -285,50 +301,50 @@ $conn->close();
 
         });
 
-        // //관광명소 추천 (+)클릭
-        // $("#mega_menu .item_add").on("click", function() {
-        //
-        //     let title_detail = $(this).prev().children(".title_detail").html();
-        //     let latitude = $(this).parent().data('latitude');
-        //     let longitude = $(this).parent().data('longitude');
-        //     let sub = $(this).prev().children(".sub").html();
-        //     let img_src = $(this).prevAll(".img_box ").children("img").attr("src");
-        //     let day = $("#top_menu .day_on").data("day");
-        //
-        //     let data = {};
-        //     data.title_detail = title_detail;
-        //     data.latitude = latitude;
-        //     data.longitude = longitude;
-        //     data.sub = sub;
-        //     data.image = img_src;
-        //     data.day = day;
-        //     console.log("data:",data);
-        //
-        //     //나의 여행장소 리스트에 push
-        //     my_travel_list.push(data);
-        //
-        //     //order_num 순서대로 다시 주기
-        //     for(let i=0; i<my_travel_list.length; i++){
-        //         let order_num = i+1;
-        //         my_travel_list[i].order_num= order_num;
-        //     }
-        //
-        //     console.log("my_travel_list:",my_travel_list);
-        //
-        //     //나의 여행장소 리로드
-        //     my_location_reload(day);
-        //
-        // });
-
-        //나의 여행장소 (-)클릭
-        // $("#major_menu .item_remove").on("click", function() {
-        //     let order_num = $(this).parent().data('order_num');
-        //     console.log("order_num:",order_num);
-        // });
-
+        //여행일정 저장
         $("#save").on("click", function() {
 
+            let title_input = $("#title_input").val();
+            let start_date_input = $("#start_date_input").val();
+            let travel_plan_no = <?=$travel_plan_no?>;
+            if(isEmpty(title_input)){
+                alert("제목을 입력해주세요.");
+                return;
+            }else if(isEmpty(start_date_input)){
+                alert("시작날짜를 입력해주세요.");
+                return;
+            }else if(my_travel_list.length == 0){
+                alert("나의 여행장소가 없습니다.");
+                return;
+            }
+
+            console.log("저장전 my_travel_list:",my_travel_list);
+
+            $.ajax({
+                type: "POST",
+                url : "/travelPlanSave.php",
+                data: {"title":title_input, "start_date" : start_date_input, "travel_plan_no": travel_plan_no, "my_travel_list": my_travel_list},
+                dataType:"json",
+                success : function(data, status, xhr) {
+                    if(data.result){
+                        alert("정상적으로 저장이 완료됐습니다.");
+                        location.href = "/travelPlan.php";
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("저장에 실패했습니다.")
+                    console.log(jqXHR.responseText);
+                }
+            });
+
         });
+
+        //여행일정 제목에 값넣어주기
+        $("#title_input").val("<?=$title?>");
+
+        //여행일정 시작날짜에 값넣어주기
+        <?php ;?>
+        $("#start_date_input").val("<?=$travel_start_date_format?>");
 
 
     });
@@ -501,16 +517,9 @@ $conn->close();
             $my_day_ul.append(html);
         }
 
-        //플러스 버튼 추가
-        let plus_html =
-            "            <li class=\"day_plus\">\n" +
-            "                <i class=\"fas fa-plus-circle\"></i>\n" +
-            "            </li>";
-        $my_day_ul.append(plus_html);
-
         //DAY가 하나도 없을경우 1개 추가
         let $my_day_li = $("#top_menu ul li");
-        if($my_day_li.length < 2){
+        if($my_day_li.length < 1){
             let day = 1;
             let html =
                 "            <li class=\"day\" data-day=\""+day+"\">\n" +
@@ -518,6 +527,13 @@ $conn->close();
                 "            </li>\n";
             $my_day_ul.append(html);
         }
+
+        //플러스 버튼 추가
+        let plus_html =
+            "            <li class=\"day_plus\">\n" +
+            "                <i class=\"fas fa-plus-circle\"></i>\n" +
+            "            </li>";
+        $my_day_ul.append(plus_html);
 
         //첫번째 DAY는 day_on 클래스 추가시키기
         $("#top_menu ul li").eq(0).addClass("day_on");
@@ -603,11 +619,6 @@ $conn->close();
 
     //윈도 인포에서 나의여행장소 추가하기
     function window_info_add(latitude, longitude, image, title_detail, sub){
-        console.log("latitude:",latitude);
-        console.log("longitude:",longitude);
-        console.log("image:",image);
-        console.log("title_detail:",title_detail);
-        console.log("sub:",sub);
         let day = $("#top_menu .day_on").data("day");
 
         let data = {};

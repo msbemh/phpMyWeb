@@ -32,7 +32,7 @@ if(!isset($_SESSION['userId'])){
                         <a class="nav-link" href="/freeBoard.php">자유게시판</a>
                     </li>
                     <li class="nav-item" style="margin-left:10px;">
-                        <a class="nav-link" href="/freeBoard.php">여행일정</a>
+                        <a class="nav-link" href="/travelPlan.php">여행일정</a>
                     </li>
                 </ul>
             </div>

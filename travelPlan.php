@@ -41,12 +41,61 @@ if(!isset($_SESSION['userId'])){
     </div>
 
     <div class="container_medium">
+        <table class="table">
+            <colgroup>
+                <col width="8%">
+                <col width="10px">
+                <col width="15%">
+                <col width="15%">
+                <col width="8%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th style="text-align: center;">번호</th>
+                <th style="text-align: center;">제목</th>
+                <th style="text-align: center;">작성자</th>
+                <th style="text-align: center;">작성일</th>
+            </tr>
+            </thead>
+            <tbody style="text-align: center;">
+            <!-- 게시판 목록 가져오기 -->
+            <?php
+            include '../DB/DBConnection.php';
+
+            //게시글 시작위치
+            $limit = ($pageNum-1)*$list;
+
+            $sql = "select * from travelPlan order by travel_plan_no desc";
+            $result = $conn->query($sql);
+            while($row = $result->fetch_assoc()) {
+                $datetime = explode(' ', $row['update_date']);
+                $date = $datetime[0];
+                $time = $datetime[1];
+                if($date == Date('Y-m-d'))
+                    $row['update_date'] = $time;
+                else
+                    $row['update_date'] = $date;
+                ?>
+                <tr class="freeBoardHover" onclick="goTravelPlanView(<?php echo $row['travel_plan_no'] ?>)">
+                    <td><?php echo $row['travel_plan_no']?></td>
+                    <td><div style="max-height:17px;overflow: hidden"; ><?php echo $row['title']?></div></td>
+                    <td><div style="max-height:17px;overflow: hidden"; ><?php echo $row['writer_email']?></div></td>
+                    <td><?php echo $row['update_date']?></td>
+                </tr>
+                <?php
+            }
+            $conn->close();
+            ?>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="container_medium">
         <!-- 버튼 -->
         <div style="margin-bottom:100px; float:right;">
             <button id="travel_plan_write_btn" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">여행 일정 만들기</button>
         </div>
-        <!-- 지도를 표시할 div 입니다 -->
-        <div id="map" style="width:100%;height:350px;"></div>
     </div>
 </div>
 <script type="text/javascript">
@@ -56,6 +105,11 @@ if(!isset($_SESSION['userId'])){
         });
 
     });
+
+    function goTravelPlanView(travel_plan_no) {
+        console.log("travel_plan_no:",travel_plan_no);
+        location.href='/travelPlanWrite.php?travel_plan_no='+travel_plan_no;
+    }
 </script>
 
 
