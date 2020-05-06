@@ -20,14 +20,9 @@ if(!isset($_SESSION['userId'])){
 <body>
 <div class="container" style="min-width:550px; height: 500px;">
     <!-- 상단 부분 -->
-    <div style="position:relative; height: 80px">
-        <h1 style="float:left;">여행 일정</h1>
-        <div style="float:right; margin:20px 0px;">
-            <button id="logOut" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">로그아웃</button>
-        </div>
-        <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
-    </div>
-    <div style="clear: both"></div>
+    <?php include './topPart.php'?>
+
+    <!-- 글쓰기 부분 -->
     <div class="container_medium2" >
         <!-- 글쓰기,제목 부분 -->
         <form id ="saveForm" action="freeBoardSave.php" method="POST"  >
@@ -46,7 +41,7 @@ if(!isset($_SESSION['userId'])){
 
         <!-- 저장버튼 -->
         <div style="float:right; margin-top: 10px;">
-            <button type="button" id="save" class="btn">저장</button>
+            <button type="button" id="save" class="btn" style="background: black; color:white;">저장</button>
         </div>
 
 

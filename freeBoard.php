@@ -28,38 +28,29 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
 </head>
 <body>
 <div class="container" style="min-width:550px; height: 500px;">
-    <div style="position:relative; height: 80px">
-        <h1 style="float:left;">여행 일정</h1>
-        <div style="float:right; margin:20px 0px;">
-            <button id="logOut" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">로그아웃</button>
-        </div>
-        <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
-    </div>
-    <div style="clear: both"></div>
+
+    <!-- 상단 부분 -->
+    <?php include './topPart.php'?>
 
     <!-- 메뉴 -->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/main.php">Home</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="/freeBoard.php">자유게시판</a></li>
-                    <li><a href="#">여행일정</a></li>
+    <div class="container_medium">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/main.php">Home</a>
+            <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item" style="background: #E3E3E3">
+                        <a class="nav-link" href="/freeBoard.php">자유게시판</a>
+                    </li>
+                    <li class="nav-item" style="margin-left:10px;">
+                        <a class="nav-link" href="/travelPlan.php">여행일정</a>
+                    </li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
+            </div>
+        </nav>
+    </div>
 
     <div class="container_medium">
         <table class="table">
@@ -173,10 +164,6 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
 </div>
 <script type="text/javascript">
     $(document).on('ready', function(e){
-        $("#logOut").on("click", function() {
-            location.href = "/logOut.php";
-        });
-
         $("#write_btn").on("click", function() {
             location.href = "/freeBoardWrite.php";
         });

@@ -76,8 +76,8 @@ $conn->close();
         <?php
         if($writer == $_SESSION['userId']){ ?>
             <div style="float:right; margin-top: 10px;">
-                <button type="button" id="save" class="btn">저장</button>
-                <button type="button" id="cancel" class="btn">취소</button>
+                <button type="button" id="save" class="btn btn-dark">저장</button>
+                <button type="button" id="cancel" class="btn btn-dark">취소</button>
             </div>
             <?php
         }
