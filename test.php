@@ -7,5 +7,8 @@
         echo '<br>idx : '.$row['idx'].', title : '.$row['title'];
     }
     $conn->close();
+
+
+    
 ?>
 
