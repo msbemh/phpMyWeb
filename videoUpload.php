@@ -12,9 +12,8 @@ $fileextension= substr($name, $position + 1);
 
 $fileextension= strtolower($fileextension);
 
-
 if (isset($name)) {
-    $realPath= '/usr/local/apache2.4/htdocs/php_uploader/video_upload/';
+    $realPath= '/home/phpMyWeb/php_uploader/video_upload/';
     $path='/php_uploader/video_upload/';
     if (empty($name)) {
         echo(json_encode(array("message" => "Please choose a file")));
