@@ -6,7 +6,6 @@ if(!isset($_SESSION['userId'])){
 //로그인 세션 있을때
 }else{
 
-    
 }
 
 //페이징 관련 변수들 지정
