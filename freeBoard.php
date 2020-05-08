@@ -5,6 +5,7 @@ if(!isset($_SESSION['userId'])){
     echo("<script>location.href='/index.php';</script>");
 //로그인 세션 있을때
 }else{
+
     
 }
 
