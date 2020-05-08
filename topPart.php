@@ -15,7 +15,12 @@
         });
 
         $("#logo").on("click", function () {
-            location.href = "/main.php";
+            if("<?=$_SESSION["userId"]?>" == "admin@naver.com"){
+                location.href = "/adminMain.php";
+            }else{
+                location.href = "/main.php";
+            }
+
         });
     });
 </script>
