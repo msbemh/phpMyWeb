@@ -8,6 +8,9 @@ if(!isset($_SESSION['userId'])){
 }else{
     echo("<script>location.href='/main.php';</script>");
 }
+
+//include './userLogo.php';
+
 ?>
 <html>
 <?php include './header.php'?>

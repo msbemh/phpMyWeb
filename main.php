@@ -7,6 +7,9 @@ if(!isset($_SESSION['userId'])){
 }else{
 
 }
+
+include './userLog.php';
+
 ?>
 <!DOCTYPE html>
 <html>
