@@ -256,6 +256,8 @@ $conn->close();
     let current_day_travel_list = [];
     //카카오 지도에서 나의 marker list
     let my_marker_list = [];
+    //카카오 지도오에서 경로 선 list
+    let polyline_list = [];
 
     console.log("my_travel_list:",my_travel_list);
 
@@ -324,7 +326,7 @@ $conn->close();
         console.log("current_day_travel_list:",current_day_travel_list);
 
         //기존에 나의 마커 삭제
-        hideMarkers();
+        hide_markers();
         my_marker_list.length = 0;
 
         current_day_travel_list.forEach(function(item, index){
@@ -358,14 +360,51 @@ $conn->close();
 
     }
 
-    function setMarkers(map) {
-        for (var i = 0; i < my_marker_list.length; i++) {
+
+    function set_markers(map) {
+        for (let i = 0; i < my_marker_list.length; i++) {
             my_marker_list[i].setMap(map);
         }
     }
 
-    function hideMarkers() {
-        setMarkers(null);
+    function hide_markers() {
+        set_markers(null);
+    }
+
+    //경로 표시하기
+    function kakao_route(current_day_travel_list) {
+        hide_line();
+        console.log("[카카오경로]current_day_travel_list:",current_day_travel_list);
+
+        // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+        let linePath = [];
+        current_day_travel_list.forEach(function(item, index){
+            linePath.push(new kakao.maps.LatLng(item.latitude, item.longitude))
+        })
+
+        // 지도에 표시할 선을 생성합니다
+        let polyline = new kakao.maps.Polyline({
+            path: linePath, // 선을 구성하는 좌표배열 입니다
+            strokeWeight: 5, // 선의 두께 입니다
+            strokeColor: '#000000', // 선의 색깔입니다
+            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'solid' // 선의 스타일입니다
+        });
+
+        polyline_list.push(polyline);
+
+        // 지도에 선을 표시합니다
+        polyline.setMap(map);
+    }
+
+    function set_lines(map) {
+        for (let i = 0; i < polyline_list.length; i++) {
+            polyline_list[i].setMap(map);
+        }
+    }
+
+    function hide_line() {
+        set_lines(null);
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -531,7 +570,10 @@ $conn->close();
 
             }
         }
+        //카카오 나의 여행장소 마커표시
         kakao_show_my_marker(current_day_travel_list);
+        //카카오 경로표시
+        kakao_route(current_day_travel_list);
 
         //이벤트 초기화
         $("#major_menu .item_remove").off("click");
