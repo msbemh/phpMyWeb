@@ -90,5 +90,11 @@
     background-color: #ffe8d6;
 }
 
+.ui-datepicker-trigger{
+    margin-left: 10px;
+    width: 30px;
+    cursor:pointer;
+}
+
 
 

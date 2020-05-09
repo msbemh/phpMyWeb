@@ -53,14 +53,6 @@ $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $day_count = $row["cnt"];
 
-
-
-//foreach ($my_travel_list as $item) {
-//    foreach ($item as $key => $value) {
-//        echo $key." ".$value."<br>";
-//    }
-//}
-
 $conn->close();
 
 ?>
@@ -71,6 +63,10 @@ $conn->close();
     <?php include './header.php'?>
     <link rel="stylesheet" href="css/trevelPlan.css" />
     <script type="text/javascript" src="./util.js"></script>
+    <!-- data picker를 위헌 css,js 추가 -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 
@@ -84,7 +80,7 @@ $conn->close();
 <div class="container_big sign_table">
     <div class="fl" style="display: inline-block;">
         <span>제목 : </span><input id="title_input" class="title" />
-        <span>시작날짜 : </span><input id="start_date_input" class="start_date" />
+        <span>시작날짜 : </span><input id="start_date_input" class="start_date" disabled readonly/>
     </div>
     <button id ="save" class="btn fr" style="width: 500px; background: black; color:white;">여행일정 저장</button>
 </div>
@@ -410,6 +406,15 @@ $conn->close();
     //-------------------------------------------------------------------------------------------------------
 
     $(document).on('ready', function(e){
+
+        $("#start_date_input").datepicker({
+            showOn: "both",
+            buttonImage: "/res/calendar.png",
+            buttonImageOnly: true,
+            buttonText: "Select date",
+            dateFormat: 'yy-mm-dd'
+        });
+
         $("#travel_plan_write_btn").on("click", function() {
             location.href = "/travelPlanWrite.php";
         });
