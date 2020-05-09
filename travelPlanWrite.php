@@ -177,6 +177,7 @@ $conn->close();
         <ul>
 <!--            <li>-->
 <!--                <div class="data_piece">-->
+<!--                    <div class="spot_order_box">1</div>-->
 <!--                    <div class ="img_box fl">-->
 <!--                        <img src="http://img.earthtory.com/img/place_img/310/6725_0_et.jpg"></img>-->
 <!--                    </div>-->
@@ -305,9 +306,13 @@ $conn->close();
         my_travel_list.push(data);
 
         //order_num 순서대로 다시 주기
+        let order_num = 0;
         for(let i=0; i<my_travel_list.length; i++){
-            let order_num = i+1;
-            my_travel_list[i].order_num= order_num;
+            if(day == my_travel_list[i].day){
+                order_num++;
+                my_travel_list[i].order_num= order_num;
+            }
+
         }
 
         //나의 여행장소 리로드
@@ -492,14 +497,17 @@ $conn->close();
         //초기화
         current_day_travel_list.length = 0;
 
+        //나의 여행장소 order(순서)
+        let order_num = 0;
         for(let i=0; i<my_travel_list.length; i++){
             let item = my_travel_list[i];
-            let order_num = i+1;
             // console.log("item:",item);
             if(item.day == selected_day){
+                order_num++;
                 let html =
                     "            <li>\n" +
                     "               <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\" data-order_num=\""+order_num+"\">\n" +
+                    "                    <div class=\"spot_order_box\">"+order_num+"</div>\n"+
                     "                    <div class =\"img_box fl\">\n" +
                     "                        <img src=\""+item.image+"\"></img>\n" +
                     "                    </div>\n" +
@@ -515,6 +523,7 @@ $conn->close();
                 $my_travel_ul.append(html);
 
                 current_day_travel_list.push(item);
+
             }
         }
         kakao_show_my_marker(current_day_travel_list);
@@ -532,14 +541,19 @@ $conn->close();
                 console.log("my_travel_list[i].order_num:",my_travel_list[i].order_num);
                 console.log(" my_travel_list[i].day:", my_travel_list[i].day);
                 if(day == my_travel_list[i].day && order_num == my_travel_list[i].order_num){
+                    console.log("삭제동작");
                     my_travel_list.splice(i,1);
                 }
             }
 
             //order_num 순서대로 다시 주기
+            order_num = 0;
             for(let i=0; i<my_travel_list.length; i++){
-                let order_num = i+1;
-                my_travel_list[i].order_num= order_num;
+                if(day == my_travel_list[i].day){
+                    order_num++;
+                    my_travel_list[i].order_num= order_num;
+                }
+
             }
 
             console.log("my_travel_list:",my_travel_list);
@@ -654,9 +668,13 @@ $conn->close();
             my_travel_list.push(data);
 
             //order_num 순서대로 다시 주기
+            let order_num = 0;
             for(let i=0; i<my_travel_list.length; i++){
-                let order_num = i+1;
-                my_travel_list[i].order_num= order_num;
+                if(day == my_travel_list[i].day){
+                    order_num++;
+                    my_travel_list[i].order_num= order_num;
+                }
+
             }
 
             console.log("my_travel_list:",my_travel_list);
