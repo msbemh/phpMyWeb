@@ -195,6 +195,9 @@ $conn->close();
             }
         });
 
+        //처음에 연도별 선택
+        $("#graph_select").val('year').trigger('change');
+
     });
 
 

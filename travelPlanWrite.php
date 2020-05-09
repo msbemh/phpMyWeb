@@ -196,8 +196,21 @@ $conn->close();
 
 </div>
 
+<!-- 카카오맵 관련 javascript -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=db020925d06b61dd2f0089235b1f2b3a"></script>
 
 <script type="text/javascript">
+    //카카오맵 map 초기화
+    let selectedMarker = null; // 클릭한 마커를 담을 변수
+    let opened_window_info = null;
+
+    let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.565700, 126.977080), // 지도의 중심좌표
+            level: 7 // 지도의 확대 레벨
+        };
+    let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
 
     // 임시 데이터 생성(관광명소 추천)
     let travel_api_list = new Array();
@@ -236,9 +249,12 @@ $conn->close();
     console.log("travel_api_list:",travel_api_list);
 
 
-
-
     let my_travel_list = <?= json_encode($my_travel_list) ?>;
+
+    //카카오 지도에 현재 선택된 날짜의 여행리스트 보내주기 위해서 만듦.
+    let current_day_travel_list = [];
+    //카카오 지도에서 나의 marker list
+    let my_marker_list = [];
 
     console.log("my_travel_list:",my_travel_list);
 
@@ -250,6 +266,99 @@ $conn->close();
 
     //나의 DAY 로드
     my_day_load();
+
+    //---------------------------------------------[구글맵 관련]---------------------------------------------------
+    // let selectedMarker = null; // 클릭한 마커를 담을 변수
+    // let opened_window_info = null;
+    //
+    // let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    //     mapOption = {
+    //         center: new kakao.maps.LatLng(37.565700, 126.977080), // 지도의 중심좌표
+    //         level: 7 // 지도의 확대 레벨
+    //     };
+
+
+    // let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+
+
+    //윈도 인포 닫기
+    function window_info_close(){
+        if(opened_window_info != null){
+            opened_window_info.close();
+        }
+    }
+
+    //윈도 인포에서 나의여행장소 추가하기
+    function window_info_add(latitude, longitude, image, title_detail, sub){
+        let day = $("#top_menu .day_on").data("day");
+
+        let data = {};
+        data.title_detail = title_detail;
+        data.latitude = latitude;
+        data.longitude = longitude;
+        data.sub = sub;
+        data.image = image;
+        data.day = day;
+
+        //나의 여행장소 리스트에 push
+        my_travel_list.push(data);
+
+        //order_num 순서대로 다시 주기
+        for(let i=0; i<my_travel_list.length; i++){
+            let order_num = i+1;
+            my_travel_list[i].order_num= order_num;
+        }
+
+        //나의 여행장소 리로드
+        my_location_reload(day);
+    }
+
+    //나의 여행장소 마커표시하기(노란색)
+    function kakao_show_my_marker(current_day_travel_list){
+        let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+        console.log("current_day_travel_list:",current_day_travel_list);
+
+        //기존에 나의 마커 삭제
+        hideMarkers();
+        my_marker_list.length = 0;
+
+        current_day_travel_list.forEach(function(item, index){
+
+            // 마커 이미지의 이미지 크기 입니다
+            let imageSize = new kakao.maps.Size(24, 35);
+
+            // 마커 이미지를 생성합니다
+            let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+            // 마커가 표시될 위치입니다
+            let markerPosition  = new kakao.maps.LatLng(item.latitude, item.longitude);
+
+            // 마커를 생성합니다
+            let marker = new kakao.maps.Marker({
+                position: markerPosition,
+                title: item.title_detail,
+                image : markerImage // 마커 이미지
+            });
+            my_marker_list.push(marker);
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+        });
+        console.log("my_marker_list:",my_marker_list);
+
+    }
+
+    function setMarkers(map) {
+        for (var i = 0; i < my_marker_list.length; i++) {
+            my_marker_list[i].setMap(map);
+        }
+    }
+
+    function hideMarkers() {
+        setMarkers(null);
+    }
+
+    //-------------------------------------------------------------------------------------------------------
 
     $(document).on('ready', function(e){
         $("#travel_plan_write_btn").on("click", function() {
@@ -371,12 +480,17 @@ $conn->close();
     //
     // xhr.send('');
 
+
+
     //나의 여행장소 리로드 함수
     function my_location_reload(selected_day) {
 
         let $my_travel_ul = $("#major_menu ul");
 
         $my_travel_ul.html("");
+
+        //초기화
+        current_day_travel_list.length = 0;
 
         for(let i=0; i<my_travel_list.length; i++){
             let item = my_travel_list[i];
@@ -399,8 +513,11 @@ $conn->close();
                     "                </div>\n" +
                     "            </li>";
                 $my_travel_ul.append(html);
+
+                current_day_travel_list.push(item);
             }
         }
+        kakao_show_my_marker(current_day_travel_list);
 
         //이벤트 초기화
         $("#major_menu .item_remove").off("click");
@@ -431,7 +548,6 @@ $conn->close();
 
         });
 
-
     }
 
     //관광명소 추천 리로드
@@ -461,6 +577,56 @@ $conn->close();
                 "            </li>";
             $travel_api_ul.append(html);
         }
+
+        //----- 카카오지도에 마커를 표시 -----
+        travel_api_list.forEach(function(item, index){
+
+            // 마커가 표시될 위치입니다
+            let markerPosition  = new kakao.maps.LatLng(item.latitude, item.longitude);
+
+            // 마커를 생성합니다
+            let marker = new kakao.maps.Marker({
+                position: markerPosition,
+                title: item.title_detail
+            });
+
+            let infowindow_html =
+                "           <div class=\"window_info\">\n" +
+                "                <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\">\n" +
+                "                    <div class =\"img_box fl\">\n" +
+                "                        <img src=\""+item.image+"\"></img>\n" +
+                "                    </div>\n" +
+                "                    <div class =\"info_box fl\">\n" +
+                "                        <div class=\"title_detail\">"+item.title_detail+"</div>\n" +
+                "                        <div class=\"sub\">"+item.sub+"</div>\n" +
+                "                    </div>\n" +
+                "                    <div class =\"close_box fr\" onclick='window_info_close()'>\n" +
+                "                        <i class=\"fas fa-times-circle\"></i>\n" +
+                "                    </div>\n" +
+                "                    <div style='clear:both; text-align: center;' onclick=''>\n" +
+                "                        <button class =\"btn\" onclick=\"window_info_add("+item.latitude+","+item.longitude+",'"+item.image+"','"+item.title_detail+"','"+item.sub+"')\">추가하기</button>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>";
+
+            // 마커에 표시할 인포윈도우를 생성합니다
+            let infowindow = new kakao.maps.InfoWindow({
+                content: infowindow_html
+            });
+
+            // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+            kakao.maps.event.addListener(marker, 'click', function() {
+                if(opened_window_info != null){
+                    opened_window_info.close();
+                }
+                infowindow.open(map, marker);
+                opened_window_info = infowindow;
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+        });
+        //----- 카카오지도에 마커를 표시 끝! -----
 
         //이벤트 초기화
         $("#major_menu .item_remove").off("click");
@@ -539,109 +705,6 @@ $conn->close();
         $("#top_menu ul li").eq(0).addClass("day_on");
 
     }
-
-
-</script>
-
-<!-- 구글맵 관련 javascript -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=db020925d06b61dd2f0089235b1f2b3a"></script>
-
-<!-- 구글맵 관련 javascript -->
-<script>
-
-    let selectedMarker = null; // 클릭한 마커를 담을 변수
-    let opened_window_info = null;
-
-    let mapContainer = document.getElementById('map'), // 지도를 표시할 div
-        mapOption = {
-            center: new kakao.maps.LatLng(37.565700, 126.977080), // 지도의 중심좌표
-            level: 7 // 지도의 확대 레벨
-        };
-
-
-    let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-    //지도에 마커를 표시
-    travel_api_list.forEach(function(item, index){
-
-        // 마커가 표시될 위치입니다
-        let markerPosition  = new kakao.maps.LatLng(item.latitude, item.longitude);
-
-        // 마커를 생성합니다
-        let marker = new kakao.maps.Marker({
-            position: markerPosition,
-            title: item.title_detail
-        });
-
-        let infowindow_html =
-            "           <div class=\"window_info\">\n" +
-            "                <div class=\"data_piece\" data-latitude=\""+item.latitude+"\" data-longitude=\""+item.longitude+"\">\n" +
-            "                    <div class =\"img_box fl\">\n" +
-            "                        <img src=\""+item.image+"\"></img>\n" +
-            "                    </div>\n" +
-            "                    <div class =\"info_box fl\">\n" +
-            "                        <div class=\"title_detail\">"+item.title_detail+"</div>\n" +
-            "                        <div class=\"sub\">"+item.sub+"</div>\n" +
-            "                    </div>\n" +
-            "                    <div class =\"close_box fr\" onclick='window_info_close()'>\n" +
-            "                        <i class=\"fas fa-times-circle\"></i>\n" +
-            "                    </div>\n" +
-            "                    <div style='clear:both; text-align: center;' onclick=''>\n" +
-            "                        <button class =\"btn\" onclick=\"window_info_add("+item.latitude+","+item.longitude+",'"+item.image+"','"+item.title_detail+"','"+item.sub+"')\">추가하기</button>\n" +
-            "                    </div>\n" +
-            "                </div>\n" +
-            "            </div>";
-
-        // 마커에 표시할 인포윈도우를 생성합니다
-        let infowindow = new kakao.maps.InfoWindow({
-            content: infowindow_html
-        });
-
-        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-        kakao.maps.event.addListener(marker, 'click', function() {
-            if(opened_window_info != null){
-                opened_window_info.close();
-            }
-            infowindow.open(map, marker);
-            opened_window_info = infowindow;
-        });
-
-        // 마커가 지도 위에 표시되도록 설정합니다
-        marker.setMap(map);
-    });
-
-    //윈도 인포 닫기
-    function window_info_close(){
-        if(opened_window_info != null){
-            opened_window_info.close();
-        }
-    }
-
-    //윈도 인포에서 나의여행장소 추가하기
-    function window_info_add(latitude, longitude, image, title_detail, sub){
-        let day = $("#top_menu .day_on").data("day");
-
-        let data = {};
-        data.title_detail = title_detail;
-        data.latitude = latitude;
-        data.longitude = longitude;
-        data.sub = sub;
-        data.image = image;
-        data.day = day;
-
-        //나의 여행장소 리스트에 push
-        my_travel_list.push(data);
-
-        //order_num 순서대로 다시 주기
-        for(let i=0; i<my_travel_list.length; i++){
-            let order_num = i+1;
-            my_travel_list[i].order_num= order_num;
-        }
-
-        //나의 여행장소 리로드
-        my_location_reload(day);
-    }
-
 
 </script>
 
