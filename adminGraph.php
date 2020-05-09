@@ -80,7 +80,7 @@ if(!isset($_SESSION['userId'])){
     let title;
     let subtitle;
     let categories;
-    let data;
+    let data =[];
 
     $(document).on('ready', function(e){
         $("#graph_select").on("change",function(){
@@ -94,19 +94,24 @@ if(!isset($_SESSION['userId'])){
                     url : "/userMonthlyVisit.php",
                     data: {},
                     dataType:"json",
-                    success : function(data, status, xhr) {
+                    success : function(ajax_data, status, xhr) {
+                        // console.log("ajax_data:",ajax_data);
+                        title ="월별 방문자 수";
+                        subtitle = "";
+                        categories = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+                        for(let i=0; i<ajax_data.length; i++){
+                            data[i] = ajax_data[i].count*1;
+                        }
+                        //그래프 리로드
                         console.log("data:",data);
+                        graph_reload(title, subtitle, categories, data);
+
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR.responseText);
                     }
                 });
-                title ="월별 방문자 수";
-                subtitle = "";
-                categories = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
-                data = [100, 1313, 123, 679, 66, 345, 12, 123];
-                //그래프 리로드
-                graph_reload(title, subtitle, categories, data);
+
             }else if(select_value == "day"){
 
             }
