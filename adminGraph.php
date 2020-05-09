@@ -12,6 +12,7 @@ if(!isset($_SESSION['userId'])){
 }
 
 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@ if(!isset($_SESSION['userId'])){
     <script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
     <script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
-    <link rel="stylesheet" href="css/graph.css.css" />
+    <link rel="stylesheet" href="css/graph.css" />
 
 </head>
 <body>
@@ -56,12 +57,17 @@ if(!isset($_SESSION['userId'])){
 
     <!-- 유저로그 차트 -->
     <div class="admin_content_container fl">
-        <figure class="highcharts-figure">
+        <div>
+            <h3 style="display: inline-block;">연도별, 월별, 일별 선택 : </h3>
+            <select id="graph_select" style="display: inline-block;">
+                <option value="">그래프 선택</option>
+                <option value="year">연도별</option>
+                <option value="month">월별</option>
+                <option value="day">일별</option>
+            </select>
+        </div>
+        <figure class="highcharts-figure" style="max-width: 100%;">
             <div id="container"></div>
-            <p class="highcharts-description">
-                Chart showing data loaded dynamically. The individual data points can
-                be clicked to display more information.
-            </p>
         </figure>
     </div>
 
@@ -70,68 +76,91 @@ if(!isset($_SESSION['userId'])){
 
 
 <script type="text/javascript">
+
+    let title;
+    let subtitle;
+    let categories;
+    let data;
+
     $(document).on('ready', function(e){
+        $("#graph_select").on("change",function(){
+            let select_value = $("#graph_select").val();
+            if(select_value == "year"){
+
+            }else if(select_value == "month"){
+                title ="월별 방문자 수";
+                subtitle = "";
+                categories = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+                data = [100, 1313, 123, 679, 66, 345, 12, 123];
+                //그래프 리로드
+                graph_reload(title, subtitle, categories, data);
+            }else if(select_value == "day"){
+
+            }
+        });
 
     });
 
-    Highcharts.chart('container', {
 
-        title: {
-            text: 'Solar Employment Growth by Sector, 2010-2016'
-        },
+    //그래프 리로드
+    function graph_reload(title, subtitle, categories, data){
+        Highcharts.chart('container', {
 
-        subtitle: {
-            text: 'Source: thesolarfoundation.com'
-        },
-
-        yAxis: {
             title: {
-                text: 'Number of Employees'
-            }
-        },
+                text: title
+            },
 
-        xAxis: {
-            accessibility: {
-                rangeDescription: 'Range: 2010 to 2017'
-            }
-        },
+            subtitle: {
+                text: subtitle
+            },
 
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle'
-        },
-
-        plotOptions: {
-            series: {
-                label: {
-                    connectorAllowed: false
-                },
-                pointStart: 2010
-            }
-        },
-
-        series: [{
-            name: 'Installation',
-            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-        }],
-
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 500
-                },
-                chartOptions: {
-                    legend: {
-                        layout: 'horizontal',
-                        align: 'center',
-                        verticalAlign: 'bottom'
-                    }
+            yAxis: {
+                title: {
+                    text: '방문자 수 [명]'
                 }
-            }]
-        }
+            },
 
-    });
+            xAxis: {
+                categories: categories
+            },
+
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+
+            series: [{
+                name: '방문자 수',
+                data: data
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+        });
+    }
 
 
 </script>
