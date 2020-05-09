@@ -39,10 +39,10 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
         <div class="sign">네비게이션</div>
         <ul>
             <li>
-                <a href="/adminMain.php">메인</a>
+                <a class="on" href="/adminMain.php">표</a>
             </li>
             <li>
-                <a href="/adminMain.php">DAY2</a>
+                <a href="/adminGraph.php">그래프</a>
             </li>
             <li>
                 <a href="/adminMain.php">DAY3</a>

@@ -1,7 +1,7 @@
 <?php
 
 //쿠키가 존재하지 않는다면
-//if(!isset($_COOKIE['user_log_cookie'])){
+if(!isset($_COOKIE['user_log_cookie'])){
     //쿠키생성
     setcookie('user_log_cookie', true, time() + 60*30);
 
@@ -41,6 +41,6 @@
     $conn->query($sql);
 
     $conn->close();
-//}
+}
 
 ?>
