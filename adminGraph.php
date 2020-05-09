@@ -88,6 +88,19 @@ if(!isset($_SESSION['userId'])){
             if(select_value == "year"){
 
             }else if(select_value == "month"){
+                //DB에서 존재하는 아이디인지 검사
+                $.ajax({
+                    type: "POST",
+                    url : "/userMonthlyVisit.php",
+                    data: {},
+                    dataType:"json",
+                    success : function(data, status, xhr) {
+                        console.log("data:",data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.responseText);
+                    }
+                });
                 title ="월별 방문자 수";
                 subtitle = "";
                 categories = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
