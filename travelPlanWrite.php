@@ -321,7 +321,6 @@ $conn->close();
 
     //나의 여행장소 마커표시하기(노란색)
     function kakao_show_my_marker(current_day_travel_list){
-        let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
         console.log("current_day_travel_list:",current_day_travel_list);
 
         //기존에 나의 마커 삭제
@@ -329,9 +328,15 @@ $conn->close();
         my_marker_list.length = 0;
 
         current_day_travel_list.forEach(function(item, index){
+            let imageSrc = "/res/marker.png";
+            if(item.order_num <11){
+                imageSrc = "/res/marker_"+item.order_num+".png";
+            }else{
+                imageSrc = "/res/marker_what.png";
+            }
 
             // 마커 이미지의 이미지 크기 입니다
-            let imageSize = new kakao.maps.Size(24, 35);
+            let imageSize = new kakao.maps.Size(50, 50);
 
             // 마커 이미지를 생성합니다
             let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
