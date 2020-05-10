@@ -37,6 +37,10 @@ $writer_email = $row["writer_email"];
 $writer_nick_name = $row["writer_nick_name"];
 $travel_start_date = $row["travel_start_date"];
 
+$datetime = explode(' ', $travel_start_date);
+$date = $datetime[0];
+$travel_start_date = $date;
+
 //좋아요 총 개수 가져오기
 $sql = "SELECT count(*) FROM travelBoardLikes WHERE travel_board_no = $travel_plan_no";
 $result = $conn->query($sql);
@@ -86,8 +90,8 @@ $conn->close();
         <form id ="form" method="POST">
             <input type="hidden" id="travel_plan_no" name="travel_plan_no" class="form-control" value="<?php echo $travel_plan_no ?>"/><br>
             <h1 type="text" id="title" name="title" style="border-bottom: 3px solid silver; padding-bottom: 5px; "><?php echo $title?></h1><br>
-            <div id="writer" name="writer" style="margin-bottom: 10px;"><?php echo 'by '.$writer_nick_name; echo ' ( '.$writer_email.' )' ?></div>
-            <div id="updateDate" name="updateDate" style="margin-bottom: 20px; color: silver;"><?php echo 'published '.$travel_start_date; ?></div>
+            <div id="writer_nick_name" name="writer_nick_name" style="margin-bottom: 10px;"><?php echo 'by '.$writer_nick_name; echo ' ( '.$writer_email.' )' ?></div>
+            <div id="$travel_start_date" name="$travel_start_date" style="margin-bottom: 20px; color: silver;"><?php echo '시작일 '.$travel_start_date; ?></div>
             <?php
             if($writer_email == $_SESSION['userId']){ ?>
                 <div style="float:right; margin-top: 10px;">
@@ -99,6 +103,24 @@ $conn->close();
             }
             ?>
         </form>
+
+        <!-- 일정 리스트 보여주기 -->
+        <div class="day_list">
+            <div class="day_item">
+                <div class="day_item_info">
+                    <div class="day_num fl">DAY1</div>
+                    <div class="date_start fl">2015.06.27</div>
+                </div>
+                <div class="travel_item">
+                    <div class="order_num">1</div>
+                    <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg">
+                    <div class="title_detail">여행을 떠나자</div>
+                    <div class="description">안녕하세요</div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+
 
         <!-- 좋아요, 북마크, 공유 -->
         <div style=" height: 75px; position: relative; border-top: 3px solid silver; border-bottom: 3px solid silver; margin-top:30px; margin-bottom: 30px;">

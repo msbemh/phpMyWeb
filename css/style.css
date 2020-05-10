@@ -161,5 +161,83 @@
     margin: 5px;
 }
 
+.day_num{
+    background:#203341;
+    height: 60px;
+    color: white;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 14px;
+}
+
+.day_item{
+    border: 1px solid #dfdfdf;
+    width: 100%;
+    height: 100%;
+}
+
+.day_item_info{
+    border: 1px solid #dfdfdf;
+    height: 60px;
+}
+
+.date_start{
+    padding: 13px;
+    width: 500px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.travel_item{
+    height: 154px;
+    border: 1px solid #dfdfdf;
+    margin:10px;
+    position: relative;
+}
+
+.travel_item img{
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    position: absolute;
+    left: 130px;
+}
+
+.order_num{
+    width: 35px;
+    height: 35px;
+    border-radius: 17px;
+    position: absolute;
+    text-align: center;
+    background: #203341;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    top: 54px;
+    left: 50px;
+}
+
+.travel_item .title_detail{
+    position: absolute;
+    font-size: 19px;
+    font-weight: bold;
+    left: 277px;
+    padding: 10px;
+    height: 35px;
+    overflow: hidden;
+}
+
+.travel_item .description{
+    position: absolute;
+    left: 277px;
+    top: 30px;
+    padding: 10px;
+    height: 108px;
+    overflow: hidden;
+}
+
 
 
