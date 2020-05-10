@@ -95,7 +95,7 @@ if(!isset($_SESSION['userId'])){
             <?php
             include '../DB/DBConnection.php';
 
-            $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, thumnail_image, travel_start_date   from (
+            $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, writer_nick_name, thumnail_image, travel_start_date   from (
                         select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day 
                         from travelPlan A
                         inner join travelPlanDetail B
@@ -116,14 +116,21 @@ if(!isset($_SESSION['userId'])){
                         <div class="plan_img_box_info">
                             <span class="travel_start_date"><?php echo $row['travel_start_date'] ?></span>
                             <span class="day_count"><?php echo $row['day_count'] ?>DAYS</span>
-                            <span class="title"><?php echo $row['title'] ?></span>
+                            <div class="title"><?php echo $row['title'] ?></div>
                         </div>
                     </div>
                     <div class="plan_info_box">
-                        <span class="good">좋아요</span>
-                        <span class="book_mark">북마크</span>
-                        <span class="writer_email"><?php echo $row['writer_email'] ?></span>
-                        <span class="writer_nick_name"><?php echo $row['writer_nick_name'] ?></span>
+                        <div class="heart_bookmark">
+                            <i class="far fa-heart fas" style="font-size: 20px; color:red;"></i>
+                            <span>&nbsp;Like(0)</span>
+                            <i class="far fa-bookmark fas" style="font-size: 20px; margin-left: 8px;"></i>
+                            <span>&nbsp;Bookmark(0)</span>
+                        </div>
+                        <div class="email_nick_name">
+                            <div class="writer_email"><?php echo $row['writer_email'] ?></div>
+                            <div class="writer_nick_name"><?php echo $row['writer_nick_name'] ?></div>
+                        </div>
+
                     </div>
                 </div>
                 <?php

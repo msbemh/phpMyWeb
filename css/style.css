@@ -100,7 +100,8 @@
     width: 260px;
     height: 300px;
     margin : 10px;
-    border: 1px solid black;
+    border: 1px solid #dfdfdf;
+    cursor:pointer;
 }
 
 .plan_item img{
@@ -109,7 +110,55 @@
 }
 
 .plan_item .plan_img_box{
+    position: relative;
     height: 200px;
+}
+
+.plan_img_box_info{
+    position:absolute;
+    left: 0px;
+    bottom: 0px;
+    color:white;
+    background: linear-gradient( to bottom, rgba(0,0,0,0), rgba(0,0,0,1));
+    width: 100%;
+    height: 110px;
+    padding-top:55px;
+    padding-left:10px;
+}
+
+.travel_start_date{
+    color:#1a7ad9;
+    font-size: 15px;
+}
+
+.day_count{
+    color:#b3b3b3;
+    margin-left: 5px;
+}
+
+.plan_img_box_info .title{
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.plan_item:hover{
+    border: 1px solid #1a7ad9;
+}
+
+.heart_bookmark{
+    font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.plan_info_box .email_nick_name{
+    margin-top:10px;
+    text-align: center;
+}
+
+.plan_info_box .email_nick_name div{
+    margin: 5px;
 }
 
 
