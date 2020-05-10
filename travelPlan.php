@@ -41,54 +41,6 @@ if(!isset($_SESSION['userId'])){
     </div>
 
     <div class="container_medium">
-        <table class="table">
-            <colgroup>
-                <col width="8%">
-                <col width="10px">
-                <col width="15%">
-                <col width="15%">
-                <col width="8%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th style="text-align: center;">번호</th>
-                <th style="text-align: center;">제목</th>
-                <th style="text-align: center;">작성자</th>
-                <th style="text-align: center;">작성일</th>
-            </tr>
-            </thead>
-            <tbody style="text-align: center;">
-            <!-- 게시판 목록 가져오기 -->
-            <?php
-            include '../DB/DBConnection.php';
-
-            //게시글 시작위치
-            $limit = ($pageNum-1)*$list;
-
-            $sql = "select * from travelPlan order by travel_plan_no desc";
-            $result = $conn->query($sql);
-            while($row = $result->fetch_assoc()) {
-                $datetime = explode(' ', $row['update_date']);
-                $date = $datetime[0];
-                $time = $datetime[1];
-                if($date == Date('Y-m-d'))
-                    $row['update_date'] = $time;
-                else
-                    $row['update_date'] = $date;
-                ?>
-                <tr class="freeBoardHover" onclick="goTravelPlanView(<?php echo $row['travel_plan_no'] ?>)">
-                    <td><?php echo $row['travel_plan_no']?></td>
-                    <td><div style="max-height:17px;overflow: hidden"; ><?php echo $row['title']?></div></td>
-                    <td><div style="max-height:17px;overflow: hidden"; ><?php echo $row['writer_email']?></div></td>
-                    <td><?php echo $row['update_date']?></td>
-                </tr>
-                <?php
-            }
-            $conn->close();
-            ?>
-            </tbody>
-        </table>
-
         <!-- 여행 리스트 -->
         <div class="plan_list">
             <!-- 게시판 목록 가져오기 -->
@@ -110,7 +62,7 @@ if(!isset($_SESSION['userId'])){
                 $date = $datetime[0];
                 $row['travel_start_date'] = $date;
                 ?>
-                <div class="plan_item fl">
+                <div class="plan_item fl" onclick="goTravelPlanView(<?php echo $row['travel_plan_no'] ?>)">
                     <div class="plan_img_box">
                         <img src="<?php echo $row['thumnail_image']?>" alt="My Image">
                         <div class="plan_img_box_info">
@@ -130,7 +82,6 @@ if(!isset($_SESSION['userId'])){
                             <div class="writer_email"><?php echo $row['writer_email'] ?></div>
                             <div class="writer_nick_name"><?php echo $row['writer_nick_name'] ?></div>
                         </div>
-
                     </div>
                 </div>
                 <?php
