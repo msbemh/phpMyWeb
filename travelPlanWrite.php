@@ -489,6 +489,7 @@ $conn->close();
                 data: {"title":title_input, "start_date" : start_date_input, "travel_plan_no": travel_plan_no, "my_travel_list": my_travel_list},
                 dataType:"json",
                 success : function(data, status, xhr) {
+                    console.log("data:",data);
                     if(data.result){
                         alert("정상적으로 저장이 완료됐습니다.");
                         location.href = "/travelPlan.php";

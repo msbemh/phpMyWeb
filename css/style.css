@@ -96,5 +96,21 @@
     cursor:pointer;
 }
 
+.plan_item{
+    width: 260px;
+    height: 300px;
+    margin : 10px;
+    border: 1px solid black;
+}
+
+.plan_item img{
+    width: 100%;
+    height: 200px;
+}
+
+.plan_item .plan_img_box{
+    height: 200px;
+}
+
 
 

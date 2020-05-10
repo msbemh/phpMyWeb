@@ -110,19 +110,21 @@ if(!isset($_SESSION['userId'])){
                 $date = $datetime[0];
                 $row['travel_start_date'] = $date;
                 ?>
-                <div class="plan_img_box">
-                    <img src="<?php echo $row['thumnail_image']?>" alt="My Image">
-                    <div class="plan_img_box_info">
-                        <span class="travel_start_date"><?php echo $row['travel_start_date'] ?></span>
-                        <span class="day_count"><?php echo $row['day_count'] ?>DAYS</span>
-                        <span class="title"><?php echo $row['title'] ?></span>
+                <div class="plan_item fl">
+                    <div class="plan_img_box">
+                        <img src="<?php echo $row['thumnail_image']?>" alt="My Image">
+                        <div class="plan_img_box_info">
+                            <span class="travel_start_date"><?php echo $row['travel_start_date'] ?></span>
+                            <span class="day_count"><?php echo $row['day_count'] ?>DAYS</span>
+                            <span class="title"><?php echo $row['title'] ?></span>
+                        </div>
                     </div>
-                </div>
-                <div class="plan_info_box">
-                    <span class="good">좋아요</span>
-                    <span class="book_mark">북마크</span>
-                    <span class="writer_email"><?php echo $row['writer_email'] ?></span>
-                    <span class="writer_nick_name"><?php echo $row['writer_nick_name'] ?></span>
+                    <div class="plan_info_box">
+                        <span class="good">좋아요</span>
+                        <span class="book_mark">북마크</span>
+                        <span class="writer_email"><?php echo $row['writer_email'] ?></span>
+                        <span class="writer_nick_name"><?php echo $row['writer_nick_name'] ?></span>
+                    </div>
                 </div>
                 <?php
             }

@@ -9,6 +9,11 @@ $my_travel_list = $_POST['my_travel_list'];
 $travel_plan_no = $_POST['travel_plan_no'];
 
 $first_image = $my_travel_list[0]["image"];
+for ($i =0; $i < count($my_travel_list); $i++) {
+    if($my_travel_list[$i]["day"] == 1 && $my_travel_list[$i]["order_num"] == 1){
+        $first_image = $my_travel_list[$i]["image"];
+    }
+}
 
 //세션정보 가져오기
 session_start();
