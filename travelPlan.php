@@ -8,6 +8,16 @@ if(!isset($_SESSION['userId'])){
 
 }
 
+//페이징 관련 변수들 지정
+$page_num = ($_GET['page']) ? $_GET['page'] : 1; //page : default = 1
+$list = ($_GET['list']) ? $_GET['list'] : 9; //page : default = 10
+
+$block_page_num_list = 10; //블럭에 나타낼 페이지 번호 갯수
+$block = ceil($page_num/$block_page_num_list); //현재 리스트의 블럭 구하기
+
+$block_start_page = ( ($block - 1) * $block_page_num_list ) + 1; //현재 블럭에서 시작페이지 번호
+$block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭에서 마지막 페이지 번호
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,6 +57,9 @@ if(!isset($_SESSION['userId'])){
             <?php
             include '../DB/DBConnection.php';
 
+            //게시글 시작위치
+            $limit = ($page_num-1)*$list;
+
             $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, writer_nick_name, thumnail_image, travel_start_date   from (
                         select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day 
                         from travelPlan A
@@ -55,7 +68,8 @@ if(!isset($_SESSION['userId'])){
                         group by travel_plan_no, day
                     )A
                     group by A.travel_plan_no
-                    order by travel_plan_no desc";
+                    order by travel_plan_no desc
+                    limit $limit,$list";
             $result = $conn->query($sql);
             while($row = $result->fetch_assoc()) {
                 $datetime = explode(' ', $row['travel_start_date']);
@@ -88,18 +102,71 @@ if(!isset($_SESSION['userId'])){
             }
             $conn->close();
             ?>
-
-
         </div>
-
+        <div style="clear: both;"></div>
     </div>
 
     <div class="container_medium">
         <!-- 버튼 -->
-        <div style="margin-bottom:100px; float:right;">
+        <div style="float:right;">
             <button id="travel_plan_write_btn" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">여행 일정 만들기</button>
         </div>
+        <div style="clear: both;"></div>
     </div>
+
+    <!-- 페이징 처리 -->
+    <nav aria-label="Page navigation" style="text-align: center;">
+        <ul class="pagination">
+            <?php
+            include '../DB/DBConnection.php';
+            //DB에서 총 데이터 개수 가져오기
+            $sql = "SELECT COUNT(*) FROM travelPlan";
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $total_count = $row["COUNT(*)"];
+
+            $total_page =  ceil($total_count/$list); //총 페이지 수
+
+            if ($block_end_page > $total_page)
+                $block_end_page = $total_page;
+
+
+            $before = $block_start_page-1;
+            //페이징 block단위로 뒤로가기
+            if($block != 1){?>
+                <li><a href="/travelPlan.php?page=<?=$before?>">이전</a></li>
+                <?php
+            }
+
+            //페이징 숫자부분
+            for($i = $block_start_page; $i <=$block_end_page; $i++) {
+                if($page_num == $i){?>
+                    <li><a style="background: silver;"><?=$i?></a></li>
+                    <?php
+                }else{?>
+                    <li><a href="/travelPlan.php?page=<?=$i?>"><?=$i?></a></li>
+                    <?php
+                }
+            }
+
+
+            $next = $block_end_page+1;
+            if($next>=$total_page){
+                $next = $total_page;
+            }
+            $total_block = ceil($total_page/$block_page_num_list);
+            //페이징 block단위로 다음으로
+            if($block != $total_block){?>
+                <li><a href="/travelPlan.php?page=<?=$next?>">다음</a></li>
+                <?php
+            }
+
+            $conn->close();
+            ?>
+
+        </ul>
+    </nav>
+
 </div>
 <script type="text/javascript">
     $(document).on('ready', function(e){
