@@ -60,8 +60,8 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
             //게시글 시작위치
             $limit = ($page_num-1)*$list;
 
-            $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, writer_nick_name, thumnail_image, travel_start_date   from (
-                        select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day 
+            $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, views   from (
+                        select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day, views 
                         from travelPlan A
                         inner join travelPlanDetail B
                         on A.travel_plan_no = B.travel_plan_no
@@ -88,9 +88,11 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
                     <div class="plan_info_box">
                         <div class="heart_bookmark">
                             <i class="far fa-heart fas" style="font-size: 20px; color:red;"></i>
-                            <span>&nbsp;Like(0)</span>
+                            <span class="like_num">&nbsp;(0)</span>
                             <i class="far fa-bookmark fas" style="font-size: 20px; margin-left: 8px;"></i>
-                            <span>&nbsp;Bookmark(0)</span>
+                            <span class="bookmark_num">&nbsp;(0)</span>
+                            <i class="fas fa-eye" style="font-size: 20px; margin-left: 8px;"></i>
+                            <span class="view_num">&nbsp;(0)</span>
                         </div>
                         <div class="email_nick_name">
                             <div class="writer_email"><?php echo $row['writer_email'] ?></div>
@@ -178,7 +180,7 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
 
     function goTravelPlanView(travel_plan_no) {
         console.log("travel_plan_no:",travel_plan_no);
-        location.href='/travelPlanWrite.php?travel_plan_no='+travel_plan_no;
+        location.href='/travelPlanView.php?travel_plan_no='+travel_plan_no;
     }
 </script>
 
