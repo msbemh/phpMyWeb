@@ -104,19 +104,64 @@ $conn->close();
             ?>
         </form>
 
-        <!-- 일정 리스트 보여주기 -->
+        <!-- 여행일정 리스트 보여주기 -->
         <div class="day_list">
-            <div class="day_item">
-                <div class="day_item_info">
-                    <div class="day_num fl">DAY1</div>
-                    <div class="date_start fl">2015.06.27</div>
-                </div>
-                <div class="travel_item">
-                    <div class="order_num">1</div>
-                    <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg">
-                    <div class="title_detail">여행을 떠나자</div>
-                    <div class="description">안녕하세요</div>
-                </div>
+
+            <!-- 게시판 목록 가져오기 -->
+            <?php
+            include '../DB/DBConnection.php';
+
+            //게시글 시작위치
+            $limit = ($pageNum-1)*$list;
+
+            $sql = "select * from travelPlanDetail
+                    where travel_plan_no = $travel_plan_no
+                    order by day asc, order_num asc";
+            $result = $conn->query($sql);
+
+            $current_bringing_day = 0;
+
+            while($row = $result->fetch_assoc()) {
+                $datetime = explode(' ', $row['travel_data']);
+                $date = $datetime[0];
+
+                if($current_bringing_day != $row['day']){
+                    if($current_bringing_day != 0){?>
+                    </div>
+                    <?php
+                    }
+                    $current_bringing_day = $row['day'];
+                    ?>
+                    <div class="day_item">
+                        <div class="day_item_info">
+                            <div class="day_num fl">DAY<?php echo $current_bringing_day?></div>
+                            <div class="date_start fl"><?php echo $date?></div>
+                        </div>
+                <?php
+                }
+                ?>
+                        <div class="travel_item">
+                            <div class="order_num"><?php echo $row['order_num']?></div>
+                            <img src="<?php echo $row['image']?>">
+                            <div class="title_detail"><?php echo $row['title_detail']?></div>
+                            <div class="description"><?php echo $row['discription']?></div>
+                        </div>
+                <?php
+            }
+            $conn->close();
+            ?>
+
+<!--            <div class="day_item">-->
+<!--                <div class="day_item_info">-->
+<!--                    <div class="day_num fl">DAY1</div>-->
+<!--                    <div class="date_start fl">2015.06.27</div>-->
+<!--                </div>-->
+<!--                <div class="travel_item">-->
+<!--                    <div class="order_num">1</div>-->
+<!--                    <img src="http://img.earthtory.com/img/place_img/310/6645_0_et.jpg">-->
+<!--                    <div class="title_detail">여행을 떠나자</div>-->
+<!--                    <div class="description">안녕하세요</div>-->
+<!--                </div>-->
             </div>
         </div>
         <div style="clear: both;"></div>
