@@ -89,6 +89,49 @@ if(!isset($_SESSION['userId'])){
             </tbody>
         </table>
 
+        <!-- 여행 리스트 -->
+        <div class="plan_list">
+            <!-- 게시판 목록 가져오기 -->
+            <?php
+            include '../DB/DBConnection.php';
+
+            $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, thumnail_image, travel_start_date   from (
+                        select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day 
+                        from travelPlan A
+                        inner join travelPlanDetail B
+                        on A.travel_plan_no = B.travel_plan_no
+                        group by travel_plan_no, day
+                    )A
+                    group by A.travel_plan_no
+                    order by travel_plan_no desc";
+            $result = $conn->query($sql);
+            while($row = $result->fetch_assoc()) {
+                $datetime = explode(' ', $row['travel_start_date']);
+                $date = $datetime[0];
+                $row['travel_start_date'] = $date;
+                ?>
+                <div class="plan_img_box">
+                    <img src="<?php echo $row['thumnail_image']?>" alt="My Image">
+                    <div class="plan_img_box_info">
+                        <span class="travel_start_date"><?php echo $row['travel_start_date'] ?></span>
+                        <span class="day_count"><?php echo $row['day_count'] ?>DAYS</span>
+                        <span class="title"><?php echo $row['title'] ?></span>
+                    </div>
+                </div>
+                <div class="plan_info_box">
+                    <span class="good">좋아요</span>
+                    <span class="book_mark">북마크</span>
+                    <span class="writer_email"><?php echo $row['writer_email'] ?></span>
+                    <span class="writer_nick_name"><?php echo $row['writer_nick_name'] ?></span>
+                </div>
+                <?php
+            }
+            $conn->close();
+            ?>
+
+
+        </div>
+
     </div>
 
     <div class="container_medium">
