@@ -73,6 +73,7 @@ $conn->close();
 <script type="text/javascript" src="./util.js"></script>
 <script type="text/javascript" src="../smartEditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -124,7 +125,7 @@ $conn->close();
                     }
                     $current_bringing_day = $row['day'];
                     ?>
-                    <div class="day_item">
+                    <div class="day_item day_item_<?php echo $current_bringing_day?>">
                         <div class="day_item_info">
                             <div class="day_num fl">DAY<?php echo $current_bringing_day?></div>
                             <div class="date_start fl"><?php echo $date?></div>
@@ -189,10 +190,27 @@ $conn->close();
 
     </div><!-- container_medium2 끝부분 -->
 
+    <!-- 지도를 표시할 div 입니다 -->
+    <div id="map"></div>
+
 
 </div>
 
+<!-- 카카오맵 관련 javascript -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=db020925d06b61dd2f0089235b1f2b3a"></script>
+
 <script type="text/javascript">
+    //카카오맵 map 초기화
+    let selectedMarker = null; // 클릭한 마커를 담을 변수
+    let opened_window_info = null;
+
+    let mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.565700, 126.977080), // 지도의 중심좌표
+            level: 7 // 지도의 확대 레벨
+        };
+    let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
     $(document).on('ready', function(e){
         $("#update").on("click", function() {
             let travel_plan_no = $("#travel_plan_no").val();
@@ -278,6 +296,18 @@ $conn->close();
 
         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
+        });
+
+        //스크롤 제일 밑으로 왔을때
+        $(window).on( "scroll", function() {
+            console.log("$(window).scrollTop():",$(window).scrollTop());
+            console.log("$(document).height():",$(document).height());
+            console.log(" window.innerHeight:", window.innerHeight);
+            console.log(" $(\".day_item\").height():", $(".day_item").height());
+
+            if (Math.floor($(window).scrollTop()) == Math.floor($(document).height() - window.innerHeight)) {
+                console.log("제일 마지막 부분");
+            }
         });
 
     });

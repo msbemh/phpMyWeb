@@ -109,7 +109,7 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
             }
             $conn->close();
             ?>
-        </div>
+        </div><!-- 여행리스트 끝 -->
         <div style="clear: both;"></div>
     </div>
 
