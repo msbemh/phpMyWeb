@@ -22,7 +22,7 @@ $result = $conn->query($sql);
 
 //여행일정 게시판 view내용 가져오기
 $sql = "SELECT A.travel_plan_no, A.travel_plan_detail_no, A.order_num, A.title_detail, A.sub, A.latitude, A.longitude, A.discription, A.image, A.day, 
-		        B.title, B.writer_email, B.writer_nick_name, B.travel_start_date, B.views
+		        B.title, B.writer_email, B.writer_nick_name, B.travel_start_date, B.views, B.creation_date
         FROM travelPlanDetail A
         INNER JOIN travelPlan B
         ON A.travel_plan_no = B.travel_plan_no
@@ -36,6 +36,7 @@ $title = $row["title"];
 $writer_email = $row["writer_email"];
 $writer_nick_name = $row["writer_nick_name"];
 $travel_start_date = $row["travel_start_date"];
+$creation_date = $row["creation_date"];
 
 $datetime = explode(' ', $travel_start_date);
 $date = $datetime[0];
@@ -89,19 +90,10 @@ $conn->close();
     <div class="container_medium2" >
         <form id ="form" method="POST">
             <input type="hidden" id="travel_plan_no" name="travel_plan_no" class="form-control" value="<?php echo $travel_plan_no ?>"/><br>
-            <h1 type="text" id="title" name="title" style="border-bottom: 3px solid silver; padding-bottom: 5px; "><?php echo $title?></h1><br>
+            <h1 type="text" id="title" name="title" style="border-bottom: 3px solid silver; padding-bottom: 5px; "><?php echo $title?></h1>
+            <div style="margin-bottom: 10px; margin-top:0px; font-weight:bold; font-size: 17px;"><?php echo 'No. '.$travel_plan_no ?></div>
             <div id="writer_nick_name" name="writer_nick_name" style="margin-bottom: 10px;"><?php echo 'by '.$writer_nick_name; echo ' ( '.$writer_email.' )' ?></div>
-            <div id="$travel_start_date" name="$travel_start_date" style="margin-bottom: 20px; color: silver;"><?php echo '시작일 '.$travel_start_date; ?></div>
-            <?php
-            if($writer_email == $_SESSION['userId']){ ?>
-                <div style="float:right; margin-top: 10px;">
-                    <button type="button" id="update" class="btn btn-dark" >수정</button>
-                    <button type="button" id="delete" class="btn btn-dark">삭제</button>
-                </div>
-                <div style="clear: both;"></div>
-                <?php
-            }
-            ?>
+            <div id="$travel_start_date" name="$travel_start_date" style="margin-bottom: 20px; color: silver;"><?php echo '생성일 '.$creation_date; ?></div>
         </form>
 
         <!-- 여행일정 리스트 보여주기 -->
@@ -182,7 +174,22 @@ $conn->close();
                 <span style="font-size: 30px;position: absolute;top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);">&nbsp;Share</span>
             </div>
         </div>
+
+        <!-- 수정, 삭제 버튼 -->
+        <?php
+        if($writer_email == $_SESSION['userId']){ ?>
+            <div style="float:right; margin-top: 10px;">
+                <button type="button" id="update" class="btn btn-dark" >수정</button>
+                <button type="button" id="delete" class="btn btn-dark">삭제</button>
+            </div>
+            <div style="clear: both;"></div>
+            <?php
+        }
+        ?>
+
     </div><!-- container_medium2 끝부분 -->
+
+
 </div>
 
 <script type="text/javascript">
