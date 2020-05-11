@@ -221,12 +221,21 @@
 
 .travel_item .title_detail{
     position: absolute;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: bold;
     left: 277px;
     padding: 10px;
-    height: 35px;
     overflow: hidden;
+}
+
+.travel_item .sub{
+    position: absolute;
+    font-size: 16px;
+    left: 277px;
+    top: 30px;
+    padding: 10px;
+    overflow: hidden;
+    color:silver;
 }
 
 .travel_item .description{

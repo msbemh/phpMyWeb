@@ -153,6 +153,7 @@ $conn->close();
                             <div class="order_num"><?php echo $row['order_num']?></div>
                             <img src="<?php echo $row['image']?>">
                             <div class="title_detail"><?php echo $row['title_detail']?></div>
+                            <div class="sub"><?php echo $row['sub']?></div>
                             <div class="description"><?php echo $row['discription']?></div>
                         </div>
                 <?php
