@@ -9,6 +9,11 @@ $my_travel_list = $_POST['my_travel_list'];
 $travel_plan_no = $_POST['travel_plan_no'];
 
 $first_image = $my_travel_list[0]["image"];
+for ($i =0; $i < count($my_travel_list); $i++) {
+    if($my_travel_list[$i]["day"] == 1 && $my_travel_list[$i]["order_num"] == 1){
+        $first_image = $my_travel_list[$i]["image"];
+    }
+}
 
 //세션정보 가져오기
 session_start();
@@ -56,7 +61,7 @@ for ($i =0; $i < count($my_travel_list); $i++) {
 //                            ,"title_detail"=>$title_detail)));
 
     $sql = "INSERT INTO travelPlanDetail (travel_plan_no, order_num, travel_data, title_detail, sub, latitude, longitude, discription, image, day) 
-	        VALUES ($travel_plan_no, $order_num, date_add(now(),INTERVAL $day_plus DAY) , '$title_detail', '$sub', $latitude, $longitude, '$discription','$image',$day)";
+	        VALUES ($travel_plan_no, $order_num, date_add('$start_date',INTERVAL $day_plus DAY) , '$title_detail', '$sub', $latitude, $longitude, '$discription','$image',$day)";
     $result = $conn->query($sql);
 }
 

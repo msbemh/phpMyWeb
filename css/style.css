@@ -19,4 +19,262 @@
     width:700px;
 }
 
+.fl{
+    float:left;
+}
+
+.fr{
+    float:right;
+}
+
+.side_bar{
+    height: 400px;
+}
+
+.side_bar ul li {
+    list-style: none; /*<li> 태그는 위의 이미지처럼 목록을 나타내는 점을 없앤다*/
+    line-height: 30px; /*글씨가 가운데로 오도록 설정하기 위해 한줄의 높이를 30px로 설정*/
+    vertical-align: middle; /*세로 정렬을 가운데로 설정(위의 line-height와 같이 설정 필요함)*/
+    text-align: center; /*글씨 정렬을 가운데로 설정*/
+    border: 1px solid black;
+    cursor:pointer;
+    margin-bottom: 5px;
+    width: 140px;
+}
+
+.sign{
+    text-align: center;
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 55px;
+    padding: 10px;
+}
+
+.side_bar ul{
+    height: 100%;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.side_bar a {
+    display: block;
+}
+
+.side_bar a:link {
+    color: black;
+    text-decoration: none;
+}
+.side_bar a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.user_log{
+    margin-left: 60px;
+    margin-right: 60px;
+    width:80%;
+}
+
+.admin_content_container{
+    margin-left: 60px;
+    margin-right: 60px;
+    width:80%;
+}
+
+.side_bar a.on {
+    background-color: silver;
+}
+
+.side_bar a:hover {
+    background-color: #ffe8d6;
+}
+
+.ui-datepicker-trigger{
+    margin-left: 10px;
+    width: 30px;
+    cursor:pointer;
+}
+
+.plan_item{
+    width: 260px;
+    height: 300px;
+    margin : 10px;
+    border: 1px solid #dfdfdf;
+    cursor:pointer;
+}
+
+.plan_item img{
+    width: 100%;
+    height: 200px;
+}
+
+.plan_item .plan_img_box{
+    position: relative;
+    height: 200px;
+}
+
+.plan_img_box_info{
+    position:absolute;
+    left: 0px;
+    bottom: 0px;
+    color:white;
+    background: linear-gradient( to bottom, rgba(0,0,0,0), rgba(0,0,0,1));
+    width: 100%;
+    height: 110px;
+    padding-top:55px;
+    padding-left:10px;
+}
+
+.travel_start_date{
+    color:#1a7ad9;
+    font-size: 15px;
+}
+
+.day_count{
+    color:#b3b3b3;
+    margin-left: 5px;
+}
+
+.plan_img_box_info .title{
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.plan_item:hover{
+    border: 1px solid #1a7ad9;
+}
+
+.heart_bookmark{
+    font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.plan_info_box .email_nick_name{
+    margin-top:10px;
+    text-align: center;
+}
+
+.plan_info_box .email_nick_name div{
+    margin: 5px;
+}
+
+.day_num{
+    background:#203341;
+    height: 60px;
+    color: white;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 14px;
+}
+
+.day_item{
+    border: 1px solid #dfdfdf;
+    width: 100%;
+}
+
+.day_item_info{
+    border: 1px solid #dfdfdf;
+    height: 60px;
+}
+
+.date_start{
+    padding: 13px;
+    width: 500px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.travel_item{
+    height: 154px;
+    border: 1px solid #dfdfdf;
+    margin:10px;
+    position: relative;
+}
+
+.travel_item img{
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    position: absolute;
+    left: 130px;
+}
+
+.order_num{
+    width: 35px;
+    height: 35px;
+    border-radius: 17px;
+    position: absolute;
+    text-align: center;
+    background: #203341;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    top: 54px;
+    left: 50px;
+}
+
+.travel_item .title_detail{
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    left: 277px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.travel_item .sub{
+    position: absolute;
+    font-size: 16px;
+    left: 277px;
+    top: 30px;
+    padding: 10px;
+    overflow: hidden;
+    color:silver;
+}
+
+.travel_item .description{
+    position: absolute;
+    left: 277px;
+    top: 30px;
+    padding: 10px;
+    height: 108px;
+    overflow: hidden;
+}
+
+.table td{
+    vertical-align: middle !important;
+}
+
+.table td .comment_num{
+    color:red;
+    font-weight: bold;
+}
+
+.main_board_title{
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin:20px;
+}
+
+.travel_view_map{
+    position: fixed;
+    width:380px !important;
+    height:380px !important;
+    margin: 10px;
+    top: 5-%;
+    left: 0px;
+    border: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    border : 1px solid black;
+}
+
+
 

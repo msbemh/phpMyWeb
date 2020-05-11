@@ -4,7 +4,7 @@
     <div style="float:right; margin:20px 0px;">
         <button id="logOut" class="btn" style="background: #ffe8d6; font-weight:bold; font-size: 18px;">로그아웃</button>
     </div>
-    <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo "{$_SESSION["nickName"]}" ?> 님</div>
+    <div style="float:right; margin:20px 0px; padding: 6px 12px; font-weight:bold; font-size: 18px;"><?php echo $_SESSION["nickName"] ?> ( <?php echo $_SESSION["userId"] ?> )</div>
 </div>
 <div style="clear: both"></div>
 
@@ -15,7 +15,12 @@
         });
 
         $("#logo").on("click", function () {
-            location.href = "/main.php";
+            if("<?=$_SESSION["userId"]?>" == "admin@naver.com"){
+                location.href = "/adminMain.php";
+            }else{
+                location.href = "/main.php";
+            }
+
         });
     });
 </script>

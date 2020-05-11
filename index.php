@@ -8,6 +8,9 @@ if(!isset($_SESSION['userId'])){
 }else{
     echo("<script>location.href='/main.php';</script>");
 }
+
+//include './userLogo.php';
+
 ?>
 <html>
 <?php include './header.php'?>
@@ -51,8 +54,14 @@ if(!isset($_SESSION['userId'])){
                         }else{
                             deleteCookie('userId');
                         }
-                        location.href = "/main.php";
-                        //실패 했을 경우
+
+                        if(data.userId == "admin@naver.com"){
+                            location.href = "/adminMain.php";
+                        }else{
+                            location.href = "/main.php";
+                        }
+
+                    //실패 했을 경우
                     }else{
                         alert("아이디와 비밀번호가 맞지 않습니다.");
                         $("#inputPassword").val("");

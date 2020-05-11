@@ -55,19 +55,23 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
     <div class="container_medium">
         <table class="table">
             <colgroup>
-                <col width="8%">
-                <col width="10px">
+                <col width="7%">
+                <col width="">
+                <col width="20%">
                 <col width="15%">
-                <col width="15%">
-                <col width="8%">
+                <col width="7%">
+                <col width="7%">
+                <col width="7%">
             </colgroup>
             <thead>
             <tr>
                 <th style="text-align: center;">번호</th>
                 <th style="text-align: center;">제목</th>
                 <th style="text-align: center;">작성자</th>
-                <th style="text-align: center;">작성일</th>
+                <th style="text-align: center;">최근 작성일</th>
                 <th style="text-align: center;">조회수</th>
+                <th style="text-align: center;">좋아요</th>
+                <th style="text-align: center;">북마크</th>
             </tr>
             </thead>
             <tbody style="text-align: center;">
@@ -78,12 +82,26 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
             //게시글 시작위치
             $limit = ($pageNum-1)*$list;
 
-            $sql = "select * from freeBoard order by idx desc limit $limit,$list";
+            $sql = "select C.*, ifnull(D.like_num, 0) as like_num, ifnull(E.comment_num, 0) as comment_num, ifnull(F.bookmark_num, 0) as bookmark_num  from(
+                        select A.*, B.nickName  from freeBoard A
+                        inner join user B
+                        on A.writer = B.userId) C
+                        
+                    left outer join (select freeBoardNo, count(freeBoardNo) as like_num from freeBoardLikes group by freeBoardNo) D
+                    on C.idx = D.freeBoardNo
+                    
+                    left outer join (select board_no, count(board_no) as comment_num from freeBoardComment group by board_no) E
+                    on C.idx = E.board_no
+                    
+                    left outer join (select freeBoardNo, count(freeBoardNo) as bookmark_num from freeBoardBookmark group by freeBoardNo) F
+                    on C.idx = F.freeBoardNo
+                    order by idx desc limit $limit,$list";
             $result = $conn->query($sql);
             while($row = $result->fetch_assoc()) {
                 $datetime = explode(' ', $row['updateDate']);
                 $date = $datetime[0];
                 $time = $datetime[1];
+                $comment_num = $row['comment_num'];
                 if($date == Date('Y-m-d'))
                     $row['updateDate'] = $time;
                 else
@@ -91,10 +109,15 @@ $b_end_page = $b_start_page + $b_pageNum_list - 1; //현재 블럭에서 마지�
                 ?>
                 <tr class="freeBoardHover" onclick="goFreeBoardView(<?php echo $row['idx'] ?>)">
                     <td><?php echo $row['idx']?></td>
-                    <td><div style="max-height:17px;overflow: hidden"; ><?php echo $row['title']?></div></td>
-                    <td><div style="max-height:17px;overflow: hidden"; ><?php echo $row['writer']?></div></td>
+                    <td><?php echo $row['title'];
+                        if($row['comment_num']>0){
+                            echo "<span class='comment_num'>&nbsp;&nbsp;[$comment_num]</span>";
+                        }?></td>
+                    <td><?php echo $row['nickName'].'<br>( '.$row['writer'].' ) '?></td>
                     <td><?php echo $row['updateDate']?></td>
                     <td><?php echo $row['views']?></td>
+                    <td><?php echo $row['like_num']?></td>
+                    <td><?php echo $row['bookmark_num']?></td>
                 </tr>
                 <?php
             }
