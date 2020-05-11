@@ -238,5 +238,14 @@
     overflow: hidden;
 }
 
+.table td{
+    vertical-align: middle !important;
+}
+
+.table td .comment_num{
+    color:red;
+    font-weight: bold;
+}
+
 
 
