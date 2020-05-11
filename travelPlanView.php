@@ -42,25 +42,25 @@ $date = $datetime[0];
 $travel_start_date = $date;
 
 //좋아요 총 개수 가져오기
-$sql = "SELECT count(*) FROM travelBoardLikes WHERE travel_board_no = $travel_plan_no";
+$sql = "SELECT count(*) FROM travelBoardLikes WHERE travel_plan_no = $travel_plan_no";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $likes = $row["count(*)"];
 
 //내가 좋아요를 선택했는지 안했는지 정보 가져오기
-$sql = "SELECT count(*) FROM travelBoardLikes WHERE travel_board_no = $travel_plan_no AND user_id ='$userId'";
+$sql = "SELECT count(*) FROM travelBoardLikes WHERE travel_plan_no = $travel_plan_no AND user_id ='$userId'";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $my_count = $row["count(*)"];
 
 //북마트 총 개수 가져오기
-$sql = "SELECT count(*) FROM travelBoardBookmark WHERE travel_board_no = $travel_plan_no";
+$sql = "SELECT count(*) FROM travelBoardBookmark WHERE travel_plan_no = $travel_plan_no";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $total_book_mark = $row["count(*)"];
 
 //내가 좋아요를 선택했는지 안했는지 정보 가져오기
-$sql = "SELECT count(*) FROM travelBoardBookmark WHERE travel_board_no = $travel_plan_no AND user_id ='$userId'";
+$sql = "SELECT count(*) FROM travelBoardBookmark WHERE travel_plan_no = $travel_plan_no AND user_id ='$userId'";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $my_book_mark = $row["count(*)"];
@@ -207,20 +207,20 @@ $conn->close();
             let like_num_value = $like_num.html()*1;
             console.log("like_num_value:",like_num_value);
             //DB에서 존재하는 아이디인지 검사
-            //$.ajax({
-            //    type: "POST",
-            //    url : "/freeBoardLike.php",
-            //    data: {"idx":<?php //echo $travel_plan_no ?>//},
-            //    dataType:"json",
-            //    success : function(data, status, xhr) {
-            //        console.log("data:",data);
-            //        $svg.toggleClass("fas");
-            //        $like_num.html(data.count);
-            //    },
-            //    error: function(jqXHR, textStatus, errorThrown) {
-            //        console.log(jqXHR.responseText);
-            //    }
-            //});
+            $.ajax({
+                type: "POST",
+                url : "/travelBoardLike.php",
+                data: {"travel_plan_no":<?php echo $travel_plan_no ?>},
+                dataType:"json",
+                success : function(data, status, xhr) {
+                    console.log("data:",data);
+                    $svg.toggleClass("fas");
+                    $like_num.html(data.count);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                }
+            });
         });
 
         //북마크 클릭
@@ -228,20 +228,20 @@ $conn->close();
             let $bookmark = $("#bookmark i");
             let $total_book_mark = $("#total_book_mark");
             //DB에서 존재하는 아이디인지 검사
-            //$.ajax({
-            //    type: "POST",
-            //    url : "/freeBoardMark.php",
-            //    data: {"idx":<?php //echo $travel_plan_no ?>//},
-            //    dataType:"json",
-            //    success : function(data, status, xhr) {
-            //        console.log("data:",data);
-            //        $bookmark.toggleClass("fas");
-            //        $total_book_mark.html(data.count);
-            //    },
-            //    error: function(jqXHR, textStatus, errorThrown) {
-            //        console.log(jqXHR.responseText);
-            //    }
-            //});
+            $.ajax({
+                type: "POST",
+                url : "/travelBoardMark.php",
+                data: {"travel_plan_no":<?php echo $travel_plan_no ?>},
+                dataType:"json",
+                success : function(data, status, xhr) {
+                    console.log("data:",data);
+                    $bookmark.toggleClass("fas");
+                    $total_book_mark.html(data.count);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                }
+            });
         });
 
         //공유 클릭
