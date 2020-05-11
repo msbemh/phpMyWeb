@@ -61,7 +61,7 @@ for ($i =0; $i < count($my_travel_list); $i++) {
 //                            ,"title_detail"=>$title_detail)));
 
     $sql = "INSERT INTO travelPlanDetail (travel_plan_no, order_num, travel_data, title_detail, sub, latitude, longitude, discription, image, day) 
-	        VALUES ($travel_plan_no, $order_num, date_add(now(),INTERVAL $day_plus DAY) , '$title_detail', '$sub', $latitude, $longitude, '$discription','$image',$day)";
+	        VALUES ($travel_plan_no, $order_num, date_add('$start_date',INTERVAL $day_plus DAY) , '$title_detail', '$sub', $latitude, $longitude, '$discription','$image',$day)";
     $result = $conn->query($sql);
 }
 
