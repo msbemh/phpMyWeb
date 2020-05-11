@@ -60,15 +60,20 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
             //게시글 시작위치
             $limit = ($page_num-1)*$list;
 
-            $sql = "select travel_plan_no, count(day) as day_count, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, views   from (
-                        select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day, views 
-                        from travelPlan A
-                        inner join travelPlanDetail B
-                        on A.travel_plan_no = B.travel_plan_no
-                        group by travel_plan_no, day
-                    )A
-                    group by A.travel_plan_no
-                    order by travel_plan_no desc
+            $sql = "select C.*, ifnull(D.like_num,0) as like_num, ifnull(E.bookmark_num,0) as bookmark_num from(
+                        select travel_plan_no, count(day) as day_count, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, views   from (
+                                                select A.travel_plan_no, title, writer_email, writer_nick_name, thumnail_image, travel_start_date, day, views 
+                                                from travelPlan A
+                                                inner join travelPlanDetail B
+                                                on A.travel_plan_no = B.travel_plan_no
+                                                group by travel_plan_no, day
+                                            )A
+                                            group by A.travel_plan_no) C
+                    left outer join (select travel_plan_no, count(travel_plan_no) as like_num from travelBoardLikes group by travel_plan_no ) D
+                    on C.travel_plan_no = D.travel_plan_no
+                    left outer join (select travel_plan_no, count(travel_plan_no) as bookmark_num from travelBoardBookmark group by travel_plan_no ) E
+                    on C.travel_plan_no = E.travel_plan_no
+                    order by C.travel_plan_no desc
                     limit $limit,$list";
             $result = $conn->query($sql);
             while($row = $result->fetch_assoc()) {
@@ -88,11 +93,11 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
                     <div class="plan_info_box">
                         <div class="heart_bookmark">
                             <i class="far fa-heart fas" style="font-size: 20px; color:red;"></i>
-                            <span class="like_num">&nbsp;(0)</span>
+                            <span class="like_num">&nbsp;(<?php echo $row['like_num'] ?>)</span>
                             <i class="far fa-bookmark fas" style="font-size: 20px; margin-left: 8px;"></i>
-                            <span class="bookmark_num">&nbsp;(0)</span>
+                            <span class="bookmark_num">&nbsp;(<?php echo $row['bookmark_num'] ?>)</span>
                             <i class="fas fa-eye" style="font-size: 20px; margin-left: 8px;"></i>
-                            <span class="view_num">&nbsp;(0)</span>
+                            <span class="view_num">&nbsp;(<?php echo $row['views'] ?>)</span>
                         </div>
                         <div class="email_nick_name">
                             <div class="writer_email"><?php echo $row['writer_email'] ?></div>
