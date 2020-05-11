@@ -254,7 +254,7 @@
     margin:20px;
 }
 
-#map{
+.travel_view_map{
     position: fixed;
     width:380px !important;
     height:380px !important;

@@ -207,7 +207,7 @@ $conn->close();
     </div><!-- container_medium2 끝부분 -->
 
     <!-- 지도를 표시할 div 입니다 -->
-    <div id="map"></div>
+    <div id="map" class="travel_view_map"></div>
 
 
 </div>
@@ -233,6 +233,8 @@ $conn->close();
     let my_travel_list = <?= json_encode($my_travel_list) ?>;
     //카카오 지도에 현재 선택된 날짜의 여행리스트 보내주기 위해서 만듦.
     let current_day_travel_list = [];
+    //카카오 지도오에서 경로 선 list
+    let polyline_list = [];
 
 
     $(document).on('ready', function(e){
@@ -334,7 +336,7 @@ $conn->close();
                 let height = $(".day_item_"+i).height();
                 benchmark += height;
                 //해당 DAY위치에 왔을때
-                if(($(window).scrollTop() < 280+ benchmark) ){
+                if(($(window).scrollTop() < 200+ benchmark) ){
                     //DAY가 변할때만 감지
                     if(current_day_position != i){
                         //map reload시키기
@@ -374,6 +376,8 @@ $conn->close();
         set_current_day_travel_list(selected_day);
         //카카오 나의 여행장소 마커표시
         kakao_show_my_marker(current_day_travel_list);
+        //카카오 나의 여행장소 경로표시
+        kakao_route(current_day_travel_list);
     }
 
     //나의 여행장소 마커표시하기(노란색)
@@ -423,6 +427,42 @@ $conn->close();
 
     function hide_markers() {
         set_markers(null);
+    }
+
+    //경로 표시하기
+    function kakao_route(current_day_travel_list) {
+        hide_line();
+        console.log("[카카오경로]current_day_travel_list:",current_day_travel_list);
+
+        // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+        let linePath = [];
+        current_day_travel_list.forEach(function(item, index){
+            linePath.push(new kakao.maps.LatLng(item.latitude, item.longitude))
+        })
+
+        // 지도에 표시할 선을 생성합니다
+        let polyline = new kakao.maps.Polyline({
+            path: linePath, // 선을 구성하는 좌표배열 입니다
+            strokeWeight: 5, // 선의 두께 입니다
+            strokeColor: '#000000', // 선의 색깔입니다
+            strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle: 'solid' // 선의 스타일입니다
+        });
+
+        polyline_list.push(polyline);
+
+        // 지도에 선을 표시합니다
+        polyline.setMap(map);
+    }
+
+    function set_lines(map) {
+        for (let i = 0; i < polyline_list.length; i++) {
+            polyline_list[i].setMap(map);
+        }
+    }
+
+    function hide_line() {
+        set_lines(null);
     }
 
 
