@@ -246,8 +246,8 @@ $conn->close();
         $("#delete").on("click", function() {
             if(confirm("정말 삭제하시겠습니까?") == true){
                 let $form = $("#form");
-                // $form.attr("action", "freeBoardDelete.php");
-                // $form.trigger("submit");
+                $form.attr("action", "travelPlanDelete.php");
+                $form.trigger("submit");
             }
         });
 
