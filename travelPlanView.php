@@ -20,6 +20,18 @@ $travel_plan_no =  $_GET["travel_plan_no"];
 $sql = "UPDATE travelPlan SET views = views + 1 WHERE travel_plan_no = $travel_plan_no";
 $result = $conn->query($sql);
 
+//나의 여행리스트 가져오기
+$sql = "SELECT * FROM travelPlan A
+        INNER JOIN travelPlanDetail B
+        ON A.travel_plan_no = B.travel_plan_no
+        WHERE A.travel_plan_no = $travel_plan_no";
+$result = $conn->query($sql);
+$my_travel_list = array();
+
+while($row = $result->fetch_assoc()) {
+    $my_travel_list[] = $row;
+}
+
 //여행일정 게시판 view내용 가져오기
 $sql = "SELECT A.travel_plan_no, A.travel_plan_detail_no, A.order_num, A.title_detail, A.sub, A.latitude, A.longitude, A.discription, A.image, A.day, 
 		        B.title, B.writer_email, B.writer_nick_name, B.travel_start_date, B.views, B.creation_date
@@ -112,6 +124,9 @@ $conn->close();
                     order by day asc, order_num asc";
             $result = $conn->query($sql);
 
+            //day몇개 있는지 count
+            $total_day_count = 0;
+
             $current_bringing_day = 0;
 
             while($row = $result->fetch_assoc()) {
@@ -124,6 +139,7 @@ $conn->close();
                     <?php
                     }
                     $current_bringing_day = $row['day'];
+                    $total_day_count ++;
                     ?>
                     <div class="day_item day_item_<?php echo $current_bringing_day?>">
                         <div class="day_item_info">
@@ -210,6 +226,14 @@ $conn->close();
             level: 7 // 지도의 확대 레벨
         };
     let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    //카카오 지도에서 나의 marker list
+    let my_marker_list = [];
+    //나의 여행리스트
+    let my_travel_list = <?= json_encode($my_travel_list) ?>;
+    //카카오 지도에 현재 선택된 날짜의 여행리스트 보내주기 위해서 만듦.
+    let current_day_travel_list = [];
+
 
     $(document).on('ready', function(e){
         $("#update").on("click", function() {
@@ -298,19 +322,110 @@ $conn->close();
             $('#myInput').trigger('focus')
         });
 
-        //스크롤 제일 밑으로 왔을때
-        $(window).on( "scroll", function() {
-            console.log("$(window).scrollTop():",$(window).scrollTop());
-            console.log("$(document).height():",$(document).height());
-            console.log(" window.innerHeight:", window.innerHeight);
-            console.log(" $(\".day_item\").height():", $(".day_item").height());
 
-            if (Math.floor($(window).scrollTop()) == Math.floor($(document).height() - window.innerHeight)) {
-                console.log("제일 마지막 부분");
+
+        //DAY위치에 맞는 map 변화시키기
+        let current_day_position =1;
+        $(window).on( "scroll", function() {
+            let count = <?php echo  $total_day_count?>;
+            let benchmark = 0;
+            //DAY개수만큼 반복
+            for(let i=1; i<=count; i++){
+                let height = $(".day_item_"+i).height();
+                benchmark += height;
+                //해당 DAY위치에 왔을때
+                if(($(window).scrollTop() < 280+ benchmark) ){
+                    //DAY가 변할때만 감지
+                    if(current_day_position != i){
+                        //map reload시키기
+                        let selected_day = i;
+                        map_reload(i);
+
+                    }
+                    //초기화
+                    current_day_position = i;
+                    break;
+                }
             }
         });
 
+        //처음에 첫번째 날로 맵 리로드
+        map_reload(1);
+
     });
+
+    //현재 DAY에 맞는 리스트 세팅
+    function set_current_day_travel_list(selected_day){
+        //초기화
+        current_day_travel_list.length = 0;
+
+        //현재 DAY에 맞는 리스트 구하기
+        for(let i=0; i<my_travel_list.length; i++){
+            let item = my_travel_list[i];
+            if(item.day == selected_day){
+                current_day_travel_list.push(item);
+            }
+        }
+    }
+
+    //맵 리로드
+    function map_reload(selected_day){
+        //현재 DAY에 맞는 리스트 세팅
+        set_current_day_travel_list(selected_day);
+        //카카오 나의 여행장소 마커표시
+        kakao_show_my_marker(current_day_travel_list);
+    }
+
+    //나의 여행장소 마커표시하기(노란색)
+    function kakao_show_my_marker(current_day_travel_list){
+        console.log("current_day_travel_list:",current_day_travel_list);
+
+        //기존에 나의 마커 삭제
+        hide_markers();
+        my_marker_list.length = 0;
+
+        current_day_travel_list.forEach(function(item, index){
+            let imageSrc = "/res/marker.png";
+            if(item.order_num <11){
+                imageSrc = "/res/marker_"+item.order_num+".png";
+            }else{
+                imageSrc = "/res/marker_what.png";
+            }
+
+            // 마커 이미지의 이미지 크기 입니다
+            let imageSize = new kakao.maps.Size(50, 50);
+
+            // 마커 이미지를 생성합니다
+            let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+            // 마커가 표시될 위치입니다
+            let markerPosition  = new kakao.maps.LatLng(item.latitude, item.longitude);
+
+            // 마커를 생성합니다
+            let marker = new kakao.maps.Marker({
+                position: markerPosition,
+                title: item.title_detail,
+                image : markerImage // 마커 이미지
+            });
+            my_marker_list.push(marker);
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+        });
+        console.log("my_marker_list:",my_marker_list);
+
+    }
+
+    function set_markers(map) {
+        for (let i = 0; i < my_marker_list.length; i++) {
+            my_marker_list[i].setMap(map);
+        }
+    }
+
+    function hide_markers() {
+        set_markers(null);
+    }
+
+
 </script>
 
 </body>
