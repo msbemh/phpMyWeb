@@ -1,6 +1,6 @@
 
 <meta name="google-site-verification" content="CmEROeOUZRl5cIPRUdqQwNkTeSsnvs87UyDhC1Pk4_0" />
-<title>Title</title>
+<title>여행일정</title>
 
 <meta charset="UTF-8">
 
