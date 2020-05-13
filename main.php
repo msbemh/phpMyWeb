@@ -17,6 +17,14 @@ include './userLog.php';
     <?php include './header.php'?>
 </head>
 <body>
+
+<!-- 채팅 창 -->
+<div style="position: relative; margin:10px;">
+    <div style="position: absolute; right:0px; top:80px; height: 900px;">
+        <iframe style="height: 100%; border:1px solid black; margin-bottom: 10px;" id="chat_iframe" src="https://wowtravel.tk:3000/socketTest.html"></iframe>
+    </div>
+</div>
+
 <div class="container" style="min-width:550px; height: 500px;">
 
     <!-- 상단 부분 -->
@@ -177,11 +185,15 @@ include './userLog.php';
             ?>
             </tbody>
         </table>
-        <iframe src="https://wowtravel.tk:3000/socketTest.html"></iframe>
     </div>
 </div>
+
 <script type="text/javascript">
-    
+
+    function sendMessageIframe(){
+        let iframe = document.getElementById('chat_iframe').contentWindow;
+        // iframe.postMessage({ parentData : 'test parent data', 'http://123.com'});
+    }
 
     $(document).on('ready', function(e){
 
