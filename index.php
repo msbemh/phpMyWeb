@@ -15,6 +15,7 @@ if(!isset($_SESSION['userId'])){
 <html>
 <?php include './header.php'?>
 <body>
+
 <div style="position:relative; height: 500px">
     <div class="container" style="position: absolute; top:50%; left:50%; transform: translateX(-50%) translateY(-50%) ;width:400px;">
         <form id ="loginForm" >
@@ -33,8 +34,8 @@ if(!isset($_SESSION['userId'])){
 </div>
 </body>
 </html>
-
 <script type="text/javascript">
+
     $(document).on('ready', function(e){
         $("#loginBtn").on("click", function() {
             let data = $('#loginForm').serialize();

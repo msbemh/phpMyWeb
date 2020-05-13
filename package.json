@@ -1,0 +1,26 @@
+{
+  "name": "phpmyweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "attach_photo.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msbemh/phpMyWeb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msbemh/phpMyWeb/issues"
+  },
+  "homepage": "https://github.com/msbemh/phpMyWeb#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "finalhandler": "^1.1.2",
+    "node-emoji": "^1.10.0",
+    "nodemon": "^2.0.3",
+    "socket.io": "^2.3.0"
+  }
+}

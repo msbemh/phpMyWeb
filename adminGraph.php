@@ -46,7 +46,6 @@ $conn->close();
 <head>
     <?php include './header.php'?>
 
-<!--    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
@@ -75,9 +74,6 @@ $conn->close();
             </li>
             <li>
                 <a class="on" href="/adminGraph.php">그래프</a>
-            </li>
-            <li>
-                <a href="/adminMain.php">DAY3</a>
             </li>
         </ul>
     </nav>

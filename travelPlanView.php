@@ -337,7 +337,7 @@ $conn->close();
                 let height = $(".day_item_"+i).height();
                 benchmark += height;
                 //해당 DAY위치에 왔을때
-                if(($(window).scrollTop() < 200+ benchmark) ){
+                if(($(window).scrollTop() < 150+ benchmark) ){
                     //DAY가 변할때만 감지
                     if(current_day_position != i){
                         //map reload시키기
