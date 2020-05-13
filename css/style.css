@@ -276,5 +276,18 @@
     border : 1px solid black;
 }
 
+.chat_iframe{
+    height: 100%;
+    border:1px solid black;
+    margin-bottom: 10px;
+}
+
+.cover_iframe{
+    position: absolute;
+    right:0px;
+    top:80px;
+    height: 850px;
+}
+
 
 
