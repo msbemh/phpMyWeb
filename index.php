@@ -1,6 +1,9 @@
 <!--세션확인하기-->
 <?php
 session_start();
+$_SESSION['hello'] = 'hi';
+var_dump(session_id());
+print_r($_SESSION);
 //로그인 세션 없을때
 if(!isset($_SESSION['userId'])){
 
@@ -46,6 +49,7 @@ if(!isset($_SESSION['userId'])){
                 data: data,
                 dataType:"json",
                 success : function(data, status, xhr) {
+                    console.log("data:",data);
                     //로그인 성공 했을 경우
                     if(data.result){
                         //로그인상태유지 체크박스 확인

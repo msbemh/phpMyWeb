@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 //로그인 세션 없을때
 if(!isset($_SESSION['userId'])){
     echo("<script>location.href='/index.php';</script>");
@@ -21,9 +22,11 @@ include './userLog.php';
 <!-- 채팅 창 -->
 <div style="position: relative; margin:10px;">
     <div class="cover_iframe">
-        <iframe class="chat_iframe" id="chat_iframe" src="https://wowtravel.tk:3000/socketTest.html"></iframe>
+        <iframe class="chat_iframe" id="chat_iframe" src="https://wowtravel.tk:3000/"></iframe>
     </div>
 </div>
+<div><?php echo session_id()."\n";
+    print_r($_SESSION);?></div>
 
 <div class="container" style="min-width:550px; height: 500px;">
 

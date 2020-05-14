@@ -1,5 +1,4 @@
 <?php
-
     include '../DB/DBConnection.php';
 
     header("Content-Type: application/json");
@@ -33,7 +32,7 @@
                     session_start();
                     $_SESSION['userId'] = $row["userId"];
                     $_SESSION['nickName'] = $row["nickName"];
-                    echo(json_encode(array("result" => true,"userId" => $_SESSION['userId'])));
+                    echo(json_encode(array("result" => true,"userId" => $_SESSION['userId'], "session_id" => session_id())));
                 //로그인 실패(패스워드 불일치)
                 }else{
                     echo(json_encode(array("result" => false)));
