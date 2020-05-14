@@ -61,11 +61,25 @@
 
 
 <script type="text/javascript">
+let user_id = "";
+let user_nick_name = "";
+//세션정보 가져오기(동기)
+$.ajax({
+    url:'/userSession',
+    dataType:'json',
+    type:'POST',
+    async:false,
+    success:function(data){
+        console.log("[세션]data:",data);
+        user_id = data.userId;
+        user_nick_name = data.nickName;
+    }
+});
 
 
 $(function() {
     // socket.io 서버에 접속한다
-    var socket = io();
+    let socket = io();
 
     // 서버로 자신의 정보를 전송한다.
     socket.emit("login", {
@@ -74,6 +88,7 @@ $(function() {
 
     // 서버로부터의 메시지가 수신되면
     socket.on("login", function(data) {
+        console.log("[로그인]data:",data);
         $("#chatLogs").append("<div><strong>" + data + "</strong> has joined</div>");
     });
 
@@ -93,16 +108,26 @@ $(function() {
     });
 
 
+
+    //유저 리스트 정보 가져오기
     $.ajax({
-        url:'/DBConnection',
+        url:'/userList',
         dataType:'json',
         type:'POST',
-        data:{msg:'123'},
+        data:{'user_id':user_id},
         success:function(data){
-            console.log("data:",data);
             user_list_reload(data);
+
+            $(".data_piece").on("click", function() {
+                console.log("$(this).data(\"nick-name\"):",$(this).data("nick-name"));
+                console.log("$(this).data(\"email\"):",$(this).data("email"));
+
+
+
+            });
         }
     });
+
 
 
 
@@ -116,7 +141,7 @@ function user_list_reload(data){
         let $user_list_ul = $("#major_menu ul");
 
         let html = "<li>\n" +
-            "                <div class=\"data_piece\">\n" +
+            "                <div class=\"data_piece\" data-nick-name="+item.nickName+" data-email="+item.userId+">\n" +
             "                    <div class =\"img_box fl\">\n" +
             "                        <img src=\"\" onerror=\"this.src='/res/user.png'\"></img>\n" +
             "                    </div>\n" +
@@ -128,6 +153,26 @@ function user_list_reload(data){
             "            </li>";
         $user_list_ul.append(html);
     }
+}
+
+function go_room() {
+    $.ajax({
+        url:'/DBConnection',
+        dataType:'json',
+        type:'POST',
+        data:{msg:'123'},
+        success:function(data){
+            user_list_reload(data);
+
+            $(".data_piece").on("click", function() {
+                console.log("$(this).data(\"nick-name\"):",$(this).data("nick-name"));
+                console.log("$(this).data(\"email\"):",$(this).data("email"));
+
+
+
+            });
+        }
+    });
 }
 
 </script>

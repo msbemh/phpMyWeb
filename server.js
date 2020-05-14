@@ -58,11 +58,9 @@ app.get('/', function(req, res) {
 });
 
 //ajax 회원 List 가져오기
-app.post('/DBConnection', function(req, res) {
-    // connection.connect();
-    // var msg = req.body.msg;
-    // msg = '[에코]'+msg;
-    connection.query('SELECT * from user where not userId like  "%admin%"', function(err, rows, fields) {
+app.post('/userList', function(req, res) {
+    let user_id = req.body.user_id
+    connection.query('SELECT * from user where not userId like  "%admin%" and userId <> "'+user_id+'"', function(err, rows, fields) {
         if (err){
             console.log('Error while performing Query.', err);
             return;
@@ -70,10 +68,26 @@ app.post('/DBConnection', function(req, res) {
         data = JSON.stringify(rows);
         res.send(data);
     });
-    // connection.end();
-
-
 });
+
+//ajax 유저 세션정보 가져오기
+app.post('/userSession', function(req, res) {
+    //header에 있는 세션ID를 이용하여 memcached에서 세션정보들을 가져옴.
+    var sid = cookie.parse(req.headers.cookie);
+    var PHPSESSID = sid.PHPSESSID;
+    memcached.get(PHPSESSID,function (err,data) {
+        if(!isEmpty(data)){
+            data = PHPUnserialize.unserializeSession(data);
+            data = JSON.stringify(data);
+            res.send(data);
+
+        }else{
+            res.send(data);
+        }
+    });
+});
+
+
 
 // connection event handler
 // connection이 수립되면 event handler function의 인자로 socket인 들어온다
@@ -109,7 +123,7 @@ io.on('connection', function(socket) {
         console.log('Client logged-in:\n name:' + socket.nickName + '\n userid: ' + socket.userId);
 
         // 접속된 모든 클라이언트에게 메시지를 전송한다
-        io.emit('login', socket.nickName );
+        io.emit('login', socket.nickName);
     });
 
     // 클라이언트로부터의 메시지가 수신되면
