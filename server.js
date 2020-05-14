@@ -11,6 +11,7 @@ var isEmpty = function(value){
 var express = require('express');
 var http = require('http');
 var ejs = require('ejs');
+var bodyParser = require('body-parser');
 
 //-------https적용------------
 var fs = require('fs');
@@ -24,27 +25,54 @@ var options = {
 var PHPUnserialize = require('php-unserialize');
 var Memcached = require('memcached');
 var memcached = new Memcached('127.0.0.1:11211');
+var cookie = require('cookie');
+var phpUnserialize = require('php-unserialize');
+var SESS_PATH = "/web/phpMyWeb/tmp/";
 //--------------------------------
 
 var app = express();
 app.use(express.static(__dirname + '/'));
 app.set('view engine', 'ejs');
-//---------- memcached ------------
-var cookie = require('cookie');
-var phpUnserialize = require('php-unserialize');
-var SESS_PATH = "/web/phpMyWeb/tmp/";
-
-//---------------------------------
+app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}));
 
 var server = https.createServer(options,app);
 
 // http server를 socket.io server로 upgrade한다
 var io = require('socket.io')(server);
 
+//---- mysql정보  ---
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+    host     : '127.0.0.1',
+    user     : 'song',
+    password : 'Alshalsh92@seongs22g@',
+    database : 'testDatabase'
+});
+
+
 // localhost:3000으로 서버에 접속하면 클라이언트로 socketTest.ejs을 전송한다
 app.get('/', function(req, res) {
     // res.sendFile(__dirname + '/socketTest.ejs');
     res.render('socketTest.ejs',{hello : 'hello2'});
+});
+
+//ajax 회원 List 가져오기
+app.post('/DBConnection', function(req, res) {
+    connection.connect();
+    // var msg = req.body.msg;
+    // msg = '[에코]'+msg;
+    connection.query('SELECT * from user', function(err, rows, fields) {
+        if (err){
+            console.log('Error while performing Query.', err);
+            return;
+        }
+        data = JSON.stringify(rows);
+        res.send(data);
+    });
+    connection.end();
+
+
 });
 
 // connection event handler
@@ -53,7 +81,7 @@ var userId = "";
 var nickName = "";
 io.on('connection', function(socket) {
 
-    //I just check if cookies are a string - may be better method
+    //header에 있는 세션ID를 이용하여 memcached에서 세션정보들을 가져옴.
     if(typeof socket.handshake.headers.cookie === "string") {
         var sid = cookie.parse(socket.handshake.headers.cookie);
         console.log("sid:",sid);
@@ -62,11 +90,13 @@ io.on('connection', function(socket) {
             console.log("data:",data);
             if(!isEmpty(data)){
                 data = PHPUnserialize.unserializeSession(data);
-                socket.userid = data.userid;
+                socket.userId = data.userId;
                 socket.nickName = data.nickName;
                 console.log("userId:",socket.userId);
                 console.log("nickName:",socket.nickName);
 
+            }else{
+                socket.disconnect();
             }
         });
 
@@ -76,7 +106,7 @@ io.on('connection', function(socket) {
 
     //접속한 클라이언트의 정보가 수신되면
     socket.on('login', function(data) {
-        console.log('Client logged-in:\n name:' + socket.nickName + '\n userid: ' + socket.userid);
+        console.log('Client logged-in:\n name:' + socket.nickName + '\n userid: ' + socket.userId);
 
         // 접속된 모든 클라이언트에게 메시지를 전송한다
         io.emit('login', socket.nickName );
@@ -84,11 +114,11 @@ io.on('connection', function(socket) {
 
     // 클라이언트로부터의 메시지가 수신되면
     socket.on('chat', function(data) {
-        console.log('Message from %s: %s', socket.name, data.msg);
+        console.log('Message from %s: %s', socket.nickName, data.msg);
 
         var msg = {
             from: {
-                name: socket.name,
+                name: socket.nickName,
                 userid: socket.userid
             },
             msg: data.msg

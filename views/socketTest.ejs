@@ -44,17 +44,7 @@
 
 
 <script type="text/javascript">
-    // $.ajax({
-    //     url:'http://127.0.0.1:3000/test',
-    //     dataType:'json',
-    //     type:'POST',
-    //     data:{'msg':$('#msg').val(),
-    //         'name': 'lineage'},
-    //     success:function(result){
-    //         alert(result.name);
-    //         $('#result').html(result.msg +"___"+ result.name);
-    //     }
-    // });
+
 
 $(function() {
     // socket.io 서버에 접속한다
@@ -62,7 +52,7 @@ $(function() {
 
     // 서버로 자신의 정보를 전송한다.
     socket.emit("login", {
-        
+
     });
 
     // 서버로부터의 메시지가 수신되면
@@ -85,14 +75,16 @@ $(function() {
         $msgForm.val("");
     });
 
-    function makeRandomName(){
-        var name = "";
-        var possible = "abcdefghijklmnopqrstuvwxyz";
-        for( var i = 0; i < 3; i++ ) {
-            name += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    $.ajax({
+        url:'/DBConnection',
+        dataType:'json',
+        type:'POST',
+        data:{msg:'123'},
+        success:function(data){
+            console.log("data:",data);
         }
-        return name;
-    }
+    });
 
 });
 
