@@ -35,17 +35,17 @@
     <nav id="major_menu" class="fl">
         <div class="sign">회원들</div>
         <ul>
-            <li>
-                <div class="data_piece">
-                    <div class ="img_box fl">
-                        <img src="" onerror="this.src='/res/user.png'"></img>
-                    </div>
-                    <div class ="info_box fl">
-                        <div class="user_nick_name">너구리</div>
-                        <div class="user_email">thdalsehf@naver.com</div>
-                    </div>
-                </div>
-            </li>
+<!--            <li>-->
+<!--                <div class="data_piece">-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="" onerror="this.src='/res/user.png'"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl">-->
+<!--                        <div class="user_nick_name">너구리</div>-->
+<!--                        <div class="user_email">thdalsehf@naver.com</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
         </ul>
     </nav>
     <div style="clear:both;"></div>
@@ -100,13 +100,36 @@ $(function() {
         data:{msg:'123'},
         success:function(data){
             console.log("data:",data);
+            user_list_reload(data);
         }
     });
 
+
+
 });
 
-$(document).on('ready', function(e){
-});
+function user_list_reload(data){
+
+    for(let i=0; i<data.length;i++){
+        let item = data[i];
+
+        let $user_list_ul = $("#major_menu ul");
+
+        let html = "<li>\n" +
+            "                <div class=\"data_piece\">\n" +
+            "                    <div class =\"img_box fl\">\n" +
+            "                        <img src=\"\" onerror=\"this.src='/res/user.png'\"></img>\n" +
+            "                    </div>\n" +
+            "                    <div class =\"info_box fl\">\n" +
+            "                        <div class=\"user_nick_name\">"+item.nickName+"</div>\n" +
+            "                        <div class=\"user_email\">"+item.userId+"</div>\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "            </li>";
+        $user_list_ul.append(html);
+    }
+}
+
 </script>
 
 </body>

@@ -62,7 +62,7 @@ app.post('/DBConnection', function(req, res) {
     // connection.connect();
     // var msg = req.body.msg;
     // msg = '[에코]'+msg;
-    connection.query('SELECT * from user', function(err, rows, fields) {
+    connection.query('SELECT * from user where not userId like  "%admin%"', function(err, rows, fields) {
         if (err){
             console.log('Error while performing Query.', err);
             return;
