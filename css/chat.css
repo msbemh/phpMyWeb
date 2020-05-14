@@ -1,0 +1,136 @@
+.chat_user_list_container{
+    width:700px;
+    margin:auto;
+}
+
+#major_menu{
+    height: 100%;
+    width: 300px;
+}
+
+
+#major_menu ul{
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#major_menu ul li{
+    height: 80px;
+}
+
+#major_menu ul li {
+    list-style: none; /*<li> 태그는 위의 이미지처럼 목록을 나타내는 점을 없앤다*/
+    line-height: 30px; /*글씨가 가운데로 오도록 설정하기 위해 한줄의 높이를 30px로 설정*/
+    vertical-align: middle; /*세로 정렬을 가운데로 설정(위의 line-height와 같이 설정 필요함)*/
+    text-align: center; /*글씨 정렬을 가운데로 설정*/
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+
+
+#major_menu .img_box{
+    width: 50px;
+    height: 55px;
+}
+
+.img_box img{
+    height: 100%;
+    width: 100%;
+    border-radius : 20px;
+    background: black;
+}
+
+
+.fl{
+    float:left;
+}
+
+.fr{
+    float:right;
+}
+
+.data_piece{
+    height: 100%;
+    padding: 12px;
+    position: relative;
+}
+
+.data_piece:hover{
+    background: #ffe8d6;
+    cursor:pointer;
+}
+
+.img_box{
+}
+
+.info_box{
+    text-align: left;
+    margin-left: 10px;
+    overflow: hidden;
+}
+
+.item_add{
+    position: absolute;
+    top:50%;
+    right:10px;
+    transform: translateY(-50%);
+}
+
+.item_remove{
+    position: absolute;
+    top:50%;
+    right:10px;
+    transform: translateY(-50%);
+}
+
+.sign{
+    text-align: center;
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 55px;
+    padding: 10px;
+}
+
+.sign_btn{
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 55px;
+    padding: 10px;
+}
+
+.item_add i, .item_remove i{
+    font-size: 25px; cursor:pointer;
+}
+
+ul{
+    /*min-height: 550px;*/
+    height: 550px;
+    overflow: auto;
+}
+
+.sign_btn .btn{
+    background: black;
+    color: white;
+}
+
+.spot_order_box{
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    position: absolute;
+    text-align: center;
+    background: #3a32c3;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    top:7px;
+    left:7px;
+}
+
+.user_nick_name{
+    font-weight: bold;
+}
+
+

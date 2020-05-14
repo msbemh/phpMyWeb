@@ -54,12 +54,12 @@ var connection = mysql.createConnection({
 // localhost:3000으로 서버에 접속하면 클라이언트로 socketTest.ejs을 전송한다
 app.get('/', function(req, res) {
     // res.sendFile(__dirname + '/socketTest.ejs');
-    res.render('socketTest.ejs',{hello : 'hello2'});
+    res.render('chatUserList.ejs',{hello : 'hello2'});
 });
 
 //ajax 회원 List 가져오기
 app.post('/DBConnection', function(req, res) {
-    connection.connect();
+    // connection.connect();
     // var msg = req.body.msg;
     // msg = '[에코]'+msg;
     connection.query('SELECT * from user', function(err, rows, fields) {
@@ -70,7 +70,7 @@ app.post('/DBConnection', function(req, res) {
         data = JSON.stringify(rows);
         res.send(data);
     });
-    connection.end();
+    // connection.end();
 
 
 });

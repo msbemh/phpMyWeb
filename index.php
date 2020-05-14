@@ -1,9 +1,7 @@
 <!--세션확인하기-->
 <?php
 session_start();
-$_SESSION['hello'] = 'hi';
-var_dump(session_id());
-print_r($_SESSION);
+
 //로그인 세션 없을때
 if(!isset($_SESSION['userId'])){
 

@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link type="text/css" rel="stylesheet" href='./css/style.css'>
+    <link type="text/css" rel="stylesheet" href='./css/chat.css'>
 
     <!-- font awesome 추가 -->
     <script src="https://kit.fontawesome.com/60fa22b10c.js" crossorigin="anonymous"></script>
@@ -30,8 +31,24 @@
 
 <body>
 
-<div class="container">
-    <h3>Socket.io Chat Example <%= hello%></h3>
+<div class="chat_user_list_container">
+    <nav id="major_menu" class="fl">
+        <div class="sign">회원들</div>
+        <ul>
+            <li>
+                <div class="data_piece">
+                    <div class ="img_box fl">
+                        <img src="" onerror="this.src='/res/user.png'"></img>
+                    </div>
+                    <div class ="info_box fl">
+                        <div class="user_nick_name">너구리</div>
+                        <div class="user_email">thdalsehf@naver.com</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <div style="clear:both;"></div>
     <form class="form-inline">
         <div class="form-group">
             <label for="msgForm">Message: </label>
