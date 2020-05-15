@@ -161,6 +161,12 @@ ul{
 
 .user_nick_name{
     font-weight: bold;
+    overflow: hidden;
+}
+
+.creation_date{
+    overflow: hidden;
+    color: silver;
 }
 
 /*---------chat window---------------*/

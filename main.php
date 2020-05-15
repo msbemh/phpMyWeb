@@ -200,7 +200,8 @@ include './userLog.php';
     window.addEventListener('message', function(e) {
         let counter_user_email = e.data.counter_user_email;
         let user_email = '<?php echo $_SESSION["userId"]?>';
-        console.log("{TEST]user_email:",user_email);
+        console.log("[TEST]user_email:",user_email);
+        console.log("[TEST]counter_user_email:",counter_user_email);
         document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&user_email='+user_email;
         $('#chatModal').modal('toggle');
     });

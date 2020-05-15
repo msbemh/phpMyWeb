@@ -109,7 +109,13 @@ app.get('/chatRoom', function(req, res) {
         'WHERE A.cnt >= 2');
     //데이터가 없을 경우
     if(rows.length <= 0){
-        res.render('chatRoom.ejs',{'room_no':-1});
+        let data = {
+            'room_no':-1,
+            'messages':'',
+            'my_email': user_email,
+            'counter_user_email':counter_user_email
+        }
+        res.render('chatRoom.ejs',data);
         return;
     }
     //데이터가 있을 경우
@@ -127,9 +133,27 @@ app.get('/chatRoom', function(req, res) {
         'my_email': user_email,
         'counter_user_email':counter_user_email
     }
-    // console.log("[TEST]data:",data);
+    console.log("[TEST]data:",data);
 
     res.render('chatRoom.ejs', data);
+});
+
+//ajax 채팅 List 가져오기
+app.post('/chatList', function(req, res) {
+    let user_id = req.body.user_id
+    console.log("[test]user_id:",user_id);
+    let rows = connection.query(
+        'SELECT A.room_no, A.user_id, A.content, SUBSTRING_INDEX(A.creationDate, \'T\', 1) as creationDate, C.nickName, D.user_id as counter_user_id, D.nickName as counter_nick_name FROM message A ' +
+        'INNER JOIN (SELECT room_no, max(creationDate) as last_date FROM message WHERE user_id="'+user_id+'" GROUP BY room_no) B\n' +
+        'ON A.room_no = B.room_no and A.creationDate = B.last_date\n' +
+        'INNER JOIN user C\n' +
+        'ON A.user_id = C.userId\n' +
+        'INNER JOIN (SELECT participant.user_id, room_no, user.nickName FROM participant INNER JOIN user on participant.user_id = user.userId) D\n' +
+        'ON D.room_no = A.room_no AND D.user_id <> "'+user_id+'"\n' +
+        'ORDER BY creationDate DESC');
+    data = JSON.stringify(rows);
+    console.log("[test]data:",data);
+    res.send(data);
 });
 
 

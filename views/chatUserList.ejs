@@ -54,17 +54,19 @@
         <div class="sign fl user_group"><img src="/res/user_group.png"></img></div>
         <div class="sign fl chat" style="background: #ffe8d6"><img src="/res/chat.png" ></img></div>
         <ul>
-            <!--            <li>-->
-            <!--                <div class="data_piece">-->
-            <!--                    <div class ="img_box fl">-->
-            <!--                        <img src="" onerror="this.src='/res/user.png'"></img>-->
-            <!--                    </div>-->
-            <!--                    <div class ="info_box fl">-->
-            <!--                        <div class="user_nick_name">너구리</div>-->
-            <!--                        <div class="user_email">thdalsehf@naver.com</div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </li>-->
+<!--            <li>-->
+<!--                <div class="data_piece">-->
+<!--                    <div class ="img_box fl">-->
+<!--                        <img src="" onerror="this.src='/res/user.png'"></img>-->
+<!--                    </div>-->
+<!--                    <div class ="info_box fl" style="width:75%;">-->
+<!--                        <div class="user_nick_name fl">너구리</div>-->
+<!--                        <div class="creation_date fr">2019-05-10</div>-->
+<!--                        <div style="clear:both;"></div>-->
+<!--                        <div class="content">안녕하세요</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
         </ul>
     </nav>
 
@@ -119,7 +121,19 @@ $(function() {
         // $("#chatLogs").append("<div>" + data.msg + " : from <strong>" + data.from.name + "</strong></div>");
     });
 
-    //유저 리스트 정보 가져오기
+    //채팅 리스트 정보 가져오기
+    $.ajax({
+        url:'/chatList',
+        dataType:'json',
+        type:'POST',
+        data:{'user_id':user_id},
+        success:function(data){
+            console.log("data:",data);
+            chat_list_reload(data);
+        }
+    });
+
+    //유저 리스트 가져오기
     $.ajax({
         url:'/userList',
         dataType:'json',
@@ -132,17 +146,17 @@ $(function() {
             $(".data_piece").on("click", function() {
                 let user_email = $(this).data("email");
                 go_room(user_email);
-
-
             });
         }
     });
 
+    //유저리스트 보여주기
     $("#chat_menu .user_group").on("click",function(){
         $('#chat_menu').css('display', 'none');
         $('#major_menu').css('display', 'block');
     });
 
+    //채팅리스트 보여주기
     $("#major_menu .chat").on("click",function(){
         $('#chat_menu').css('display', 'block');
         $('#major_menu').css('display', 'none');
@@ -171,6 +185,32 @@ function user_list_reload(data){
             "            </li>";
         $user_list_ul.append(html);
     }
+}
+
+function chat_list_reload(data) {
+
+    for(let i=0; i<data.length;i++) {
+        let item = data[i];
+
+        let $chat_list_ul = $("#chat_menu ul");
+
+        let html =
+            "               <li>\n" +
+            "                <div class=\"data_piece\" data-nick-name=" + item.nickName + " data-email=" + item.userId + " data-room_no= "+ item.room_no +" data-counter_user_id= "+ item.counter_user_id +" data-counter_nick_name= "+ item.counter_nick_name +">\n" +
+            "                    <div class =\"img_box fl\">\n" +
+            "                        <img src=\"\" onerror=\"this.src='/res/user.png'\"></img>\n" +
+            "                    </div>\n" +
+            "                    <div class =\"info_box fl\" style=\"width:75%;\">\n" +
+            "                        <div class=\"user_nick_name fl\">"+item.counter_nick_name+"</div>\n" +
+            "                        <div class=\"creation_date fr\">"+item.creationDate+"</div>\n" +
+            "                        <div style=\"clear:both;\"></div>\n" +
+            "                        <div class=\"content\">"+item.content+"</div>\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "            </li>";
+        $chat_list_ul.append(html);
+    }
+
 }
 
 function go_room(user_email) {
