@@ -164,11 +164,9 @@ $block_end_page = $block_start_page + $block_page_num_list - 1; //현재 블럭�
 
 
 <script type="text/javascript">
-    $(document).on('ready', function(e){
+$(document).on('ready', function(e){
 
-    });
-
-
+});
 </script>
 
 

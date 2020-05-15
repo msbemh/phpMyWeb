@@ -49,6 +49,7 @@
         </ul>
     </nav>
     <div style="clear:both;"></div>
+    <a href="/views/chatRoom"><button>첫번째 페이지로 이동</button></a>
     <form class="form-inline">
         <div class="form-group">
             <label for="msgForm">Message: </label>
@@ -116,12 +117,12 @@ $(function() {
         type:'POST',
         data:{'user_id':user_id},
         success:function(data){
+            //유저 리스트 리로드
             user_list_reload(data);
-
+            //유저리스트 클릭 이벤트
             $(".data_piece").on("click", function() {
-                console.log("$(this).data(\"nick-name\"):",$(this).data("nick-name"));
-                console.log("$(this).data(\"email\"):",$(this).data("email"));
-
+                let user_email = $(this).data("email");
+                go_room(user_email);
 
 
             });
@@ -155,24 +156,18 @@ function user_list_reload(data){
     }
 }
 
-function go_room() {
-    $.ajax({
-        url:'/DBConnection',
-        dataType:'json',
-        type:'POST',
-        data:{msg:'123'},
-        success:function(data){
-            user_list_reload(data);
-
-            $(".data_piece").on("click", function() {
-                console.log("$(this).data(\"nick-name\"):",$(this).data("nick-name"));
-                console.log("$(this).data(\"email\"):",$(this).data("email"));
-
-
-
-            });
-        }
-    });
+function go_room(user_email) {
+    window.parent.postMessage({ hello: 'parent' }, '*');
+    // location.href='https://wowtravel.tk/freeBoard.php';
+    // $.ajax({
+    //     url:'/goRoom',
+    //     dataType:'json',
+    //     type:'POST',
+    //     data:{'user_email':user_email},
+    //     success:function(data){
+    //         console.log("data:",data);
+    //     }
+    // });
 }
 
 </script>

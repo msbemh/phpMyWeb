@@ -19,6 +19,8 @@ include './userLog.php';
 </head>
 <body>
 
+<?php include './shareModal.php'?>
+
 <!-- 채팅 창 -->
 <div style="position: relative; margin:10px;">
     <div class="cover_iframe">
@@ -191,7 +193,14 @@ include './userLog.php';
     </div>
 </div>
 
+
 <script type="text/javascript">
+
+    //자식 iframe이 보내는 이벤트
+    window.addEventListener('message', function(e) {
+        $('#exampleModal').modal('toggle')
+        console.log(e.data);
+    });
 
     function sendMessageIframe(){
         let iframe = document.getElementById('chat_iframe').contentWindow;

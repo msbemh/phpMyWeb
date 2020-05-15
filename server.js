@@ -8,6 +8,9 @@ var isEmpty = function(value){
     }
 };
 
+let user_id = "";
+let nick_name = "";
+
 var express = require('express');
 var http = require('http');
 var ejs = require('ejs');
@@ -51,7 +54,7 @@ var connection = mysql.createConnection({
 });
 
 
-// localhost:3000으로 서버에 접속하면 클라이언트로 socketTest.ejs을 전송한다
+// localhost:3000으로(Root경로) 서버에 접속하면 클라이언트로 socketTest.ejs을 전송한다
 app.get('/', function(req, res) {
     // res.sendFile(__dirname + '/socketTest.ejs');
     res.render('chatUserList.ejs',{hello : 'hello2'});
@@ -79,6 +82,8 @@ app.post('/userSession', function(req, res) {
         if(!isEmpty(data)){
             data = PHPUnserialize.unserializeSession(data);
             data = JSON.stringify(data);
+            user_id = data.userId;
+            nick_name = data.nickName;
             res.send(data);
 
         }else{
@@ -87,12 +92,16 @@ app.post('/userSession', function(req, res) {
     });
 });
 
+//채팅방으로 이동
+app.get('/chatRoom', function(req, res) {
+    console.log("[room]라우터");
+    res.render('chatRoom.ejs');
+});
+
 
 
 // connection event handler
 // connection이 수립되면 event handler function의 인자로 socket인 들어온다
-var userId = "";
-var nickName = "";
 io.on('connection', function(socket) {
 
     //header에 있는 세션ID를 이용하여 memcached에서 세션정보들을 가져옴.
