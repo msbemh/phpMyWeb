@@ -114,8 +114,18 @@ app.get('/chatRoom', function(req, res) {
     }
     //데이터가 있을 경우
     let room_no = rows[0].room_no;
-    global_room_no = room_no;
-    res.render('chatRoom.ejs',{'room_no':room_no});
+
+    //DB에서 message select하기
+    rows = connection.query(
+        'SELECT * FROM message WHERE room_no = '+room_no);
+    let data = {
+        'room_no':room_no,
+        'rows':rows,
+        'my_email': user_email
+    }
+    console.log("[TEST]data:",data);
+
+    res.render('chatRoom.ejs', data);
 });
 
 
@@ -150,12 +160,25 @@ io.on('connection', function(socket) {
 
     console.log("socket.id:",socket.id);
 
-    //접속한 클라이언트의 정보가 수신되면
+    //클라이언트가 방에 접속하면
     socket.on('login', function(data) {
-        console.log('Client logged-in:\n name:' + socket.nickName + '\n userid: ' + socket.userId);
+        let user_email =  socket.userId;
+        let user_nick_name =  socket.nickName;
+        let room_no =  data.room_no;
+        console.log("[서버 로그인]room_no:",room_no);
 
-        // 접속된 모든 클라이언트에게 메시지를 전송한다
-        io.emit('login', socket.nickName);
+        //들어온 소켓 가상의 방에 넣기
+        socket.join(room_no);
+
+        //DB에서 message select하기
+        let rows = connection.query(
+            'SELECT * FROM message WHERE room_no = '+room_no);
+        //데이터가 있을 경우
+        if(rows.length > 0){
+            // 접속된 모든 클라이언트에게 메시지를 전송한다
+            io.to(room_no).emit('login', rows);
+        }
+
     });
 
     // 클라이언트로부터의 메시지가 수신되면

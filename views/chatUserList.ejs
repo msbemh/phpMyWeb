@@ -83,15 +83,15 @@ $(function() {
     let socket = io();
 
     // 서버로 자신의 정보를 전송한다.
-    socket.emit("login", {
-
-    });
+    // socket.emit("login", {
+    //
+    // });
 
     // 서버로부터의 메시지가 수신되면
-    socket.on("login", function(data) {
-        console.log("[로그인]data:",data);
-        $("#chatLogs").append("<div><strong>" + data + "</strong> has joined</div>");
-    });
+    // socket.on("login", function(data) {
+    //     console.log("[로그인]data:",data);
+    //     $("#chatLogs").append("<div><strong>" + data + "</strong> has joined</div>");
+    // });
 
     // 서버로부터의 메시지가 수신되면
     socket.on("chat", function(data) {
