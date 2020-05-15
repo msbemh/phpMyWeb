@@ -36,7 +36,7 @@
         <div class="inbox_people">
             <div class="headind_srch">
                 <div class="recent_heading">
-                    <h4>Recent</h4>
+                    <h4>Recent(<%= room_no %>)</h4>
                 </div>
                 <div class="srch_bar">
                     <div class="stylish-input-group">
@@ -152,6 +152,8 @@
 <script type="text/javascript">
     let user_id = "";
     let user_nick_name = "";
+    let room_no = <%= room_no %>;
+
     //세션정보 가져오기(동기)
     $.ajax({
         url:'/userSession',
@@ -178,12 +180,12 @@
         // 서버로부터의 메시지가 수신되면
         socket.on("login", function(data) {
             console.log("[로그인]data:",data);
-            $("#chatLogs").append("<div><strong>" + data + "</strong> has joined</div>");
+            // $("#chatLogs").append("<div><strong>" + data + "</strong> has joined</div>");
         });
 
         // 서버로부터의 메시지가 수신되면
         socket.on("chat", function(data) {
-            // $("#chatLogs").append("<div>" + data.msg + " : from <strong>" + data.from.name + "</strong></div>");
+            console.log("[클라이언트 수신]data:",data);
             let $msg_history = $(".msg_history");
             let html =
                 "               <div class=\"outgoing_msg\">\n" +
@@ -199,12 +201,15 @@
             let send_message_input = $(".write_msg");
             let send_message = $(".write_msg").val();
 
-            // 서버로 메시지를 전송한다.
-            socket.emit("chat", { msg: send_message });
-            //초기화
-            send_message_input.val("");
-        });
+            //빈값이 아닐때
+            if("" != send_message){
+                // 서버로 메시지를 전송한다.
+                socket.emit("chat", { 'msg': send_message ,'room_no':room_no});
+                //초기화
+                send_message_input.val("");
+            }
 
+        });
 
 
         //유저 리스트 정보 가져오기

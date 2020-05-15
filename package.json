@@ -30,6 +30,7 @@
     "node-emoji": "^1.10.0",
     "nodemon": "^2.0.3",
     "php-unserialize": "0.0.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "sync-mysql": "^3.0.1"
   }
 }

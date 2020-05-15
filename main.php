@@ -28,7 +28,7 @@ include './userLog.php';
     </div>
 </div>
 <div><?php echo session_id()."\n";
-    print_r($_SESSION);?></div>
+    print_r($_SESSION['userId']);?></div>
 
 <div class="container" style="min-width:550px; height: 500px;">
 
@@ -198,9 +198,11 @@ include './userLog.php';
 
     //자식 iframe이 보내는 이벤트
     window.addEventListener('message', function(e) {
-        document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom';
+        let counter_user_email = e.data.counter_user_email;
+        let user_email = '<?php echo $_SESSION["userId"]?>';
+        console.log("{TEST]user_email:",user_email);
+        document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&user_email='+user_email;
         $('#chatModal').modal('toggle');
-        console.log(e.data);
     });
 
     function sendMessageIframe(){
