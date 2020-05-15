@@ -198,7 +198,8 @@ include './userLog.php';
 
     //자식 iframe이 보내는 이벤트
     window.addEventListener('message', function(e) {
-        $('#exampleModal').modal('toggle')
+        document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom';
+        $('#chatModal').modal('toggle');
         console.log(e.data);
     });
 
