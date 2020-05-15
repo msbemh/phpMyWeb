@@ -123,10 +123,11 @@ app.get('/chatRoom', function(req, res) {
         'WHERE room_no = '+room_no);
     let data = {
         'room_no':room_no,
-        'rows':rows,
-        'my_email': user_email
+        'messages':rows,
+        'my_email': user_email,
+        'counter_user_email':counter_user_email
     }
-    console.log("[TEST]data:",data);
+    // console.log("[TEST]data:",data);
 
     res.render('chatRoom.ejs', data);
 });
@@ -135,7 +136,12 @@ app.get('/chatRoom', function(req, res) {
 // 소켓채팅 관련
 // connection event handler
 // connection이 수립되면 event handler function의 인자로 socket인 들어온다
+var socket_list =[];
 io.on('connection', function(socket) {
+    socket_list.push(socket);
+    console.log("---------[연결]----------");
+    console.log("socket_list:",socket_list.length);
+
 
     //header에 있는 세션ID를 이용하여 memcached에서 세션정보들을 가져옴.
     if(typeof socket.handshake.headers.cookie === "string") {
@@ -190,6 +196,7 @@ io.on('connection', function(socket) {
         let user_nick_name =  socket.nickName;
         let msg = data.msg;
         let room_no = data.room_no;
+        let counter_user_email = data.counter_user_email;
 
         var send_message = {
             user_nick_name: user_nick_name,
@@ -200,6 +207,7 @@ io.on('connection', function(socket) {
 
         //들어온 소켓 가상의 방에 넣기
         socket.join(room_no);
+        console.log("[서버수신]socket:",socket.adapter.rooms);
 
         console.log("[서버수신]send_message:",send_message);
 
@@ -207,17 +215,28 @@ io.on('connection', function(socket) {
         connection.query(
             'INSERT INTO message (room_no, user_id, content, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'",now())');
 
-        // 메시지를 전송한 클라이언트를 제외한 모든 클라이언트에게 메시지를 전송한다
+        //목적지 email인 socket에게 메시지를 전달
+        let length = socket_list.length;
+        for(let i=0; i<length; i++){
+            console.log("[서버수신]socket_list[i].userId:",socket_list[i].userId);
+            console.log("[서버수신]counter_user_email:",counter_user_email);
+            if(socket_list[i].userId == counter_user_email){
+                console.log("[서버수신]들어옴");
+                socket_list[i].emit('chat', send_message);
+            }
+        }
+
+        // 해당socket을 제외한 모든 socket에게 메시지를 전송한다
         // socket.broadcast.emit('chat', msg);
 
-        // 메시지를 전송한 클라이언트에게만 메시지를 전송한다
-        // socket.emit('s2c chat', msg);
+        // 해당socket에게만 메시지를 전송한다
+        socket.emit('chat', send_message);
 
         // 접속된 모든 클라이언트에게 메시지를 전송한다
         // io.emit('chat', send_message);
 
         // 특정 클라이언트에게만 메시지를 전송한다
-        io.to(room_no).emit('chat', send_message);
+        // io.to(room_no).emit('chat', send_message);
     });
 
     // force client disconnect from server
@@ -226,6 +245,12 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
+        let length = socket_list.length;
+        for(let i=0; i<length; i++){
+            if(socket_list[i] == socket){
+                socket_list.splice(i, 1);
+            }
+        }
         console.log('user disconnected');
     });
 });

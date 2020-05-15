@@ -121,15 +121,15 @@
             <div class="msg_history" style="height: 360px;">
                 <%
                     //메시지가 존재한다면
-                    if(typeof rows !== "undefined"){
+                    if(typeof messages !== "undefined"){
                         //메시지 개수만큼 출력
-                        for(var i = 0;i < rows.length;i++){
+                        for(var i = 0;i < messages.length;i++){
                             //메시지 주인과 현재 로그인한 id가 같다면
-                            if(my_email == rows[i].user_id){ %>
+                            if(my_email == messages[i].user_id){ %>
                                 <div class="outgoing_msg">
                                     <div class="sent_msg">
-                                        <p><%= rows[i].content %></p>
-                                        <span class="time_date"><%= rows[i].creationDate %></span> </div>
+                                        <p><%= messages[i].content %></p>
+                                        <span class="time_date"><%= messages[i].creationDate %></span> </div>
                                 </div>
                              <!-- 메시지 주인과 현재 로그인한 id가 같지 않다면 -->
                           <% }else{ %>
@@ -137,9 +137,9 @@
                                     <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
-                                            <span class="user_nick_name"><%= rows[i].nick_name %></span>
-                                            <p><%= rows[i].content %></p>
-                                            <span class="time_date"><%= rows[i].creationDate %></span></div>
+                                            <span class="user_nick_name"><%= messages[i].nick_name %></span>
+                                            <p><%= messages[i].content %></p>
+                                            <span class="time_date"><%= messages[i].creationDate %></span></div>
                                     </div>
                                 </div>
                           <% }
@@ -161,8 +161,10 @@
 <script type="text/javascript">
     let user_id = "";
     let user_nick_name = "";
-    let room_no = <%= room_no %>;
-    console.log("[test]room_no:",room_no);
+    let global_room_no = '<%= room_no %>'*1;
+    let counter_user_email = '<%= counter_user_email %>';
+    console.log("[test]global_room_no:",global_room_no);
+    console.log("[test]counter_user_email:",counter_user_email);
 
     //세션정보 가져오기(동기)
     $.ajax({
@@ -202,29 +204,34 @@
             let msg = data.msg;
             let room_no = data.room_no;
 
-            //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
-            if(user_id == user_email){
-                let $msg_history = $(".msg_history");
-                let html =
-                    "               <div class=\"outgoing_msg\">\n" +
-                    "                    <div class=\"sent_msg\">\n" +
-                    "                        <p>"+data.msg+"</p>\n" +
-                    "                        <span class=\"time_date\"> 11:01 AM    |    June 9</span> </div>\n" +
-                    "                </div>";
-                $msg_history.append(html);
-            //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
+            //현재방에 맞는 메시지일 경우
+            if(global_room_no == room_no){
+                //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
+                if(user_id == user_email){
+                    let $msg_history = $(".msg_history");
+                    let html =
+                        "               <div class=\"outgoing_msg\">\n" +
+                        "                    <div class=\"sent_msg\">\n" +
+                        "                        <p>"+data.msg+"</p>\n" +
+                        "                        <span class=\"time_date\"> 11:01 AM    |    June 9</span> </div>\n" +
+                        "                </div>";
+                    $msg_history.append(html);
+                    //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
+                }else{
+                    let $msg_history = $(".msg_history");
+                    let html = "<div class=\"incoming_msg\">\n" +
+                        "                                    <div class=\"incoming_msg_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\n" +
+                        "                                    <div class=\"received_msg\">\n" +
+                        "                                        <div class=\"received_withd_msg\">\n" +
+                        "                                            <span class=\"user_nick_name\">"+user_nick_name+"</span>\n" +
+                        "                                            <p>"+msg+"</p>\n" +
+                        "                                            <span class=\"time_date\">11:01 AM    |    June 9</span></div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>";
+                    $msg_history.append(html);
+                }
             }else{
-                let $msg_history = $(".msg_history");
-                let html = "<div class=\"incoming_msg\">\n" +
-                    "                                    <div class=\"incoming_msg_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\n" +
-                    "                                    <div class=\"received_msg\">\n" +
-                    "                                        <div class=\"received_withd_msg\">\n" +
-                    "                                            <span class=\"user_nick_name\">"+user_nick_name+"</span>\n" +
-                    "                                            <p>"+msg+"</p>\n" +
-                    "                                            <span class=\"time_date\">11:01 AM    |    June 9</span></div>\n" +
-                    "                                    </div>\n" +
-                    "                                </div>";
-                $msg_history.append(html);
+                console.log("이메시지는 옆메시지로 가야함");
             }
 
         });
@@ -237,7 +244,7 @@
             //빈값이 아닐때
             if("" != send_message){
                 // 서버로 메시지를 전송한다.
-                socket.emit("chat", { 'msg': send_message ,'room_no':room_no});
+                socket.emit("chat", { 'msg': send_message ,'room_no':global_room_no, 'counter_user_email':counter_user_email});
                 //초기화
                 send_message_input.val("");
             }
