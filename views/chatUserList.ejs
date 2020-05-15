@@ -32,8 +32,9 @@
 <body>
 
 <div class="chat_user_list_container">
-    <nav id="major_menu" class="fl">
-        <div class="sign">회원들</div>
+    <nav id="major_menu" class="fl" style="display: none;">
+        <div class="sign fl user_group" style="background: #ffe8d6"><img src="/res/user_group.png"></img></div>
+        <div class="sign fl chat"><img src="/res/chat.png"></img></div>
         <ul>
 <!--            <li>-->
 <!--                <div class="data_piece">-->
@@ -48,6 +49,25 @@
 <!--            </li>-->
         </ul>
     </nav>
+
+    <nav id="chat_menu" class="fl">
+        <div class="sign fl user_group"><img src="/res/user_group.png"></img></div>
+        <div class="sign fl chat" style="background: #ffe8d6"><img src="/res/chat.png" ></img></div>
+        <ul>
+            <!--            <li>-->
+            <!--                <div class="data_piece">-->
+            <!--                    <div class ="img_box fl">-->
+            <!--                        <img src="" onerror="this.src='/res/user.png'"></img>-->
+            <!--                    </div>-->
+            <!--                    <div class ="info_box fl">-->
+            <!--                        <div class="user_nick_name">너구리</div>-->
+            <!--                        <div class="user_email">thdalsehf@naver.com</div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </li>-->
+        </ul>
+    </nav>
+
     <div style="clear:both;"></div>
     <a href="/views/chatRoom"><button>첫번째 페이지로 이동</button></a>
     <form class="form-inline">
@@ -118,7 +138,15 @@ $(function() {
         }
     });
 
+    $("#chat_menu .user_group").on("click",function(){
+        $('#chat_menu').css('display', 'none');
+        $('#major_menu').css('display', 'block');
+    });
 
+    $("#major_menu .chat").on("click",function(){
+        $('#chat_menu').css('display', 'block');
+        $('#major_menu').css('display', 'none');
+    });
 
 
 });

@@ -218,10 +218,8 @@ io.on('connection', function(socket) {
         //목적지 email인 socket에게 메시지를 전달
         let length = socket_list.length;
         for(let i=0; i<length; i++){
-            console.log("[서버수신]socket_list[i].userId:",socket_list[i].userId);
-            console.log("[서버수신]counter_user_email:",counter_user_email);
             if(socket_list[i].userId == counter_user_email){
-                console.log("[서버수신]들어옴");
+                // 해당socket에게만 메시지를 전송한다
                 socket_list[i].emit('chat', send_message);
             }
         }

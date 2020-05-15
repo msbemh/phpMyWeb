@@ -49,6 +49,17 @@
     font-size: 20px;
     height: 55px;
     padding: 10px;
+    width:50%;
+}
+
+.sign:hover{
+    cursor:pointer;
+    background: silver;
+}
+
+.sign img{
+    width:30px;
+    height:30px;
 }
 
 .side_bar ul{
