@@ -137,6 +137,7 @@
                                     <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
+                                            <span class="user_nick_name"><%= rows[i].nick_name %></span>
                                             <p><%= rows[i].content %></p>
                                             <span class="time_date"><%= rows[i].creationDate %></span></div>
                                     </div>
@@ -181,28 +182,51 @@
         // socket.io 서버에 접속한다
         let socket = io();
 
-        // 서버로 자신의 정보를 전송한다.
-        socket.emit("login", {
-            'room_no' : room_no
-        });
-
-        // 서버로부터의 메시지가 수신되면
-        socket.on("login", function(data) {
-            console.log("[로그인]data:",data);
-
-        });
+        // // 서버로 자신의 정보를 전송한다.
+        // socket.emit("login", {
+        //     'room_no' : room_no
+        // });
+        //
+        // // 서버로부터의 메시지가 수신되면
+        // socket.on("login", function(data) {
+        //     console.log("[로그인]data:",data);
+        //
+        // });
 
         // 서버로부터의 메시지가 수신되면
         socket.on("chat", function(data) {
             console.log("[클라이언트 수신]data:",data);
-            let $msg_history = $(".msg_history");
-            let html =
-                "               <div class=\"outgoing_msg\">\n" +
-                "                    <div class=\"sent_msg\">\n" +
-                "                        <p>"+data.msg+"</p>\n" +
-                "                        <span class=\"time_date\"> 11:01 AM    |    June 9</span> </div>\n" +
-                "                </div>";
-            $msg_history.append(html);
+            console.log("[클라이언트 수신]user_id:",user_id);
+            let user_email = data.user_email;
+            let user_nick_name = data.user_nick_name;
+            let msg = data.msg;
+            let room_no = data.room_no;
+
+            //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
+            if(user_id == user_email){
+                let $msg_history = $(".msg_history");
+                let html =
+                    "               <div class=\"outgoing_msg\">\n" +
+                    "                    <div class=\"sent_msg\">\n" +
+                    "                        <p>"+data.msg+"</p>\n" +
+                    "                        <span class=\"time_date\"> 11:01 AM    |    June 9</span> </div>\n" +
+                    "                </div>";
+                $msg_history.append(html);
+            //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
+            }else{
+                let $msg_history = $(".msg_history");
+                let html = "<div class=\"incoming_msg\">\n" +
+                    "                                    <div class=\"incoming_msg_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\n" +
+                    "                                    <div class=\"received_msg\">\n" +
+                    "                                        <div class=\"received_withd_msg\">\n" +
+                    "                                            <span class=\"user_nick_name\">"+user_nick_name+"</span>\n" +
+                    "                                            <p>"+msg+"</p>\n" +
+                    "                                            <span class=\"time_date\">11:01 AM    |    June 9</span></div>\n" +
+                    "                                    </div>\n" +
+                    "                                </div>";
+                $msg_history.append(html);
+            }
+
         });
 
         // Send 버튼이 클릭되면

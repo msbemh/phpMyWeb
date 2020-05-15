@@ -106,7 +106,7 @@ app.get('/chatRoom', function(req, res) {
         'SELECT room_no FROM(\n' +
             'SELECT room_no, count(room_no) as cnt FROM participant WHERE user_id = \''+counter_user_email+'\' OR user_id = \''+user_email+'\'\n' +
             'GROUP BY room_no) A\n' +
-        'WHERE A.cnt >= 2;');
+        'WHERE A.cnt >= 2');
     //데이터가 없을 경우
     if(rows.length <= 0){
         res.render('chatRoom.ejs',{'room_no':-1});
@@ -117,7 +117,10 @@ app.get('/chatRoom', function(req, res) {
 
     //DB에서 message select하기
     rows = connection.query(
-        'SELECT * FROM message WHERE room_no = '+room_no);
+        'SELECT room_no, message.user_id, message.content, message.creationDate, user.nickName as nick_name FROM message\n' +
+        'INNER JOIN user   \n' +
+        'ON message.user_id = user.userId\n' +
+        'WHERE room_no = '+room_no);
     let data = {
         'room_no':room_no,
         'rows':rows,
@@ -161,25 +164,25 @@ io.on('connection', function(socket) {
     console.log("socket.id:",socket.id);
 
     //클라이언트가 방에 접속하면
-    socket.on('login', function(data) {
-        let user_email =  socket.userId;
-        let user_nick_name =  socket.nickName;
-        let room_no =  data.room_no;
-        console.log("[서버 로그인]room_no:",room_no);
-
-        //들어온 소켓 가상의 방에 넣기
-        socket.join(room_no);
-
-        //DB에서 message select하기
-        let rows = connection.query(
-            'SELECT * FROM message WHERE room_no = '+room_no);
-        //데이터가 있을 경우
-        if(rows.length > 0){
-            // 접속된 모든 클라이언트에게 메시지를 전송한다
-            io.to(room_no).emit('login', rows);
-        }
-
-    });
+    // socket.on('login', function(data) {
+    //     let user_email =  socket.userId;
+    //     let user_nick_name =  socket.nickName;
+    //     let room_no =  data.room_no;
+    //     console.log("[서버 로그인]room_no:",room_no);
+    //
+    //     //들어온 소켓 가상의 방에 넣기
+    //     socket.join(room_no);
+    //
+    //     //DB에서 message select하기
+    //     let rows = connection.query(
+    //         'SELECT * FROM message WHERE room_no = '+room_no);
+    //     //데이터가 있을 경우
+    //     if(rows.length > 0){
+    //         // 접속된 모든 클라이언트에게 메시지를 전송한다
+    //         io.to(room_no).emit('login', rows);
+    //     }
+    //
+    // });
 
     // 클라이언트로부터의 메시지가 수신되면
     socket.on('chat', function(data) {
@@ -195,6 +198,9 @@ io.on('connection', function(socket) {
             room_no : room_no
         };
 
+        //들어온 소켓 가상의 방에 넣기
+        socket.join(room_no);
+
         console.log("[서버수신]send_message:",send_message);
 
         //DB에 messgae 저장
@@ -208,10 +214,10 @@ io.on('connection', function(socket) {
         // socket.emit('s2c chat', msg);
 
         // 접속된 모든 클라이언트에게 메시지를 전송한다
-        io.emit('chat', send_message);
+        // io.emit('chat', send_message);
 
         // 특정 클라이언트에게만 메시지를 전송한다
-        // io.to(id).emit('s2c chat', data);
+        io.to(room_no).emit('chat', send_message);
     });
 
     // force client disconnect from server
