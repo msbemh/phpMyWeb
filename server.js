@@ -175,9 +175,8 @@ io.on('connection', function(socket) {
         console.log("[서버수신]send_message:",send_message);
 
         //DB에 messgae 저장
-        // let rows = connection.query(
-        //     'INSERT INTO message (room_no, user_id, content, creationDate)
-        //         VALUES (0,'thdalsehf@naver.com' ,'안녕하세요',now())');
+        connection.query(
+            'INSERT INTO message (room_no, user_id, content, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'",now())');
 
         // 메시지를 전송한 클라이언트를 제외한 모든 클라이언트에게 메시지를 전송한다
         // socket.broadcast.emit('chat', msg);
