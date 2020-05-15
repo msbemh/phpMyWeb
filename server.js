@@ -94,7 +94,6 @@ app.post('/userSession', function(req, res) {
 
 //채팅방으로 이동
 app.get('/chatRoom', function(req, res) {
-    console.log("[room]라우터");
     res.render('chatRoom.ejs');
 });
 
