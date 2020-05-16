@@ -97,30 +97,39 @@ app.post('/userSession', function(req, res) {
 
 //채팅방으로 이동
 app.get('/chatRoom', function(req, res) {
+
+    let is_room_no = req.param('is_room_no');
+    let room_no = -1;
     //상대방 이메일
     let counter_user_email = req.param('counter_user_email');
     //나의 이메일
     let user_email = req.param('user_email');
-    //DB쿼리
-    let rows = connection.query(
-        'SELECT room_no FROM(\n' +
+
+    //방번호로 방을 찾아갈때
+    if(is_room_no == true){
+        room_no = req.param('room_no');
+    //상대방 이메일과 나의 이메일로 방을 찾아 갈때
+    }else{
+        //DB쿼리
+        let rows = connection.query(
+            'SELECT room_no FROM(\n' +
             'SELECT room_no, count(room_no) as cnt FROM participant WHERE user_id = \''+counter_user_email+'\' OR user_id = \''+user_email+'\'\n' +
             'GROUP BY room_no) A\n' +
-        'WHERE A.cnt >= 2');
-    //데이터가 없을 경우
-    if(rows.length <= 0){
-        let data = {
-            'room_no':-1,
-            'messages':'',
-            'my_email': user_email,
-            'counter_user_email':counter_user_email
+            'WHERE A.cnt >= 2');
+        //데이터가 없을 경우
+        if(rows.length <= 0){
+            let data = {
+                'room_no':-1,
+                'messages':'',
+                'my_email': user_email,
+                'counter_user_email':counter_user_email
+            }
+            res.render('chatRoom.ejs',data);
+            return;
         }
-        res.render('chatRoom.ejs',data);
-        return;
+        //데이터가 있을 경우
+        room_no = rows[0].room_no;
     }
-    //데이터가 있을 경우
-    let room_no = rows[0].room_no;
-
     //DB에서 message select하기
     rows = connection.query(
         'SELECT room_no, message.user_id, message.content, message.creationDate, user.nickName as nick_name FROM message\n' +
@@ -133,7 +142,6 @@ app.get('/chatRoom', function(req, res) {
         'my_email': user_email,
         'counter_user_email':counter_user_email
     }
-    console.log("[TEST]data:",data);
 
     res.render('chatRoom.ejs', data);
 });

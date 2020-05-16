@@ -198,12 +198,23 @@ include './userLog.php';
 
     //자식 iframe이 보내는 이벤트
     window.addEventListener('message', function(e) {
-        let counter_user_email = e.data.counter_user_email;
-        let user_email = '<?php echo $_SESSION["userId"]?>';
-        console.log("[TEST]user_email:",user_email);
-        console.log("[TEST]counter_user_email:",counter_user_email);
-        document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&user_email='+user_email;
-        $('#chatModal').modal('toggle');
+        //방번호로 방을찾아가는지, 상대방과 나의 이메일로 방을 찾아가는지
+        let is_room_no = e.data.is_room_no;
+        //방번호로 방을 찾아갈때
+        if(is_room_no){
+            let room_no = e.data.room_no;
+            let counter_user_email = e.data.counter_user_email;
+            let user_email = '<?php echo $_SESSION["userId"]?>';
+            document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&room_no='+room_no+'&user_email='+user_email+"&is_room_no="+is_room_no;
+            $('#chatModal').modal('toggle');
+        //상대방 이메일과 나의 이메일로 방을 찾아 갈때
+        }else{
+            let counter_user_email = e.data.counter_user_email;
+            let user_email = '<?php echo $_SESSION["userId"]?>';
+            document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&user_email='+user_email+"&is_room_no="+is_room_no;
+            $('#chatModal').modal('toggle');
+        }
+
     });
 
     function sendMessageIframe(){
