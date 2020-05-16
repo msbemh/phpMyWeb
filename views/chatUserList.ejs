@@ -117,28 +117,13 @@ $(function() {
 
     // 서버로부터의 메시지가 수신되면
     socket.on("chat", function(data) {
-        console.log("[메인 리스트]chat동작");
+        console.log("[메인 리스트]chat동작 data:",data);
+        chat_list_reload_full();
         // $("#chatLogs").append("<div>" + data.msg + " : from <strong>" + data.from.name + "</strong></div>");
     });
 
-    //채팅 리스트 정보 가져오기
-    $.ajax({
-        url:'/chatList',
-        dataType:'json',
-        type:'POST',
-        data:{'user_id':user_id},
-        success:function(data){
-            console.log("data:",data);
-            chat_list_reload(data);
-
-            $("#chat_menu .data_piece").on("click", function() {
-                let room_no = $(this).data("room_no");
-                let user_email = $(this).data("email");
-                console.log("user_email:",user_email);
-                go_room_with_room_no(room_no, user_email);
-            });
-        }
-    });
+    //채팅 리스트 완전 리로드
+    chat_list_reload_full();
 
     //유저 리스트 가져오기
     $.ajax({
@@ -175,11 +160,12 @@ $(function() {
 });
 
 function user_list_reload(data){
+    let $user_list_ul = $("#major_menu ul");
+    //초기화
+    $user_list_ul.html("");
 
     for(let i=0; i<data.length;i++){
         let item = data[i];
-
-        let $user_list_ul = $("#major_menu ul");
 
         let html = "<li>\n" +
             "                <div class=\"data_piece\" data-nick-name="+item.nickName+" data-email="+item.userId+">\n" +
@@ -197,11 +183,12 @@ function user_list_reload(data){
 }
 
 function chat_list_reload(data) {
+    let $chat_list_ul = $("#chat_menu ul");
+    //초기화
+    $chat_list_ul.html("");
 
     for(let i=0; i<data.length;i++) {
         let item = data[i];
-
-        let $chat_list_ul = $("#chat_menu ul");
 
         let html =
             "               <li>\n" +
@@ -219,7 +206,31 @@ function chat_list_reload(data) {
             "            </li>";
         $chat_list_ul.append(html);
     }
+}
 
+//채팅 리스트 완전 리로드
+function chat_list_reload_full(){
+    //채팅 리스트 정보 가져오기
+    $.ajax({
+        url:'/chatList',
+        dataType:'json',
+        type:'POST',
+        data:{'user_id':user_id},
+        success:function(data){
+            console.log("data:",data);
+            chat_list_reload(data);
+
+            //이벤트 초기화
+            $("#chat_menu .data_piece").off("click");
+
+            $("#chat_menu .data_piece").on("click", function() {
+                let room_no = $(this).data("room_no");
+                let user_email = $(this).data("email");
+                console.log("user_email:",user_email);
+                go_room_with_room_no(room_no, user_email);
+            });
+        }
+    });
 }
 
 //유저 이메일로 방에 들어가기

@@ -135,7 +135,8 @@ app.get('/chatRoom', function(req, res) {
         'SELECT room_no, message.user_id, message.content, message.creationDate, user.nickName as nick_name FROM message\n' +
         'INNER JOIN user   \n' +
         'ON message.user_id = user.userId\n' +
-        'WHERE room_no = '+room_no);
+        'WHERE room_no = '+room_no+'\n' +
+        'ORDER BY creationDate ASC');
     let data = {
         'room_no':room_no,
         'messages':rows,
@@ -152,13 +153,14 @@ app.post('/chatList', function(req, res) {
     console.log("[test]user_id:",user_id);
     let rows = connection.query(
         'SELECT A.room_no, A.user_id, A.content, SUBSTRING_INDEX(A.creationDate, \'T\', 1) as creationDate, C.nickName, D.user_id as counter_user_id, D.nickName as counter_nick_name FROM message A ' +
-        'INNER JOIN (SELECT room_no, max(creationDate) as last_date FROM message WHERE user_id="'+user_id+'" GROUP BY room_no) B\n' +
+        'INNER JOIN (SELECT room_no, max(creationDate) as last_date FROM message WHERE room_no IN(SELECT room_no FROM participant WHERE user_id = "'+user_id+'") GROUP BY room_no) B\n' +
         'ON A.room_no = B.room_no and A.creationDate = B.last_date\n' +
         'INNER JOIN user C\n' +
         'ON A.user_id = C.userId\n' +
         'INNER JOIN (SELECT participant.user_id, room_no, user.nickName FROM participant INNER JOIN user on participant.user_id = user.userId) D\n' +
         'ON D.room_no = A.room_no AND D.user_id <> "'+user_id+'"\n' +
         'ORDER BY creationDate DESC');
+
     data = JSON.stringify(rows);
     console.log("[test]data:",data);
     res.send(data);
@@ -247,11 +249,12 @@ io.on('connection', function(socket) {
         connection.query(
             'INSERT INTO message (room_no, user_id, content, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'",now())');
 
-        //목적지 email인 socket에게 메시지를 전달
+        //목적지 email인 socket에게 메시지를 전달 (상대방과 나)
         let length = socket_list.length;
         for(let i=0; i<length; i++){
-            if(socket_list[i].userId == counter_user_email){
+            if(socket_list[i].userId == counter_user_email || socket_list[i].userId == user_email){
                 // 해당socket에게만 메시지를 전송한다
+                console.log("[보낸사람]socket_list[i].userId:",socket_list[i].userId);
                 socket_list[i].emit('chat', send_message);
             }
         }
@@ -260,7 +263,7 @@ io.on('connection', function(socket) {
         // socket.broadcast.emit('chat', msg);
 
         // 해당socket에게만 메시지를 전송한다
-        socket.emit('chat', send_message);
+        // socket.emit('chat', send_message);
 
         // 접속된 모든 클라이언트에게 메시지를 전송한다
         // io.emit('chat', send_message);

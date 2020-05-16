@@ -44,79 +44,21 @@
                     </div>
                 </div>
             </div>
+            <!-- 채팅방 -->
             <div class="inbox_chat scroll" style="height: 360px;">
-                <div class="chat_list active_chat">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat_list">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat_list">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat_list">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat_list">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat_list">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat_list">
-                    <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="chat_list active_chat">-->
+<!--                    <div class="chat_people">-->
+<!--                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                        <div class="chat_ib">-->
+<!--                            <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>-->
+<!--                            <p>Test, which is a new approach to have all solutions-->
+<!--                                astrology under one roof.</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
+        <!-- 메시지 -->
         <div class="mesgs">
             <div class="msg_history" style="height: 360px;">
                 <%
@@ -233,6 +175,8 @@
             }else{
                 console.log("이메시지는 옆메시지로 가야함");
             }
+            //채팅 리스트 완전 리로드
+            chat_list_reload_full();
 
         });
 
@@ -251,64 +195,70 @@
 
         });
 
-
-        //유저 리스트 정보 가져오기
-        $.ajax({
-            url:'/userList',
-            dataType:'json',
-            type:'POST',
-            data:{'user_id':user_id},
-            success:function(data){
-                //유저 리스트 리로드
-                user_list_reload(data);
-                //유저리스트 클릭 이벤트
-                $(".data_piece").on("click", function() {
-                    let user_email = $(this).data("email");
-                    go_room(user_email);
-
-
-                });
-            }
-        });
-
-
+        //채팅 리스트 완전 리로드
+        chat_list_reload_full();
 
 
     });
 
-    function user_list_reload(data){
+    function chat_list_reload(data) {
+        let $inbox_chat = $(".inbox_chat");
+        //초기화
+        $inbox_chat.html("");
 
-        for(let i=0; i<data.length;i++){
+        for(let i=0; i<data.length;i++) {
             let item = data[i];
-
-            let $user_list_ul = $("#major_menu ul");
-
-            let html = "<li>\n" +
-                "                <div class=\"data_piece\" data-nick-name="+item.nickName+" data-email="+item.userId+">\n" +
-                "                    <div class =\"img_box fl\">\n" +
-                "                        <img src=\"\" onerror=\"this.src='/res/user.png'\"></img>\n" +
+            let html = "";
+            //리스트 방번호와 현재 방번호가 같다면 방 활성화
+            if(item.room_no == global_room_no){
+                html += "               <div class=\"chat_list active_chat\" data-nick-name=" + item.nickName + " data-email=" + item.counter_user_id + " data-room_no= "+ item.room_no +" data-counter_user_id= "+ item.counter_user_id +" data-counter_nick_name= "+ item.counter_nick_name +">\n";
+            //리스트 방번호와 현재 방번호가 같지 않다면 방 비활성화
+            }else{
+                html += "               <div class=\"chat_list\" data-nick-name=" + item.nickName + " data-email=" + item.counter_user_id + " data-room_no= "+ item.room_no +" data-counter_user_id= "+ item.counter_user_id +" data-counter_nick_name= "+ item.counter_nick_name +">\n";
+            }
+            html +=
+                "                    <div class=\"chat_people\">\n" +
+                "                        <div class=\"chat_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\n" +
+                "                        <div class=\"chat_ib\">\n" +
+                "                            <h5>"+item.counter_nick_name+"<span class=\"chat_date\">"+item.creationDate+"</span></h5>\n" +
+                "                            <p>"+item.content+"</p>\n" +
+                "                        </div>\n" +
                 "                    </div>\n" +
-                "                    <div class =\"info_box fl\">\n" +
-                "                        <div class=\"user_nick_name\">"+item.nickName+"</div>\n" +
-                "                        <div class=\"user_email\">"+item.userId+"</div>\n" +
-                "                    </div>\n" +
-                "                </div>\n" +
-                "            </li>";
-            $user_list_ul.append(html);
+                "                </div>";
+
+            $inbox_chat.append(html);
         }
     }
 
-    function go_room(user_email) {
-        location.href='/views/chatRoom.ejs?room_no='+0;
-        // $.ajax({
-        //     url:'/goRoom',
-        //     dataType:'json',
-        //     type:'POST',
-        //     data:{'user_email':user_email},
-        //     success:function(data){
-        //         console.log("data:",data);
-        //     }
-        // });
+    //채팅 리스트 완전 리로드
+    function chat_list_reload_full(){
+        //채팅 리스트 정보 가져오기
+        $.ajax({
+            url:'/chatList',
+            dataType:'json',
+            type:'POST',
+            data:{'user_id':user_id},
+            success:function(data){
+                console.log("data:",data);
+                chat_list_reload(data);
+
+                //이벤트 초기화
+                $(".chat_list").off("click");
+
+                $(".chat_list").on("click", function() {
+                    let room_no = $(this).data("room_no");
+                    let user_email = $(this).data("email");
+                    console.log("user_email:",user_email);
+                    go_room_with_room_no(room_no, user_email);
+                });
+            }
+        });
+    }
+
+    //방번호로 방에 들어가기
+    function go_room_with_room_no(room_no, user_email) {
+        //모든 부모 윈도우에게 메시지 전송
+        window.parent.postMessage({ 'room_no': room_no, 'counter_user_email': user_email, 'is_room_no': true }, '*');
     }
 
 </script>
