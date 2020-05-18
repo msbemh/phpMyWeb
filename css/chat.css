@@ -252,12 +252,13 @@ ul{
 
 .chat_ib p {
     font-size: 12px;
-    color: #989898;
+    color: black;
     margin: auto;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width:110px;
 }
 
 .chat_img {
@@ -293,6 +294,10 @@ ul{
 
 .active_chat {
     background: #e8f6ff;
+}
+
+.incoming_msg{
+    margin-top:15px;
 }
 
 .incoming_msg_img {
@@ -403,5 +408,21 @@ ul{
 
 .content{
     display: inline-block;
+    height: 22px;
+    width:140px;
+    overflow: hidden;
 }
+
+.chat_ib h5{
+    font-weight: bold;
+}
+
+.chat_date{
+    font-weight: 100;
+    color:silver;
+}
+
+
+
+
 

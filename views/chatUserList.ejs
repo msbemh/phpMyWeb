@@ -179,6 +179,30 @@ function chat_list_reload(data) {
     for(let i=0; i<data.length;i++) {
         let item = data[i];
 
+        let content = item.content;
+        let creationDate = item.creationDate;
+
+        //글자 길이 제한하기
+        if(content.length > 9){
+            content = content.substring(0,9)+"...";
+        }
+
+        //날짜 바꾸기
+        let date_array = creationDate.split(" ");
+        let date = date_array[0];
+        let time = date_array[1];
+        //시간 형태 바꾸기
+        let time_array = time.split(":");
+        time = time_array[0] + ":" + time_array[1];
+
+        let date_to_compare = change_date_format(new Date());
+
+        if(date_to_compare == date){
+            item.creationDate = time;
+        }else{
+            item.creationDate = date;
+        }
+
         let html =
             "               <li>\n" +
             "                <div class=\"data_piece\" data-nick-name=" + item.nickName + " data-email=" + item.counter_user_id + " data-room_no= "+ item.room_no +" data-counter_user_id= "+ item.counter_user_id +" data-counter_nick_name= "+ item.counter_nick_name +">\n" +
@@ -189,10 +213,10 @@ function chat_list_reload(data) {
             "                        <div class=\"user_nick_name fl\">"+item.counter_nick_name+"</div>\n" +
             "                        <div class=\"creation_date fr\">"+item.creationDate+"</div>\n" +
             "                        <div style=\"clear:both;\"></div>\n" +
-            "                        <div class=\"content\">"+item.content+"</div>\n";
+            "                        <div class=\"content\">"+content+"</div>\n";
         //안 읽은 개수가 존재할때만 표시해주기
         if(item.read_num > 0){
-            html += "                <div class=\"read_num\">"+item.read_num+"</div>";
+            html += "                <div class=\"read_num fr\">"+item.read_num+"</div>";
         }
         html +=    "             </div>\n" +
             "                </div>\n" +
@@ -236,6 +260,19 @@ function go_room(user_email) {
 function go_room_with_room_no(room_no, user_email) {
     //모든 부모 윈도우에게 메시지 전송
     window.parent.postMessage({ 'room_no': room_no, 'counter_user_email': user_email, 'is_room_no': true }, '*');
+}
+
+function change_date_format(date) {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = month > 9 ? month : "0" + month;
+    day  = day > 9 ? day : "0" + day;
+
+    let date_for_comapre = year + "-" + month + "-" +day;
+    return date_for_comapre;
+
 }
 
 
