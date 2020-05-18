@@ -231,6 +231,22 @@ io.on('connection', function(socket) {
         let msg = data.msg;
         let room_no = data.room_no;
         let counter_user_email = data.counter_user_email;
+        console.log("[서버수신]user_email:",user_email);
+        console.log("[서버수신]counter_user_email:",counter_user_email);
+        console.log("[서버수신]msg:",msg);
+        console.log("[서버수신]room_no:",room_no);
+
+        //방번호가 -1이라면 (방이없다면), 방생성
+        if(room_no == -1){
+            //Room생성
+            connection.query( 'INSERT INTO room (creationDate)VALUES (now())');
+            rows = connection.query('SELECT LAST_INSERT_ID() AS room_no');
+            room_no = rows[0].room_no;
+
+            //Room에 인원 생성
+            connection.query( 'INSERT INTO participant (user_id, room_no) VALUES ("'+user_email+'",'+room_no+')');
+            connection.query( 'INSERT INTO participant (user_id, room_no) VALUES ("'+counter_user_email+'",'+room_no+')');
+        }
 
         var send_message = {
             user_nick_name: user_nick_name,
@@ -240,7 +256,7 @@ io.on('connection', function(socket) {
         };
 
         //들어온 소켓 가상의 방에 넣기
-        socket.join(room_no);
+        // socket.join(room_no);
         console.log("[서버수신]socket:",socket.adapter.rooms);
 
         console.log("[서버수신]send_message:",send_message);

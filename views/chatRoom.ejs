@@ -36,7 +36,7 @@
         <div class="inbox_people">
             <div class="headind_srch">
                 <div class="recent_heading">
-                    <h4>Recent(<%= room_no %>)</h4>
+                    <h4 class="room_no_flag">Recent(<%= room_no %>)</h4>
                 </div>
                 <div class="srch_bar">
                     <div class="stylish-input-group">
@@ -86,7 +86,8 @@
                                 </div>
                           <% }
                          }
-                    }%>
+                    }
+              %>
             </div>
             <div class="type_msg">
                 <div class="input_msg_write">
@@ -108,6 +109,18 @@
     console.log("[test]global_room_no:",global_room_no);
     console.log("[test]counter_user_email:",counter_user_email);
 
+    //스크롤바 존재여부 체크하기
+    (function($) {
+        $.fn.hasVerticalScrollbar = function() {
+            // This will return true, when the div has vertical scrollbar
+            return this.get(0).scrollHeight > this.height();
+        }
+        $.fn.hasHorizontalScrollbar = function() {
+            // This will return true, when the div has horizontal scrollbar
+            return this.get(0).scrollWidth > this.width();
+        }
+    })(jQuery);
+
     //세션정보 가져오기(동기)
     $.ajax({
         url:'/userSession',
@@ -120,6 +133,8 @@
             user_nick_name = data.nickName;
         }
     });
+
+    //메시지를 상대방이 읽었을경우, 읽었다고 표시하기
 
 
     $(function() {
@@ -145,6 +160,12 @@
             let user_nick_name = data.user_nick_name;
             let msg = data.msg;
             let room_no = data.room_no;
+
+            //-1번방일경우 메시지 받았을때 방이동.
+            if(global_room_no == -1){
+                global_room_no = room_no;
+                $(".room_no_flag").html("Recent("+global_room_no+")");
+            }
 
             //현재방에 맞는 메시지일 경우
             if(global_room_no == room_no){
@@ -172,12 +193,16 @@
                         "                                </div>";
                     $msg_history.append(html);
                 }
+                //스크롤 제일 아래로
+                $(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
             }else{
                 console.log("이메시지는 옆메시지로 가야함");
             }
+
+            //메시지를 상대방이 읽었을경우, 읽었다고 표시하기
+
             //채팅 리스트 완전 리로드
             chat_list_reload_full();
-
         });
 
         // Send 버튼이 클릭되면
@@ -195,11 +220,15 @@
 
         });
 
+
+        //스크롤 제일 아래로
+        $(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
+
         //채팅 리스트 완전 리로드
         chat_list_reload_full();
 
-
     });
+
 
     //채팅리스트 리로드
     function chat_list_reload(data) {
