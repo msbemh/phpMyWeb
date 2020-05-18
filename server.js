@@ -152,7 +152,9 @@ app.post('/chatList', function(req, res) {
     let user_id = req.body.user_id
     console.log("[test]user_id:",user_id);
     let rows = connection.query(
-        'SELECT A.room_no, A.user_id, A.content, SUBSTRING_INDEX(A.creationDate, \'T\', 1) as creationDate, C.nickName, D.user_id as counter_user_id, D.nickName as counter_nick_name FROM message A ' +
+        'SELECT A.room_no, A.user_id, A.content, SUBSTRING_INDEX(A.creationDate, \'T\', 1) as creationDate, C.nickName, D.user_id as counter_user_id, D.nickName as counter_nick_name, \n' +
+        '(SELECT count(is_read) FROM message E WHERE E.room_no = A.room_no AND counter_user_id = \''+user_id+'\' AND is_read = false) as read_num \n' +
+        'FROM message A ' +
         'INNER JOIN (SELECT room_no, max(creationDate) as last_date FROM message WHERE room_no IN(SELECT room_no FROM participant WHERE user_id = "'+user_id+'") GROUP BY room_no) B\n' +
         'ON A.room_no = B.room_no and A.creationDate = B.last_date\n' +
         'INNER JOIN user C\n' +
@@ -264,7 +266,7 @@ io.on('connection', function(socket) {
 
         //DB에 messgae 저장
         connection.query(
-            'INSERT INTO message (room_no, user_id, content, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'",now())');
+            'INSERT INTO message (room_no, user_id, content, counter_user_id, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'","'+counter_user_email+'", now())');
 
         //메시지 생성날짜 가져오기
         rows = connection.query('SELECT LAST_INSERT_ID() AS message_no');

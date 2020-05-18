@@ -252,7 +252,12 @@
                 "                        <div class=\"chat_img\"> <img src=\"https://ptetutorials.com/images/user-profile.png\" alt=\"sunil\"> </div>\n" +
                 "                        <div class=\"chat_ib\">\n" +
                 "                            <h5>"+item.counter_nick_name+"<span class=\"chat_date\">"+item.creationDate+"</span></h5>\n" +
-                "                            <p>"+item.content+"</p>\n" +
+                "                            <p>"+item.content+"</p>\n";
+            //안 읽은 개수가 존재할때만 표시해주기
+            if(item.read_num > 0){
+                html +="                     <div class=\"read_num\">"+item.read_num+"</div>";
+            }
+            html +=
                 "                        </div>\n" +
                 "                    </div>\n" +
                 "                </div>";
