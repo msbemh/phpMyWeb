@@ -200,7 +200,7 @@ ul{
     display: inline-block;
     text-align: right;
     width: 60%;
-    padding:
+    padding: 0px;
 }
 
 .headind_srch {
@@ -392,6 +392,11 @@ ul{
 .msg_history {
     height: 516px;
     overflow-y: auto;
+}
+
+.chat_list:hover{
+    cursor:pointer;
+    background: #ffe8d6;
 }
 
 

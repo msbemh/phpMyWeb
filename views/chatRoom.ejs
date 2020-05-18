@@ -201,6 +201,7 @@
 
     });
 
+    //채팅리스트 리로드
     function chat_list_reload(data) {
         let $inbox_chat = $(".inbox_chat");
         //초기화
@@ -247,9 +248,15 @@
 
                 $(".chat_list").on("click", function() {
                     let room_no = $(this).data("room_no");
-                    let user_email = $(this).data("email");
+                    let counter_user_email = $(this).data("email");
+                    let user_email = user_id;
+                    let is_room_no = true;
+                    console.log("room_no:",room_no);
+                    console.log("counter_user_email:",counter_user_email);
                     console.log("user_email:",user_email);
-                    go_room_with_room_no(room_no, user_email);
+                    console.log("is_room_no:",is_room_no);
+                    window.location.href = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&room_no='+room_no+'&user_email='+user_email+"&is_room_no="+is_room_no;
+                    // go_room_with_room_no(room_no, user_email);
                 });
             }
         });
