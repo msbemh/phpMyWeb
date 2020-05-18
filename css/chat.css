@@ -10,6 +10,7 @@
 
 
 #major_menu ul{
+    height: 765px;
     padding: 10px;
     border: 1px solid black;
 }
@@ -40,6 +41,7 @@
 
 
 #chat_menu ul{
+    height: 765px;
     padding: 10px;
     border: 1px solid black;
 }
@@ -156,6 +158,7 @@ ul{
     font-weight: bold;
     display: inline-block;
     margin-left:3px;
+    line-height: 27px;
 }
 
 .user_nick_name{
@@ -398,4 +401,7 @@ ul{
     background: #ffe8d6;
 }
 
+.content{
+    display: inline-block;
+}
 

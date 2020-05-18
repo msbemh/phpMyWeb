@@ -141,10 +141,10 @@
         // socket.io 서버에 접속한다
         socket = io();
 
-        // // 서버로 자신의 정보를 전송한다.
-        // socket.emit("login", {
-        //     'room_no' : room_no
-        // });
+        // 서버로 자신의 정보를 전송한다.
+        socket.emit("room_join", {
+            'room_no' : global_room_no
+        });
         //
         // // 서버로부터의 메시지가 수신되면
         // socket.on("login", function(data) {
@@ -313,7 +313,6 @@
             console.log("소켓을 닫자!");
             socket.emit("forceDisconnect");
         }
-
     }
 
 </script>

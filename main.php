@@ -24,11 +24,9 @@ include './userLog.php';
 <!-- 채팅 창 -->
 <div style="position: relative; margin:10px;">
     <div class="cover_iframe">
-        <iframe class="chat_iframe" id="chat_iframe" src="https://wowtravel.tk:3000/"></iframe>
+        <iframe class="chat_iframe" id="chat_iframe" src="https://wowtravel.tk:3000/" scrolling="no"></iframe>
     </div>
 </div>
-<div><?php echo session_id()."\n";
-    print_r($_SESSION['userId']);?></div>
 
 <div class="container" style="min-width:550px; height: 500px;">
 
@@ -191,7 +189,6 @@ include './userLog.php';
             </tbody>
         </table>
     </div>
-    <button id="test">테스트</button>
 </div>
 
 

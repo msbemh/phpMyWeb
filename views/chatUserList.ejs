@@ -69,17 +69,6 @@
 <!--            </li>-->
         </ul>
     </nav>
-
-    <div style="clear:both;"></div>
-    <a href="/views/chatRoom"><button>첫번째 페이지로 이동</button></a>
-    <form class="form-inline">
-        <div class="form-group">
-            <label for="msgForm">Message: </label>
-            <input type="text" class="form-control" id="msgForm">
-        </div>
-        <button type="submit" class="btn btn-primary">Send</button>
-    </form>
-    <div id="chatLogs"></div>
 </div>
 
 
@@ -109,11 +98,11 @@ $(function() {
     //
     // });
 
-    // 서버로부터의 메시지가 수신되면
-    // socket.on("login", function(data) {
-    //     console.log("[로그인]data:",data);
-    //     $("#chatLogs").append("<div><strong>" + data + "</strong> has joined</div>");
-    // });
+    //서버로부터의 방접속 됐다고 신호가 온다면, 채팅리스트를 리로드 시켜ㅑ주자
+    socket.on("room_join", function(data) {
+        console.log("[채팅리로드시키자!]");
+        chat_list_reload_full();
+    });
 
     // 서버로부터의 메시지가 수신되면
     socket.on("chat", function(data) {
@@ -200,8 +189,12 @@ function chat_list_reload(data) {
             "                        <div class=\"user_nick_name fl\">"+item.counter_nick_name+"</div>\n" +
             "                        <div class=\"creation_date fr\">"+item.creationDate+"</div>\n" +
             "                        <div style=\"clear:both;\"></div>\n" +
-            "                        <div class=\"content\">"+item.content+"</div>\n" +
-            "                    </div>\n" +
+            "                        <div class=\"content\">"+item.content+"</div>\n";
+        //안 읽은 개수가 존재할때만 표시해주기
+        if(item.read_num > 0){
+            html += "                <div class=\"read_num\">"+item.read_num+"</div>";
+        }
+        html +=    "             </div>\n" +
             "                </div>\n" +
             "            </li>";
         $chat_list_ul.append(html);

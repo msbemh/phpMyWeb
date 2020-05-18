@@ -231,6 +231,26 @@ io.on('connection', function(socket) {
     //
     // });
 
+    //클라이언트가 방에 접속하면
+    socket.on('room_join', function(data) {
+        let user_email =  socket.userId;
+        let user_nick_name =  socket.nickName;
+        let room_no =  data.room_no;
+        console.log("[방에접속]room_no:",room_no);
+
+        //들어온 소켓 가상의 방에 넣기
+        socket.room_no = room_no;
+
+        //부모창 채팅리스트 리로드 시키기위해서 전송
+        let length = socket_list.length;
+        for(let i=0; i<length; i++){
+            if(socket_list[i].userId == user_email){
+                // 해당socket에게만 메시지를 전송한다
+                socket_list[i].emit('room_join', 'reload');
+            }
+        }
+    });
+
     // 클라이언트로부터의 메시지가 수신되면
     socket.on('chat', function(data) {
         let user_email =  socket.userId;
@@ -284,6 +304,11 @@ io.on('connection', function(socket) {
         //목적지 email인 socket에게 메시지를 전달 (상대방과 나)
         let length = socket_list.length;
         for(let i=0; i<length; i++){
+            //메시지 받을사람이 현재 방에 존재한다면, 읽은거라고 수정해주기
+            if(socket_list[i].userId == counter_user_email && socket_list[i].room_no == room_no){
+                connection.query('UPDATE message SET is_read = true WHERE room_no = '+room_no+' and counter_user_id = "'+counter_user_email+'" ');
+            }
+
             //메시지 보내기
             if(socket_list[i].userId == counter_user_email || socket_list[i].userId == user_email){
                 // 해당socket에게만 메시지를 전송한다
