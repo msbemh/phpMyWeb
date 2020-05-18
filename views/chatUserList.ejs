@@ -86,6 +86,7 @@
 <script type="text/javascript">
 let user_id = "";
 let user_nick_name = "";
+
 //세션정보 가져오기(동기)
 $.ajax({
     url:'/userSession',
@@ -99,11 +100,10 @@ $.ajax({
     }
 });
 
-
+let socket;
 $(function() {
     // socket.io 서버에 접속한다
-    let socket = io();
-
+    socket = io();
     // 서버로 자신의 정보를 전송한다.
     // socket.emit("login", {
     //
@@ -244,6 +244,7 @@ function go_room_with_room_no(room_no, user_email) {
     //모든 부모 윈도우에게 메시지 전송
     window.parent.postMessage({ 'room_no': room_no, 'counter_user_email': user_email, 'is_room_no': true }, '*');
 }
+
 
 </script>
 

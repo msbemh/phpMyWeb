@@ -129,6 +129,7 @@ app.get('/chatRoom', function(req, res) {
         }
         //데이터가 있을 경우
         room_no = rows[0].room_no;
+
     }
     //DB에서 message select하기
     rows = connection.query(
@@ -137,6 +138,10 @@ app.get('/chatRoom', function(req, res) {
         'ON message.user_id = user.userId\n' +
         'WHERE room_no = '+room_no+'\n' +
         'ORDER BY creationDate ASC');
+
+    //나에게온 메시지 읽음으로 수정하기
+    connection.query('UPDATE message SET is_read = true WHERE room_no = '+room_no+' and counter_user_id = "'+user_email+'"');
+
     let data = {
         'room_no':room_no,
         'messages':rows,
@@ -259,7 +264,6 @@ io.on('connection', function(socket) {
         };
 
         //들어온 소켓 가상의 방에 넣기
-        // socket.join(room_no);
         console.log("[서버수신]socket:",socket.adapter.rooms);
 
         console.log("[서버수신]send_message:",send_message);
@@ -267,6 +271,7 @@ io.on('connection', function(socket) {
         //DB에 messgae 저장
         connection.query(
             'INSERT INTO message (room_no, user_id, content, counter_user_id, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'","'+counter_user_email+'", now())');
+
 
         //메시지 생성날짜 가져오기
         rows = connection.query('SELECT LAST_INSERT_ID() AS message_no');
@@ -279,6 +284,7 @@ io.on('connection', function(socket) {
         //목적지 email인 socket에게 메시지를 전달 (상대방과 나)
         let length = socket_list.length;
         for(let i=0; i<length; i++){
+            //메시지 보내기
             if(socket_list[i].userId == counter_user_email || socket_list[i].userId == user_email){
                 // 해당socket에게만 메시지를 전송한다
                 console.log("[보낸사람]socket_list[i].userId:",socket_list[i].userId);
@@ -311,7 +317,9 @@ io.on('connection', function(socket) {
                 socket_list.splice(i, 1);
             }
         }
+        console.log('----[소켓 닫기]-----');
         console.log('user disconnected');
+        console.log('socket_list.length:',socket_list.length);
     });
 });
 

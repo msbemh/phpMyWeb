@@ -136,10 +136,10 @@
 
     //메시지를 상대방이 읽었을경우, 읽었다고 표시하기
 
-
+    let socket;
     $(function() {
         // socket.io 서버에 접속한다
-        let socket = io();
+        socket = io();
 
         // // 서버로 자신의 정보를 전송한다.
         // socket.emit("login", {
@@ -301,6 +301,19 @@
     function go_room_with_room_no(room_no, user_email) {
         //모든 부모 윈도우에게 메시지 전송
         window.parent.postMessage({ 'room_no': room_no, 'counter_user_email': user_email, 'is_room_no': true }, '*');
+    }
+
+    // 부모로부터 메시지 수신
+    //자식 iframe이 보내는 이벤트
+    window.addEventListener( 'message', receiveMsgFromParent );
+    function receiveMsgFromParent( e ) {
+        // e.data가 전달받은 메시지
+        console.log("e.data:",e.data);
+        if(e.data.message == "socket_close"){
+            console.log("소켓을 닫자!");
+            socket.emit("forceDisconnect");
+        }
+
     }
 
 </script>

@@ -191,6 +191,7 @@ include './userLog.php';
             </tbody>
         </table>
     </div>
+    <button id="test">테스트</button>
 </div>
 
 
@@ -206,24 +207,19 @@ include './userLog.php';
             let counter_user_email = e.data.counter_user_email;
             let user_email = '<?php echo $_SESSION["userId"]?>';
             document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&room_no='+room_no+'&user_email='+user_email+"&is_room_no="+is_room_no;
-            $('#chatModal').modal('toggle');
+            $('#chatModal').modal({backdrop: 'static', keyboard: false});
         //상대방 이메일과 나의 이메일로 방을 찾아 갈때
         }else{
             let counter_user_email = e.data.counter_user_email;
             let user_email = '<?php echo $_SESSION["userId"]?>';
             document.getElementById("chat_iframe_modal").src = 'https://wowtravel.tk:3000/chatRoom?counter_user_email='+counter_user_email+'&user_email='+user_email+"&is_room_no="+is_room_no;
-            $('#chatModal').modal('toggle');
+            $('#chatModal').modal({backdrop: 'static', keyboard: false});
         }
 
     });
 
-    function sendMessageIframe(){
-        let iframe = document.getElementById('chat_iframe').contentWindow;
-        iframe.postMessage({ parentData : 'test parent data'}, 'http://123.com');
-    }
 
     $(document).on('ready', function(e){
-
 
 
     });
