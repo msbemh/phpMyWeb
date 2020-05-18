@@ -132,7 +132,7 @@ app.get('/chatRoom', function(req, res) {
     }
     //DB에서 message select하기
     rows = connection.query(
-        'SELECT room_no, message.user_id, message.content, message.creationDate, user.nickName as nick_name FROM message\n' +
+        'SELECT room_no, message.user_id, message.content, SUBSTRING_INDEX(message.creationDate, "T", 1) as creationDate, user.nickName as nick_name FROM message\n' +
         'INNER JOIN user   \n' +
         'ON message.user_id = user.userId\n' +
         'WHERE room_no = '+room_no+'\n' +
@@ -231,6 +231,7 @@ io.on('connection', function(socket) {
         let msg = data.msg;
         let room_no = data.room_no;
         let counter_user_email = data.counter_user_email;
+        console.log("[서버수신]data:",data);
         console.log("[서버수신]user_email:",user_email);
         console.log("[서버수신]counter_user_email:",counter_user_email);
         console.log("[서버수신]msg:",msg);
@@ -264,6 +265,14 @@ io.on('connection', function(socket) {
         //DB에 messgae 저장
         connection.query(
             'INSERT INTO message (room_no, user_id, content, creationDate) VALUES ('+room_no+',"'+user_email+'" ,"'+msg+'",now())');
+
+        //메시지 생성날짜 가져오기
+        rows = connection.query('SELECT LAST_INSERT_ID() AS message_no');
+        let message_no = rows[0].message_no;
+        rows = connection.query('SELECT SUBSTRING_INDEX(creationDate, "T", 1) as creationDate FROM message WHERE message_no = '+message_no+'');
+        let creationDate = rows[0].creationDate;
+        //메시지 생성날짜 send_massage에 넣기
+        send_message.creationDate = creationDate;
 
         //목적지 email인 socket에게 메시지를 전달 (상대방과 나)
         let length = socket_list.length;

@@ -160,6 +160,7 @@
             let user_nick_name = data.user_nick_name;
             let msg = data.msg;
             let room_no = data.room_no;
+            let creationDate = data.creationDate;
 
             //-1번방일경우 메시지 받았을때 방이동.
             if(global_room_no == -1){
@@ -176,10 +177,10 @@
                         "               <div class=\"outgoing_msg\">\n" +
                         "                    <div class=\"sent_msg\">\n" +
                         "                        <p>"+data.msg+"</p>\n" +
-                        "                        <span class=\"time_date\"> 11:01 AM    |    June 9</span> </div>\n" +
+                        "                        <span class=\"time_date\">"+creationDate+"</span> </div>\n" +
                         "                </div>";
                     $msg_history.append(html);
-                    //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
+                //현재 로그인된 아이디와 메시지 보낸 사람이 같다면
                 }else{
                     let $msg_history = $(".msg_history");
                     let html = "<div class=\"incoming_msg\">\n" +
@@ -188,7 +189,7 @@
                         "                                        <div class=\"received_withd_msg\">\n" +
                         "                                            <span class=\"user_nick_name\">"+user_nick_name+"</span>\n" +
                         "                                            <p>"+msg+"</p>\n" +
-                        "                                            <span class=\"time_date\">11:01 AM    |    June 9</span></div>\n" +
+                        "                                            <span class=\"time_date\">"+creationDate+"</span></div>\n" +
                         "                                    </div>\n" +
                         "                                </div>";
                     $msg_history.append(html);
