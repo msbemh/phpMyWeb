@@ -188,6 +188,46 @@ include './userLog.php';
             ?>
             </tbody>
         </table>
+
+        <div class="main_board_title">[ 여행관련 뉴스글 ]</div>
+        <!-- 여행관련 뉴스글 리스트 -->
+        <div class="travel_news_list">
+            <!-- 여행관련 뉴스글 가져오기 -->
+            <?php
+            include '../DB/DBConnection.php';
+
+            //게시글 시작위치
+            $sql = "SELECT * FROM travel_news ORDER BY travel_news_no DESC";
+            $result = $conn->query($sql);
+            while($row = $result->fetch_assoc()) {
+                $datetime = explode(' ', $row['creation_date']);
+                $date = $datetime[0];
+                $row['creation_date'] = $date;
+                $title = $row['title'];
+                if(strlen($title) >30){
+                    $title = iconv_substr($title, 0, 30,"utf-8");
+                    $title = $title."...";
+                }
+                ?>
+                <div class="travel_news_item fl" onclick="goTravelPlanView(<?php echo $row['travel_news_no'] ?>)">
+                    <div class="travel_news_img_box">
+                        <a href="https://news.joins.com<?php echo $row['image_url']?>">
+                            <img src="<?php echo $row['image_src']?>">
+                        </a>
+                    </div>
+                    <div class="travel_news_info_box">
+                        <div class="travel_news_title"><a href="https://news.joins.com<?php echo $row['url'] ?>"><?php echo $title ?></a></div>
+                        <span class="travel_news_summary"><a href="<?php echo $row['summary_url'] ?>"><?php echo $row['summary'] ?></a></span>
+                        <span class="travel_news_date"><?php echo $row['creation_date'] ?></span>
+                    </div>
+                </div>
+                <?php
+            }
+            $conn->close();
+            ?>
+        </div><!-- 여행리스트 끝 -->
+        <div style="clear: both;"></div>
+
     </div>
 </div>
 
