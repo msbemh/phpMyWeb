@@ -70,6 +70,7 @@
         </ul>
     </nav>
 </div>
+<button id="crawling">크롤링</button>
 
 
 <script type="text/javascript">
@@ -143,6 +144,18 @@ $(function() {
     $("#major_menu .chat").on("click",function(){
         $('#chat_menu').css('display', 'block');
         $('#major_menu').css('display', 'none');
+    });
+
+    //크롤링하기
+    $("#crawling").on("click",function(){
+        $.ajax({
+            url:'/crawling',
+            dataType:'json',
+            type:'POST',
+            success:function(data){
+                console.log("data:",data);
+            }
+        });
     });
 
 
@@ -262,6 +275,7 @@ function go_room_with_room_no(room_no, user_email) {
     window.parent.postMessage({ 'room_no': room_no, 'counter_user_email': user_email, 'is_room_no': true }, '*');
 }
 
+//데이터 형식 변경
 function change_date_format(date) {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;

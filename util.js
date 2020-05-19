@@ -7,3 +7,5 @@ var isEmpty = function(value){
     }
 };
 
+console.log("안녕하세요");
+

@@ -31,6 +31,9 @@ var memcached = new Memcached('127.0.0.1:11211');
 var cookie = require('cookie');
 var phpUnserialize = require('php-unserialize');
 var SESS_PATH = "/web/phpMyWeb/tmp/";
+//-------- crawling ---------------
+var axios = require('axios');
+var cheerio = require('cheerio');
 //--------------------------------
 
 var app = express();
@@ -66,6 +69,42 @@ var connection = new mysql({
 app.get('/', function(req, res) {
     // res.sendFile(__dirname + '/socketTest.ejs');
     res.render('chatUserList.ejs');
+});
+
+//크롤링 하기
+app.post('/crawling', function(req, res) {
+
+    let url = 'https://news.joins.com/travel/news/list';
+
+    axios.get(url).then(html => {
+        let ulList = [];
+        const $ = cheerio.load(html.data);
+        const $bodyList = $(".list_basic  ul").children("li");
+        //each : list 마다 함수 실행, forEach와 동일
+        $bodyList.each(function(i, elem) {
+            ulList[i] = {
+                //find : 해당 태그가 있으면 그 요소 반환
+                title: $(this).find('.headline a').text(),
+                url: $(this).find('.headline a').attr('href'),
+                image_url: $(this).find('.thumb a').attr('href'),
+                image_src: $(this).find('.thumb a img').attr('src'),
+                summary: $(this).find('.byline em a').text(),
+                summary_url: $(this).find('.byline em a').attr('href'),
+                date: $(this).find('.byline em').eq(1).text()
+            };
+            // "'" 따옴표 있을시 "\\'"로 교체하기
+            let title = ulList[i].title.replace(/'/g,"\\'");
+            //DB에 데이터 넣기
+            connection.query( 'INSERT INTO travel_news (title, url, image_url, image_src, summary, summary_url, creation_date)\n' +
+                '\tVALUES (\''+title+'\',\''+ulList[i].url+'\',\''+ulList[i].image_url+'\',\''+ulList[i].image_src+'\', \''+ulList[i].summary+'\', \''+ulList[i].summary_url+'\', \''+ulList[i].date+'\');');
+        });
+        // console.log("ulList:",ulList);
+
+        let data = {result:"hello"};
+        data = JSON.stringify(data);
+        res.send(data);
+    });
+
 });
 
 //ajax 회원 List 가져오기
