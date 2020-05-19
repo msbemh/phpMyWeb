@@ -172,14 +172,14 @@ app.get('/chatRoom', function(req, res) {
     }
     //DB에서 message select하기
     rows = connection.query(
-        'SELECT room_no, message.user_id, message.content, \n' +
+        'SELECT message_no, room_no, message.user_id, message.content, \n' +
         'IF(SUBSTRING_INDEX(SUBSTRING_INDEX(message.creationDate, "T", 1), " ",1) = date_format(now(),\'%Y-%m-%d\'), SUBSTRING_INDEX(SUBSTRING_INDEX(message.creationDate, "T", 1), " ",-1) , date_format(now(),\'%Y-%m-%d\')) as creationDate , \n' +
         'user.nickName as nick_name \n' +
         'FROM message\n' +
         'INNER JOIN user   \n' +
         'ON message.user_id = user.userId\n' +
         'WHERE room_no = '+room_no+'\n' +
-        'ORDER BY creationDate ASC');
+        'ORDER BY message_no ASC');
     console.log("[결과]rows:",rows);
     //나에게온 메시지 읽음으로 수정하기
     connection.query('UPDATE message SET is_read = true WHERE room_no = '+room_no+' and counter_user_id = "'+user_email+'"');
