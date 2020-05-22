@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://wowtravel.tk:444/nginx/videojs/video.js"></script>
+    <script src="https://wowtravel.tk:444/nginx/videojs/videojs-http-streaming.js"></script>
+    <meta charset="utf-8">
+    <title>LiveStream</title>
+    <link href="https://wowtravel.tk:444/nginx/videojs/video-js.min.css" rel="stylesheet">
+</head>
+<body>
+<center>
+    <video-js id="live_stream" class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" controls perload="auto" autoplay="true"
+              width="auto" height="auto" poster="../res/calendar.png">
+        <source src="https://wowtravel.tk:444/hls/112/index.m3u8" type="application/x-mpegURL">
+    </video-js>
+
+    <script>
+        let player = videojs('live_stream');
+        player.play();
+    </script>
+</center>
+</body>
+</html>

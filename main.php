@@ -21,20 +21,13 @@ include './userLog.php';
 
 <?php include './shareModal.php'?>
 
-<!-- 채팅 창 -->
-<div style="position: relative; margin:10px;">
-    <div class="cover_iframe">
-        <iframe class="chat_iframe" id="chat_iframe" src="https://wowtravel.tk:3000/" scrolling="no"></iframe>
-    </div>
-</div>
-
-<div class="container" style="min-width:550px; height: 500px;">
+<div class="container" style="height: 500px; width: 1300px; max-width: 1208px; ">
 
     <!-- 상단 부분 -->
     <?php include './topPart.php'?>
 
     <!-- 메뉴 -->
-    <div class="container_medium">
+    <div class="container_medium" style="float:left;">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/main.php" style="background: #E3E3E3">Home</a>
             <button class="navbar-toggler"  type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -229,6 +222,14 @@ include './userLog.php';
         <div style="clear: both;"></div>
 
     </div>
+
+    <!-- 채팅 창 -->
+    <div style="position: relative; margin:10px;">
+        <div class="cover_iframe fr">
+            <iframe class="chat_iframe" id="chat_iframe" src="https://wowtravel.tk:3000/" scrolling="no"></iframe>
+        </div>
+    </div>
+
 </div>
 
 
